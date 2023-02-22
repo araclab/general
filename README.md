@@ -1,1 +1,1 @@
-# Arac Lab - General Info:
+# ARAC Lab - General Info:
