@@ -23,6 +23,8 @@ BLCM uses multivariate binary responses that indicate presence or absence of 18 
  
 ### Usage
 
+Rscript hostelement_blca.R -i INPUT_CSV -o OUTPUT_FOLDER
+
 ### Result Interpretation
 To obtain a dichotomous classification (i.e., meat or human origin), we apply a user-defined probability thresholds of ≥ 0.80 for positive and ≤ 0.20 for negative; probabilities between these two values were considered indeterminate. 
 
