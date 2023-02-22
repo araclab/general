@@ -3,12 +3,13 @@
 # November 18th, 2019
 # Modified by Daniel Park | danpark@gwu.edu
 
+library(rjags)
+load.module("glm")
 # read in data:
 
 rm(list=ls())
 dat <- read.csv("PATH_TO_YOUR_FILE")
-
-head(dat)
+result_folder <- "RESULTS_PATH_HERE"
 
 class_label <- rep(NA,nrow(dat))
 for (i in 1:nrow(dat)){
@@ -27,15 +28,13 @@ for (i in 1:nrow(dat)){
 
 ntrain = nrow(dat)
 test_id <- which(dat[1:ntrain,]$training==0)
-Y <- as.matrix(dat[1:ntrain,-(1:13)])
-
-result_folder <- "RESULTS_PATH_HERE"
+Y <- as.matrix(dat[1:ntrain,-(1:13)]) # remove non-input columns
 
 # fit Bayesian model:
 mcmc_options <- list(debugstatus= TRUE,
                      n.chains   = 1,
-                     n.itermcmc = 10000, #10000
-                     n.burnin   = 5000, #5000
+                     n.itermcmc = 10000, 
+                     n.burnin   = 5000, 
                      n.thin     = 1,
                      result.folder = result_folder,
                      bugsmodel.dir = result_folder
@@ -68,23 +67,11 @@ model_text <- "model{#BEGIN OF MODEL:
   }
 }
 
-
-# # generate new data:
-# for (i in 1:N){
-# for (k in 1:K){
-# new_Y[i,k] ~ dbern(p[new_eta[i],k])
-# }
-# new_eta[i] ~ dcat(pi[1:M_fit])
-#}
-
-
 } #END OF MODEL."
 
 writeLines(model_text, filename)
 
 # run jags:
-library(rjags)
-load.module("glm")
 
 M_fit <- 10 # this equals the number of all possible categories
 N <- nrow(Y)
@@ -124,14 +111,6 @@ print_res <- function(x,coda_res) plot(coda_res[,grep(x,colnames(coda_res))])
 get_res   <- function(x,coda_res) coda_res[,grep(x,colnames(coda_res))]
 
 print_res("eta",res)
-
-# 
-# 
-# 
-# ind_ord <- order(pi_vec) 
-# retain_ind <- grep("^p",rownames(out$summary))
-# posterior_table <- cbind(c(pi_vec[ind_ord],p_mat[ind_ord,]),round(out$summary[retain_ind,],3))
-# colnames(posterior_table)[1] <- "truth"
 
 mat_test <- as.matrix(get_res("eta",res))[,test_id]
 
