@@ -11,12 +11,12 @@ BLCM uses multivariate binary responses that indicate presence or absence of 18 
 - JAGS => v.4.2.0
 
 ### Input format
-| Command | Description |
+| Column Name | Description |
 | --- | --- |
 | git status | List all new or modified files |
 | git diff | Show file differences that haven't been staged |
 ### Output format
-| Command | Description |
+|  Column Name | Description |
 | --- | --- |
 | git status | List all new or modified files |
 | git diff | Show file differences that haven't been staged |
