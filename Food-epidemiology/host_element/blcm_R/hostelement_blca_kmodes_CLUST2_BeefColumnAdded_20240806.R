@@ -63,14 +63,14 @@ head(dat)
 class_label <- rep(NA,nrow(dat))
 for (i in 1:nrow(dat)){
     if (dat$training[i] ==1){
-        if (!is.na(dat$Human_CL1[i]) && dat$Human_CL1[i] ==1) class_label[i]=1
-        if (!is.na(dat$Human_CL2[i]) && dat$Human_CL2[i] ==1) class_label[i]=2
-        if (!is.na(dat$Chicken_CL1[i]) && dat$Chicken_CL1[i] ==1) class_label[i]=3
-        if (!is.na(dat$Chicken_CL2[i]) && dat$Chicken_CL2[i] ==1) class_label[i]=4
-        if (!is.na(dat$Turkey_CL1[i]) && dat$Turkey_CL1[i] ==1) class_label[i]=5
-        if (!is.na(dat$Turkey_CL2[i]) && dat$Turkey_CL2[i] ==1) class_label[i]=6
-        if (!is.na(dat$Pork[i]) && dat$Pork[i] ==1) class_label[i]=7
-	if (!is.na(dat$Beef[i]) && dat$Beef[i] ==1) class_label[i]=8}
+        if (!is.na(datHuman_CL1[i]) && datHuman_CL1[i]) && datHuman_CL1[i] ==1) class_label[i]=1
+        if (!is.na(datHuman_CL2[i]) && datHuman_CL2[i]) && datHuman_CL2[i] ==1) class_label[i]=2
+        if (!is.na(datChicken_CL1[i]) && datChicken_CL1[i]) && datChicken_CL1[i] ==1) class_label[i]=3
+        if (!is.na(datChicken_CL2[i]) && datChicken_CL2[i]) && datChicken_CL2[i] ==1) class_label[i]=4
+        if (!is.na(datTurkey_CL1[i]) && datTurkey_CL1[i]) && datTurkey_CL1[i] ==1) class_label[i]=5
+        if (!is.na(datTurkey_CL2[i]) && datTurkey_CL2[i]) && datTurkey_CL2[i] ==1) class_label[i]=6
+        if (!is.na(datPork[i]) && datPork[i]) && datPork[i] ==1) class_label[i]=7
+	if (!is.na(datBeef[i]) && datBeef[i]) && datBeef[i] ==1) class_label[i]=8}
 }
 # set.seed(123)
 ntrain = nrow(dat)
@@ -96,23 +96,23 @@ filename   <- file.path(mcmc_options$bugsmodel.dir, model_bugfile_name)
 model_text <- "model{#BEGIN OF MODEL:
   for (i in 1:N){
   for (k in 1:K){
-  Y[i,k] ~ dbern(p[eta[i],k])
+  Y[i,k] ~ dbern(p[eta[i],k]) #observed data
   }
-  eta[i] ~ dcat(pi[1:M_fit])
+  eta[i] ~ dcat(pi[1:M_fit]) #Latent class assignment
   }
   
   for (j in 1:(M_fit-1)){
-  exp0[j] <- exp(a[j])
-  a[j] ~ dnorm(0,4/9)
+  exp0[j] <- exp(a[j]) #Class probabilities derived
+  a[j] ~ dnorm(0,4/9) #Hyperpriors
   }
   exp0[M_fit] <- 1
   exp_sorted <- sort(exp0[1:M_fit])
   
   for (j in 1:M_fit){
-  pi[j] <- exp_sorted[j]/sum(exp_sorted[1:M_fit])
+  pi[j] <- exp_sorted[j]/sum(exp_sorted[1:M_fit]) #Class probabilities normalized
   for (k in 1:K){
-  p[j,k] <- 1/(1+exp(-g[j,k]))
-  g[j,k] ~ dnorm(0,4/9)
+  p[j,k] <- 1/(1+exp(-g[j,k])) # logistic , Response probabilities
+  g[j,k] ~ dnorm(0,4/9)#Hyperpriors
   }
 }
 
