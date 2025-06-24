@@ -61,7 +61,7 @@ A matrix with Order of the columns needs to be kept the same as below:
 | pred_Turkey_CL1  | Positive Predictive Value for the genome to have a Turkey source in cluster 1   |
 | pred_Turkey_CL2  | Positive Predictive Value for the genome to have a Turkey source in cluster 2   |
 | pred_Pork        | Positive Predictive Value for the genome to have a Pork source 		     |
-| pred_Bork 	   | Positive Predictive Value for the genome to have a Beef source 		     |
+| pred_Beef    	   | Positive Predictive Value for the genome to have a Beef source 		     |
 
 The rest of the columns are the same as the input file.
  
