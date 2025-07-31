@@ -3,10 +3,10 @@ bin-debug/
 bin-release/
 [Oo]bj/
 [Bb]in/
-paper_scripts/
 
 # Other files and folders
 .settings/
+paper_scripts/
 
 # Executables
 *.swf

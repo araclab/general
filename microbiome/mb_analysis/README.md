@@ -3,7 +3,7 @@ Welcome to the ARAC DADA2 Pipeline for 16S rRNA sequencing processing. This pipl
 
 
 ## Installation Instructions
-Please obtain the bin files from source sites. Note the specific versions used in this pipeline are noted below in the table.
+Please obtain the bin files from source sites. Note the specific versions used in this pipeline are listed below in the table.
 * dada2 -- https://github.com/benjjneb/dada2
 * qiime1 -- https://qiime.org/install/install.html
 * rdp -- https://sourceforge.net/projects/rdp-classifier/files/rdp-classifier/
@@ -50,8 +50,8 @@ General pipeline system call for SLURM environment (use qsub instead of sbatch f
 
 ## Script Usage
 
-* If you are processing **Nasal samples** specific sequencing, please use: `database_files/amplicon_primers_fadrosh.fasta`, as described in: PMID 24558975
-* If you are processing **Genital samples** specific sequencing, please use: `database_files/amplicon_primers_bactquant.fasta`, as described in: PMID 22510143
+* **Nasal samples** specific sequence processing, please use: `database_files/amplicon_primers_fadrosh.fasta`, as described in: PMID 24558975
+* **Genital samples** specific sequence processing, please use: `database_files/amplicon_primers_bactquant.fasta`, as described in: PMID 22510143
 
 ### run_codes/dada2_pipeline_vP_v11_cleaned.sh
 ```
