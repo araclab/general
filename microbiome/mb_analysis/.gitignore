@@ -6,7 +6,8 @@ bin-release/
 
 # Other files and folders
 .settings/
-paper_scripts/
+
+
 
 # Executables
 *.swf
