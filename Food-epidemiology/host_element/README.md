@@ -103,7 +103,7 @@ __removesmalls.pl__ - Helper perl function to trim sequences less than 500 bp.
 
 __minimap2_output_processor.py__ - Python script that processes the paf files from minimap2 into summary files and data frames: summary_df, threshold_count_df, presence_df, proportional_df, host_element_prevalence_df, element_presence_df(s). The element_presence_df are part of the construction of the blcm input file.
 
-## Bayesian Latent Class model (Folder:)
+## Bayesian Latent Class model (Folder:blcm_R)
 __run_hostelement_blca.sh__ - submits a slurm job to run hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R on the blcm input file.
 ```
 sbatch run_hostelement_blca.sh (blcm input file) (folder output)
