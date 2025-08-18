@@ -11,6 +11,8 @@ BLCM uses multivariate binary responses that indicate presence or absence of 17 
 
 ## Mobile Genetic Element Detection (Folder:minimap2)
 
+__Reference host element genes fasta__: 20221101_elementgeneList.fasta 
+
 __minimap2_pipeline.sh__ - starts the minimap2 pipeline. Requires fasta folder, its associated host isolation source mapping, and an output name.
 ```
 sbatch minimap2_pipeline.sh (reference_fasta_folder) (reference_fasta_HostLabels) (output_name)
