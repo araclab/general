@@ -64,7 +64,7 @@ __cgmlstFinder_compile.sh__ - Compiles the outputs from cgmlstFinder_runner.sh a
 __cgMLSTFinder_git Folder__ - This is the original cgMLSTFinder git with modified codes used in this analysis. 
 
 
-#### Cluster cgmlst profiles using kmodes clustering (Folder:)
+#### Cluster cgmlst profiles using kmodes clustering (Folder:kmodes_clustering)
 __kmodes_submitter.sh__ - starts the kmodes clustering pipeline. Requires the kmodes ready file output from cge_cgmlstFinder pipeline.
 ```
 bash kmodes_submitter.sh (data_tsv) (output_name)
