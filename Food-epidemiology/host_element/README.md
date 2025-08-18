@@ -1,7 +1,17 @@
 # LatentHost: Probabilistic host attribution using mobile genetic elements through Bayesian latent class analysis.
-Code repository used to generate cgMLST kmodes clustering based on a pre-trained model for cluster predictions.
+A  Bayesian latent class model (BLCM) to systematically integrate multiple accessory elements for probabilistic assignment of host-origins.
 
-### cgMLST and Kmodes requirements:
+### Introduction
+ 
+Detection of mobile genetic elements in conjunction with core-genome features (phylogenetic clades or cgmlst) may identify zoonotic spillover and host switch events. We applied Bayesian latent class model (BLCM) approach that assumes the host-origin for each isolate is in an unobserved class of human, turkey, pork and chicken, with further stratification into three major clades based on core phylogeny. 
+
+BLCM uses multivariate binary responses that indicate presence or absence of 18 host-associated accessory elements, identified previously, to infer the latent host-origins. The latent classes and model parameters can be learned in an unsupervised fashion or using a training set. Markov chain Monte Carlo algorithms are used to iteratively produce samples from the posterior distribution of the unobserved host-origins, based on which we calculate posterior probabilities of host-origins for each isolate.
+
+### Features:
+
+## cgMLST and Kmodes 
+Code repository used to generate cgMLST kmodes clustering based on a pre-trained model for cluster predictions.
+# requirements:
 | Tool            | Version                						       |
 | --------------- | -------------------------------------------------------------------------- |
 | SLURM           | v23.02.4               						       |
@@ -37,7 +47,7 @@ ccc774babc22191d76275c20399b79818dbc314f sb27_genomes.tar.gz
 These ecoli context genomes is provided in collaboration with Pathogenwatch: https://pathogen.watch/
 
 
-## cge_cgmlstFinder
+# cge_cgmlstFinder
 __run_cgmlstFinder.sh__ - starts the cgmlstFinder pipeline. Requires a folder with fasta files, a fasta samplelist text file, and a job name for the output folder. Utilizes slurm job array.
 ```
 bash run_cgmlstFinder.sh (fasta_folder_input) (fasta_sampleList_input) (job_name)
@@ -54,7 +64,7 @@ __cgmlstFinder_compile.sh__ - Compiles the outputs from cgmlstFinder_runner.sh a
 __cgMLSTFinder_git Folder__ - This is the original cgMLSTFinder git with modified codes used in this analysis. 
 
 
-## kmodes_clustering
+# kmodes_clustering
 __kmodes_submitter.sh__ - starts the kmodes clustering pipeline. Requires the kmodes ready file output from cge_cgmlstFinder pipeline.
 ```
 bash kmodes_submitter.sh (data_tsv) (output_name)
@@ -76,8 +86,11 @@ python kmodes_clustering_predicting.py (new kmodes ready file) (trained kmodes m
 
 __FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl__ - Trained kmodes model on the genome context at k=2 (two clusters) used in this analysis.
 
+## Phylogenetic clades:
 
-## minimap2
+## Mobile Genetic Element Detection:
+
+# minimap2
 __minimap2_pipeline.sh__ - starts the minimap2 pipeline. Requires fasta folder, its associated host isolation source mapping, and an output name.
 ```
 sbatch minimap2_pipeline.sh (reference_fasta_folder) (reference_fasta_HostLabels) (output_name)
@@ -91,7 +104,7 @@ __removesmalls.pl__ - Helper perl function to trim sequences less than 500 bp.
 
 __minimap2_output_processor.py__ - Python script that processes the paf files from minimap2 into summary files and data frames: summary_df, threshold_count_df, presence_df, proportional_df, host_element_prevalence_df, element_presence_df(s). The element_presence_df are part of the construction of the blcm input file.
 
-## blcm_R
+## Bayesian Latent Class model
 __run_hostelement_blca.sh__ - submits a slurm job to run hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R on the blcm input file.
 ```
 sbatch run_hostelement_blca.sh (blcm input file) (folder output)
