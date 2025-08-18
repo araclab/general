@@ -47,7 +47,7 @@ ccc774babc22191d76275c20399b79818dbc314f sb27_genomes.tar.gz
 These ecoli context genomes is provided in collaboration with Pathogenwatch: https://pathogen.watch/
 
 
-### Assign cgmlst to genome using CGE-cgmlst database (Folder:)
+### Assign cgmlst to genome using CGE-cgmlst database (Folder:cge_cgmlstFinder)
 __run_cgmlstFinder.sh__ - starts the cgmlstFinder pipeline. Requires a folder with fasta files, a fasta samplelist text file, and a job name for the output folder. Utilizes slurm job array.
 ```
 bash run_cgmlstFinder.sh (fasta_folder_input) (fasta_sampleList_input) (job_name)
