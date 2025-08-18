@@ -9,7 +9,7 @@ BLCM uses multivariate binary responses that indicate presence or absence of 18 
 
 ## Features:
 
-### cgMLST and Kmodes 
+## cgMLST and Kmodes 
 Code repository used to generate cgMLST kmodes clustering based on a pre-trained model for cluster predictions.
 ### requirements:
 | Tool            | Version                						       |
