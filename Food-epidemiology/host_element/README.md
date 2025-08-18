@@ -47,7 +47,7 @@ ccc774babc22191d76275c20399b79818dbc314f sb27_genomes.tar.gz
 These ecoli context genomes is provided in collaboration with Pathogenwatch: https://pathogen.watch/
 
 
-# cge_cgmlstFinder
+#### cge_cgmlstFinder
 __run_cgmlstFinder.sh__ - starts the cgmlstFinder pipeline. Requires a folder with fasta files, a fasta samplelist text file, and a job name for the output folder. Utilizes slurm job array.
 ```
 bash run_cgmlstFinder.sh (fasta_folder_input) (fasta_sampleList_input) (job_name)
@@ -64,7 +64,7 @@ __cgmlstFinder_compile.sh__ - Compiles the outputs from cgmlstFinder_runner.sh a
 __cgMLSTFinder_git Folder__ - This is the original cgMLSTFinder git with modified codes used in this analysis. 
 
 
-# kmodes_clustering
+#### kmodes_clustering
 __kmodes_submitter.sh__ - starts the kmodes clustering pipeline. Requires the kmodes ready file output from cge_cgmlstFinder pipeline.
 ```
 bash kmodes_submitter.sh (data_tsv) (output_name)
@@ -90,7 +90,7 @@ __FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl__ - Trained kmode
 
 ## Mobile Genetic Element Detection:
 
-# minimap2
+#### minimap2
 __minimap2_pipeline.sh__ - starts the minimap2 pipeline. Requires fasta folder, its associated host isolation source mapping, and an output name.
 ```
 sbatch minimap2_pipeline.sh (reference_fasta_folder) (reference_fasta_HostLabels) (output_name)
