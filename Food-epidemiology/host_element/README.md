@@ -88,9 +88,8 @@ __FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl__ - Trained kmode
 
 ## Phylogenetic clades:
 
-## Mobile Genetic Element Detection:
+## Mobile Genetic Element Detection (Folder:minimap2)
 
-#### minimap2
 __minimap2_pipeline.sh__ - starts the minimap2 pipeline. Requires fasta folder, its associated host isolation source mapping, and an output name.
 ```
 sbatch minimap2_pipeline.sh (reference_fasta_folder) (reference_fasta_HostLabels) (output_name)
