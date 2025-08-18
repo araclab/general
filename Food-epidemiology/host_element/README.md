@@ -9,6 +9,21 @@ BLCM uses multivariate binary responses that indicate presence or absence of 17 
 
 ## Features:
 
+## Mobile Genetic Element Detection (Folder:minimap2)
+
+__minimap2_pipeline.sh__ - starts the minimap2 pipeline. Requires fasta folder, its associated host isolation source mapping, and an output name.
+```
+sbatch minimap2_pipeline.sh (reference_fasta_folder) (reference_fasta_HostLabels) (output_name)
+```
+
+The minimap2 portion uses `-cx asm20 --cs=long` to generate paf files with mapQ scoring for hits to the reference fasta file (20221101_elementgeneList.fasta). Additional maf alignment and fasta file are generated for independent evaluation and/or troubleshooting.
+
+__20221101_elementgeneList.fasta__ - Contains the fasta reference sequences for the host element markers for minimap2 to map against.
+
+__removesmalls.pl__ - Helper perl function to trim sequences less than 500 bp.
+
+__minimap2_output_processor.py__ - Python script that processes the paf files from minimap2 into summary files and data frames: summary_df, threshold_count_df, presence_df, proportional_df, host_element_prevalence_df, element_presence_df(s). The element_presence_df are part of the construction of the blcm input file.
+
 ## cgMLST and Kmodes 
 Code repository used to generate cgMLST kmodes clustering based on a pre-trained model for cluster predictions.
 ### requirements:
@@ -88,20 +103,6 @@ __FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl__ - Trained kmode
 
 ## Phylogenetic clades:
 
-## Mobile Genetic Element Detection (Folder:minimap2)
-
-__minimap2_pipeline.sh__ - starts the minimap2 pipeline. Requires fasta folder, its associated host isolation source mapping, and an output name.
-```
-sbatch minimap2_pipeline.sh (reference_fasta_folder) (reference_fasta_HostLabels) (output_name)
-```
-
-The minimap2 portion uses `-cx asm20 --cs=long` to generate paf files with mapQ scoring for hits to the reference fasta file (20221101_elementgeneList.fasta). Additional maf alignment and fasta file are generated for independent evaluation and/or troubleshooting.
-
-__20221101_elementgeneList.fasta__ - Contains the fasta reference sequences for the host element markers for minimap2 to map against.
-
-__removesmalls.pl__ - Helper perl function to trim sequences less than 500 bp.
-
-__minimap2_output_processor.py__ - Python script that processes the paf files from minimap2 into summary files and data frames: summary_df, threshold_count_df, presence_df, proportional_df, host_element_prevalence_df, element_presence_df(s). The element_presence_df are part of the construction of the blcm input file.
 
 ## Bayesian Latent Class model (Folder:blcm_R)
 __run_hostelement_blca.sh__ - submits a slurm job to run hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R on the blcm input file.
