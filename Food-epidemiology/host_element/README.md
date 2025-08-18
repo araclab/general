@@ -113,3 +113,15 @@ __hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R__ - Utilizes jags to
 ```
 hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R (blcm input file) (folder output)
 ```
+
+### Citation
+Methods paper - Coming soon
+
+For now if you use BLCM - Host Elements, please cite:
+
+[Using source-associated mobile genetic elements to identify zoonotic extraintestinal E.coli infections](https://www.sciencedirect.com/science/article/pii/S2352771423000381)
+
+```
+Cindy M. Liu, Maliha Aziz, Daniel E. Park, Zhenke Wu, Marc Stegger, Mengbing Li, Yashan Wang, Kara Schmidlin, Timothy J. Johnson, Benjamin J. Koch, Bruce A. Hungate, Lora Nordstrom, Lori Gauld, Brett Weaver, Diana Rolland, Sally Statham, Brantley Hall, Sanjeev Sariya, Gregg S. Davis, Paul S. Keim, James R. Johnson, Lance B. Price,
+Using source-associated mobile genetic elements to identify zoonotic extraintestinal E. coli infections,
+One Health, 2023, 100518, ISSN 2352-7714, https://doi.org/10.1016/j.onehlt.2023.100518.
