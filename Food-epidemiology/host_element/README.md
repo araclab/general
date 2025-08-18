@@ -47,7 +47,7 @@ ccc774babc22191d76275c20399b79818dbc314f sb27_genomes.tar.gz
 These ecoli context genomes is provided in collaboration with Pathogenwatch: https://pathogen.watch/
 
 
-#### cge_cgmlstFinder
+### Assign cgmlst to genome using CGE-cgmlst database (Folder:)
 __run_cgmlstFinder.sh__ - starts the cgmlstFinder pipeline. Requires a folder with fasta files, a fasta samplelist text file, and a job name for the output folder. Utilizes slurm job array.
 ```
 bash run_cgmlstFinder.sh (fasta_folder_input) (fasta_sampleList_input) (job_name)
@@ -64,7 +64,7 @@ __cgmlstFinder_compile.sh__ - Compiles the outputs from cgmlstFinder_runner.sh a
 __cgMLSTFinder_git Folder__ - This is the original cgMLSTFinder git with modified codes used in this analysis. 
 
 
-#### kmodes_clustering
+#### Cluster cgmlst profiles using kmodes clustering (Folder:)
 __kmodes_submitter.sh__ - starts the kmodes clustering pipeline. Requires the kmodes ready file output from cge_cgmlstFinder pipeline.
 ```
 bash kmodes_submitter.sh (data_tsv) (output_name)
@@ -104,7 +104,7 @@ __removesmalls.pl__ - Helper perl function to trim sequences less than 500 bp.
 
 __minimap2_output_processor.py__ - Python script that processes the paf files from minimap2 into summary files and data frames: summary_df, threshold_count_df, presence_df, proportional_df, host_element_prevalence_df, element_presence_df(s). The element_presence_df are part of the construction of the blcm input file.
 
-## Bayesian Latent Class model
+## Bayesian Latent Class model (Folder:)
 __run_hostelement_blca.sh__ - submits a slurm job to run hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R on the blcm input file.
 ```
 sbatch run_hostelement_blca.sh (blcm input file) (folder output)
