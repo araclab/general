@@ -14,7 +14,7 @@ conda activate python3.8.1
 
 
 # paths
-helper_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/Food-epidemiology/host_element_pipeline/scripts/helper_scripts"
+helper_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
 
 
 # Pipeline Inputs

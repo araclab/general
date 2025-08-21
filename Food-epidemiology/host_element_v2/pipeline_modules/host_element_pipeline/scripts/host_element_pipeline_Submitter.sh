@@ -5,9 +5,9 @@
 #SBATCH -o host_element_pipeline_%j.out
 
 
-# Updated Version: 	v4.0
+# Updated Version: 	v4.0.1
 # Updated By:		Edward Sung (edward.sung@gwu.edu)
-# Updated Date: 	05/27/25
+# Updated Date: 	08/18/25
 
 
 STARTTIMER="$(date +%s)"
@@ -21,10 +21,10 @@ module load perl5
 
 
 # paths
-element_genes_screen="/scratch/liu_price_lab/ehsung/github/Development/ehsung/Food-epidemiology/host_element_pipeline/databases/20250527_elementgeneList.fasta"
+element_genes_screen="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/databases/20250818_elementgeneList.fasta"
 
-host_element_scipts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/Food-epidemiology/host_element_pipeline/scripts"
-helper_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/Food-epidemiology/host_element_pipeline/scripts/helper_scripts"
+host_element_scipts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts"
+helper_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
 mmseq2_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
 
 

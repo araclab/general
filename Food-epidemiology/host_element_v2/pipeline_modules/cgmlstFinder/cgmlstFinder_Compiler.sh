@@ -6,9 +6,13 @@
 
 
 # This script runs at the end of cgmlstfinder, where it compiles the results into kmode_ready file.
+# It is automatically queued up by the cgmlstFinder module.
 # It also cleans up the remaining file system.
 
 cgmlstfinder_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder"
+
+
+
 
 
 # Inputs
