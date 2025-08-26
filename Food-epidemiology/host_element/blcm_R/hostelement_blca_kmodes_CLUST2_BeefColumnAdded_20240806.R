@@ -63,14 +63,14 @@ head(dat)
 class_label <- rep(NA,nrow(dat))
 for (i in 1:nrow(dat)){
     if (dat$training[i] ==1){
-        if (!is.na(datHuman_CL1[i]) && datHuman_CL1[i]) && datHuman_CL1[i] ==1) class_label[i]=1
-        if (!is.na(datHuman_CL2[i]) && datHuman_CL2[i]) && datHuman_CL2[i] ==1) class_label[i]=2
-        if (!is.na(datChicken_CL1[i]) && datChicken_CL1[i]) && datChicken_CL1[i] ==1) class_label[i]=3
-        if (!is.na(datChicken_CL2[i]) && datChicken_CL2[i]) && datChicken_CL2[i] ==1) class_label[i]=4
-        if (!is.na(datTurkey_CL1[i]) && datTurkey_CL1[i]) && datTurkey_CL1[i] ==1) class_label[i]=5
-        if (!is.na(datTurkey_CL2[i]) && datTurkey_CL2[i]) && datTurkey_CL2[i] ==1) class_label[i]=6
-        if (!is.na(datPork[i]) && datPork[i]) && datPork[i] ==1) class_label[i]=7
-	if (!is.na(datBeef[i]) && datBeef[i]) && datBeef[i] ==1) class_label[i]=8}
+        if (!is.na(dat$Human_CL1[i]) && dat$Human_CL1[i] ==1) class_label[i]=1
+        if (!is.na(dat$Human_CL2[i]) && dat$Human_CL2[i]) && dat$Human_CL2[i] ==1) class_label[i]=2
+        if (!is.na(dat$Chicken_CL1[i]) && dat$Chicken_CL1[i]) && dat$Chicken_CL1[i] ==1) class_label[i]=3
+        if (!is.na(dat$Chicken_CL2[i]) && dat$Chicken_CL2[i]) && dat$Chicken_CL2[i] ==1) class_label[i]=4
+        if (!is.na(dat$Turkey_CL1[i]) && dat$Turkey_CL1[i]) && dat$Turkey_CL1[i] ==1) class_label[i]=5
+        if (!is.na(dat$Turkey_CL2[i]) && dat$Turkey_CL2[i]) && dat$Turkey_CL2[i] ==1) class_label[i]=6
+        if (!is.na(dat$Pork[i]) && dat$Pork[i]) && dat$Pork[i] ==1) class_label[i]=7
+	if (!is.na(dat$Beef[i]) && dat$Beef[i]) && dat$Beef[i] ==1) class_label[i]=8}
 }
 # set.seed(123)
 ntrain = nrow(dat)

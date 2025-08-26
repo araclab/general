@@ -103,8 +103,6 @@ python kmodes_clustering_predicting.py (new kmodes ready file) (trained kmodes m
 
 __FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl__ - Trained kmodes model on the genome context at k=2 (two clusters) used in this analysis.
 
-## Phylogenetic clades:
-
 
 ## Bayesian Latent Class model (Folder:blcm_R)
 __run_hostelement_blca.sh__ - submits a slurm job to run hostelement_blca_kmodes_CLUST2_BeefColumnAdded_20240806.R on the blcm input file.
