@@ -19,7 +19,7 @@
 | M11   |     6       | 100_CN_05_B6_M2_C4_P2 | group_1025::Contig_41:29362..31485<br>group_1453::Contig_41:26317..27873<br>tnsC::Contig_41:27914..29362<br>tnsA::Contig_41:31472..32314<br>group_8588::Contig_41:24727..25026<br>group_843::Contig_41:22338..23861 | Meat (Turkey)         | Transposable element, adjacent to EL41.                                                                                                                                                                                                                                                                                                                        |
 
 ## NCBI BioProject
-
+PRJNA1321378
 
 ## References
 
