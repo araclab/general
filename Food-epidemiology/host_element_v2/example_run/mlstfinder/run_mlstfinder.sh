@@ -3,7 +3,7 @@
 #SBATCH -p nano
 #SBATCH -e mlstfinder_%j.err
 #SBATCH -o mlstfinder_%j.out
-#SBATCH -J mlstfinder
+
 
 # This script runs only mlstFinder from CGE Tools.
 # Source: https://bitbucket.org/genomicepidemiology/mlst/src/master/
