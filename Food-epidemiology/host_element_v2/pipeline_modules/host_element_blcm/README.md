@@ -4,6 +4,15 @@ A  Bayesian latent class model (BLCM) to systematically integrate multiple acces
 ### Critical Modifications that should be made for every run
 The code for classes needs to be updated if the hosts change. i.e. if you have added beef , update the code to incoporate a new class. if you removed chicken -> update code. Please ask someone who has updated the code before to help!
 
+There are currenly two versions that have their own folders:
+* Excludes_beef/
+* Includes_beef/
+
+The difference are within the R code, where the beef class has been either included or excluded, with lines adjusted accordingly. To identify which lines and make your own adjustments based on the classes you do have, please utilize the diff function (or any public software) to compare the R code between the excludes and includes folder.
+
+The other difference is in the base_blcm_input folder csv file base file. The impacted columns would be the front columns containing the host specifics combinations with the kmodes clustering (Human_CL1,Human_CL2,Chicken_CL1,Chicken_CL2,etc). These should only contain the columns in which you do have classes for. Given that the training set does include all of those current hosts, these would remain. The Excludes_beef does not have any beef samples, thus it has been removed as a column. In the Includes_beef, this column is kept, because there are built in samples that are beef.
+
+
 ### Requirement
 - R => v.3.3.1
 - JAGS => v.4.2.0
