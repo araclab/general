@@ -7,6 +7,8 @@ Detection of mobile genetic elements in conjunction with core-genome features (p
 
 BLCM uses multivariate binary responses that indicate presence or absence of 17 host-associated accessory elements, identified previously, to infer the latent host-origins. The latent classes and model parameters can be learned in an unsupervised fashion or using a training set. Markov chain Monte Carlo algorithms are used to iteratively produce samples from the posterior distribution of the unobserved host-origins, based on which we calculate posterior probabilities of host-origins for each isolate.
 
+[Test](pipeline_modules/Host_Element_GitHub.pdf)
+
 ## Features:
 
 ## Mobile Genetic Element Detection (Folder:minimap2)
