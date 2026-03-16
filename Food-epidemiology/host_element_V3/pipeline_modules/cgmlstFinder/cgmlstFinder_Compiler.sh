@@ -10,8 +10,7 @@
 # It also cleans up the remaining file system.
 
 #cgmlstfinder_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder"
-cgmlstfinder_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder"
-
+cgmlstfinder_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder"
 
 
 # Inputs
@@ -19,7 +18,7 @@ main_output_folder_input=$1
 jobname_input=$2
 
 
-# compile the results into this folder
+#compile the results into this folder
 mkdir $main_output_folder_input/compiled_files
 cp $cgmlstfinder_scripts/kmodes_ready_inputfile_TEMPLATE.txt $main_output_folder_input/compiled_files/${jobname_input}_kmodes_ready_inputfile.txt
 

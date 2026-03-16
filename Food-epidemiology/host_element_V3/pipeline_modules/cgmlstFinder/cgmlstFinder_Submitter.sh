@@ -13,13 +13,8 @@
 
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
-#Edward Slurm (legacy)
-#Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder"
-#Lars Slurm (legacy)
-#Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/araclab_general_new/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder"
 #Jon Slurm
-Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder"
-
+Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder"
 
 # User Inputs
 Data_Folder_input=$1

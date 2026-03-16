@@ -10,28 +10,22 @@
 
 
 # Script Developed by: Edward Sung (edward.sung@gwu.edu) on 02/20/24
-
+# Script Modified by: Jon Slotved (JOSS@dksund.dk)
 
 STARTTIMER="$(date +%s)"
 
 
 # Conda Environment
-#. /GWSPH/groups/liu_price_lab/tools/anaconda3/etc/profile.d/conda.sh
 . /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
 
 # cge_tools_env can be created from scratch by just installing the necessary tools to run cgmlstfinder: https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
-#conda activate cge_tools_env
 conda activate araclab_blcm_cge_dependencies
 
 
 # Script and Tools Paths
-#CGE_DB_Path="/GWSPH/groups/liu_price_lab/pegasus_bin/Tools/CGE_tools/cgmlstfinder_db" # Obtained from https://bitbucket.org/genomicepidemiology/cgmlstfinder_db/src/master/
 CGE_DB_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_for_araclab_host_element_v2/cgmlstfinder_db" # need to install this db
-#CGE_KMA_Tool_Path="/GWSPH/groups/liu_price_lab/pegasus_bin/Tools/CGE_tools/kma/kma"
 CGE_KMA_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_for_araclab_host_element_v2/kma/kma"
-#CGE_Tool_Path="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder/cgMLSTFinder_git/" # Git clone repo under pipeline_modules/cgmlstFinder
-CGE_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/araclab_general_new/Food-epidemiology/host_element_v2/pipeline_modules/cgmlstFinder/cgMLSTFinder_git"
-
+CGE_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/cgMLSTFinder_git"
 
 
 # User Input
