@@ -1,0 +1,11 @@
+this is a crude config file for running cgMLST.
+
+databases:
+__CGE_DB_Path__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_araclab_host_element_v3/cgmlstfinder_db
+__CGE_KMA_Tool_Path__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_araclab_host_element_v3/kma/kma
+
+tool:
+__CGE_Tool_Path__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/cgMLSTFinder_git
+
+main_scripts:
+__cgmlstfinder_scripts__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder

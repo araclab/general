@@ -1,8 +1,0 @@
-cgmlst:
-  db_path: /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_for_araclab_host_element_v2/cgmlstfinder_db
-  kma_path: /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_for_araclab_host_element_v2/kma/kma
-  tool_path: /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/cgMLSTFinder_git
-slurm:  
-  slurm_array_scripts: /dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder
-
-
