@@ -14,7 +14,7 @@
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 
-config_file="/config/minifig.txt"
+config_file="config/minifig.txt"
 #Jon Slurm
 Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@__ | awk -F'__:' '{print $2}' | xargs)
 
