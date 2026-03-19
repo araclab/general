@@ -17,14 +17,13 @@ STARTTIMER="$(date +%s)"
 
 # Conda Environment
 . /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
-
 # cge_tools_env can be created from scratch by just installing the necessary tools to run cgmlstfinder: https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
 conda activate araclab_blcm_cge_dependencies
 
 
 # Script and Tools Paths
-CGE_DB_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_for_araclab_host_element_v2/cgmlstfinder_db" # need to install this db
-CGE_KMA_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_for_araclab_host_element_v2/kma/kma"
+CGE_DB_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_araclab_host_element_v3/cgmlstfinder_db" # need to install this db
+CGE_KMA_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_araclab_host_element_v3/kma"
 CGE_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/cgMLSTFinder_git"
 
 
