@@ -19,7 +19,7 @@ cgmlstfinder_scripts=$(cat $config_file | grep __cgmlstfinder_scripts__@__ | awk
 # Inputs
 main_output_folder_input=$1
 jobname_input=$2
-
+slurm_array_ready_file=$3
 
 #compile the results into this folder
 mkdir $main_output_folder_input/compiled_files
@@ -43,3 +43,4 @@ rm tmpfilelist
 mkdir $main_output_folder_input/compiled_files/slurm_files
 mv cgmlstFinder_Compiler_${SLURM_JOB_ID}.out $main_output_folder_input/compiled_files/slurm_files
 mv cgmlstFinder_Compiler_${SLURM_JOB_ID}.err $main_output_folder_input/compiled_files/slurm_files
+mv ${slurm_array_ready_file} $main_output_folder_input

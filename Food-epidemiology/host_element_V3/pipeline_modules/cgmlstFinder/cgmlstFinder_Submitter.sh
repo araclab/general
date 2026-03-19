@@ -14,9 +14,10 @@
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 
+#config
 config_file="config/minifig.txt"
-#Jon Slurm
 Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@__ | awk -F'__:' '{print $2}' | xargs)
+
 
 # User Inputs
 Data_Folder_input=$1
@@ -122,6 +123,8 @@ do
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname
+sbatch --dependency=singleton -J "$jobname" \ 
+   "$Slurm_Array_scripts/cgmlstFinder_Compiler.sh" \
+   ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
