@@ -15,25 +15,33 @@
 STARTTIMER="$(date +%s)"
 
 
+
 # Conda Environment
 . /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
 # cge_tools_env can be created from scratch by just installing the necessary tools to run cgmlstfinder: https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
 conda activate araclab_blcm_cge_dependencies
 
-
+#config file:
+config_file="/config/minifig.txt"
 # Script and Tools Paths
-CGE_DB_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_araclab_host_element_v3/cgmlstfinder_db" # need to install this db
-CGE_KMA_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/dependencies_and_databases_araclab_host_element_v3/kma"
-CGE_Tool_Path="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/cgMLSTFinder_git"
+CGE_DB_Path=$(cat $config_file | grep __CGE_DB_Path__@__ | awk -F'__:' '{print $2}' | xargs)
+CGE_KMA_Tool_Path=$(cat $config_file | grep __CGE_KMA_Tool_Path__@__ | awk -F'__:' '{print $2}' | xargs)
+CGE_Tool_Path=$(cat $config_file | grep __CGE_Tool_Path__@__ | awk -F'__:' '{print $2}' | xargs)
 
+# make sure paths exit
+for path in "$CGE_DB_Path" "$CGE_KMA_Tool_Path" "$CGE_Tool_Path"; 
+do
+    if [ ! -d "$path" ] && [ ! -f "$path" ]; then
+        echo "ERROR: Path not found or invalid: $path"
+        # exit 1  # Uncomment this to stop the script if a path is missing
+    fi
+done
 
-# User Input
+# Input
 Data_Folder_input=$1
 Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
 Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
 main_output_folder_input=$4
-
-
 
 # Obtains the filename indicated by slurm_array_id
 fileInput="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $3}')"

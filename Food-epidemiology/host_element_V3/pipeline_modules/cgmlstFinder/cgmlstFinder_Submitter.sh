@@ -13,8 +13,10 @@
 
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
+
+config_file="/config/minifig.txt"
 #Jon Slurm
-Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder"
+Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@__ | awk -F'__:' '{print $2}' | xargs)
 
 # User Inputs
 Data_Folder_input=$1
