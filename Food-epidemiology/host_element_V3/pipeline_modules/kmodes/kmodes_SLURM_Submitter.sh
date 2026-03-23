@@ -20,7 +20,7 @@ trained_model=$(cat "$config_file" | grep __trained_model__@__ | awk -F'__:' '{p
 kmodes_rdy_inputfile=$1
 
 #check input
-if [ $# -lt 2 ]
+if [ $# -lt 1 ]
 then
 	echo "add input (kmodes_rdy_inputfile) (trained_model.pkl)"
 	echo	
