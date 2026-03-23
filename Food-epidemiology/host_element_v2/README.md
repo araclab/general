@@ -11,6 +11,8 @@ BLCM uses multivariate binary responses that indicate presence or absence of 17 
 
 
 ## Tool & database dependancies:
++ Python => 3.8
++ R/4.1.1
 + MLST - [Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)
 + mmseq - https://github.com/soedinglab/MMseqs2
 + kmodes python package
