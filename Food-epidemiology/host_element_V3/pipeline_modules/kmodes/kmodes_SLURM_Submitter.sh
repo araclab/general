@@ -22,7 +22,7 @@ kmodes_rdy_inputfile=$1
 #check input
 if [ $# -lt 1 ]
 then
-	echo "add input (kmodes_rdy_inputfile) (trained_model.pkl)"
+	echo "add input (kmodes_rdy_inputfile)"
 	echo	
 	echo "note: do not have at dots '.' in inputfile path, as it may ruin output writing!"
 fi
