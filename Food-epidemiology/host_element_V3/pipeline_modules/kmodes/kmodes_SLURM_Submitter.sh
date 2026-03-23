@@ -35,5 +35,5 @@ sbatch -J kmodes_pred \
 	-e kmodes_pred_%j.err \
 	--cpus-per-task=$cpus \
 	--mem=$mem \
-	--wrap "source '$conda_base' && conda activate '$conda_name' && python '$kmodes_loc/kmodes_clustering_predicting.py' '$kmodes_rdy_inputfile' '$trained_model'"
+	--wrap ". '$conda_base' && conda activate '$conda_name' && python '$kmodes_loc/kmodes_clustering_predicting.py' '$kmodes_rdy_inputfile' '$trained_model'"
 

@@ -1,0 +1,13 @@
+this is a crude config file for running kmodes.
+
+kmodes_loc:
+__kmodes_loc__@__:/Users/B328695/Documents/GitHub/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/kmodes
+__trained_model__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/kmodes/trained_models/cluster_2/FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl
+
+conda_env:
+__conda_env_name__@__:araclab_blcm_kmodes_dependencies
+__conda_base_loc__@__:/dpssi/data/Tools/Conda/latest/etc/profile.d/conda.sh
+
+SLURM:
+__cpus_usage__@__:4
+__mem_usage__@__:8GB
