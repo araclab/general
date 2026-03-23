@@ -103,7 +103,7 @@ fi
 # Manually Set Slurm_CalcRunParallel for this special case (to speed up process)
 # If you need to speed-up the process, you can manually select the number of nodes to be used per SlurmArray job.
 # Uncomment (delete the #) and type in your int number.
-#Slurm_CalcRunParallel=1
+Slurm_CalcRunParallel=2
 
 
 # Splits up the samplelist by index_set and runs the SlurmArray jobs based on the start and end of each set
@@ -123,8 +123,5 @@ do
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J "$jobname" \ 
-   "$Slurm_Array_scripts/cgmlstFinder_Compiler.sh" \
-   ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
-
+sbatch --dependency=singleton -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
