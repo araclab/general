@@ -103,7 +103,7 @@ fi
 # Manually Set Slurm_CalcRunParallel for this special case (to speed up process)
 # If you need to speed-up the process, you can manually select the number of nodes to be used per SlurmArray job.
 # Uncomment (delete the #) and type in your int number.
-Slurm_CalcRunParallel=2
+#Slurm_CalcRunParallel=2
 
 
 # Splits up the samplelist by index_set and runs the SlurmArray jobs based on the start and end of each set
