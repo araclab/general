@@ -1,4 +1,8 @@
 #!/bin/sh
+#SBATCH --time 30:00
+#SBATCH -p project
+#SBATCH -e kmodes_Submitter_%j.err
+#SBATCH -o kmodes_Submitter_%j.out
 
 #config file
 config_file="config/minifig.txt"
@@ -26,7 +30,6 @@ then
 	echo	
 	echo "note: do not have at dots '.' in inputfile path, as it may ruin output writing!"
 fi
-
 
 sbatch -J kmodes_pred \
 	-p project \
