@@ -18,3 +18,8 @@ Update 01/15/26 -- Jon Slotved
         all data except for SB27 data has been removed
 	This version does not include either beef or turkley in training, thus no prediction for said classes
 	R Code base reflects this aswell
+
+Update 01/15/26 -- Jon Slotved
+SB27_raw_input_26022026.csv
+	includes only pork, chicken and human
+	R code also reflects this
