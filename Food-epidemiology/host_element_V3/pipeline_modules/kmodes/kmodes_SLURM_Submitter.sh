@@ -1,11 +1,23 @@
 #!/bin/sh
 
-#paths
-kmodes_loc="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/kmodes"
+#config file
+config_file="config/minifig.txt"
+
+#conda
+conda_base=$(cat "$config_file" | grep __conda_base_loc__@__ | awk -F'__:' '{print $2}' | xargs)
+conda_name=$(cat "$config_file" | grep __conda_env_name__@__ | awk -F'__:' '{print $2}' | xargs)
+
+#slurm
+cpus=$(cat "$config_file" | grep __cpu_usage__@__ | awk -F'__:' '{print $2}' | xargs)
+mem=$(cat "$config_file" | grep __mem_usage__@__ | awk -F'__:' '{print $2}' | xargs)
+
+#kmodes
+kmodes_loc=$(cat "$config_file" | grep __kmodes_loc__@__ | awk -F'__:' '{print $2}' | xargs)
+trained_model=$(cat "$config_file" | grep __trained_model__@__ | awk -F'__:' '{print $2}' | xargs)
+
 
 #input
 kmodes_rdy_inputfile=$1
-trained_model=$2
 
 #check input
 if [ $# -lt 2 ]
@@ -15,4 +27,13 @@ then
 	echo "note: do not have at dots '.' in inputfile path, as it may ruin output writing!"
 fi
 
+
+sbatch -J kmodes_pred \
+	-p project \
+	-t 04:00:00 \
+	-o kmodes_pred_%j.out \
+	-e kmodes_pred_%j.err \
+	--cpus-per-task=$cpus \
+	--mem=$mem \
+	--wrap "source '$conda_base' && conda activate '$conda_name' && python '$kmodes_loc/kmodes_clustering_predicting.py' '$kmodes_rdy_inputfile' '$trained_model'"
 
