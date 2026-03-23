@@ -22,7 +22,7 @@ STARTTIMER="$(date +%s)"
 conda activate araclab_blcm_cge_dependencies
 
 #config file:
-config_file="config/minifig.txt"
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/config/minifig.txt"
 # Script and Tools Paths
 CGE_DB_Path=$(cat $config_file | grep __CGE_DB_Path__@__ | awk -F'__:' '{print $2}' | xargs)
 CGE_KMA_Tool_Path=$(cat $config_file | grep __CGE_KMA_Tool_Path__@__ | awk -F'__:' '{print $2}' | xargs)

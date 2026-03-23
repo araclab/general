@@ -5,7 +5,7 @@
 #SBATCH -o kmodes_Submitter_%j.out
 
 #config file
-config_file="config/minifig.txt"
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/kmodes/config/minifig.txt"
 
 #conda
 conda_base=$(cat "$config_file" | grep __conda_base_loc__@__ | awk -F'__:' '{print $2}' | xargs)

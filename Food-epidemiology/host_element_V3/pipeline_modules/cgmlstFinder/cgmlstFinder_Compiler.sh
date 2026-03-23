@@ -10,7 +10,7 @@
 # It also cleans up the remaining file system.
 
 #config file:
-config_file="config/minifig.txt"
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/config/minifig.txt"
 
 #get path to main script loc
 cgmlstfinder_scripts=$(cat $config_file | grep __cgmlstfinder_scripts__@__ | awk -F'__:' '{print $2}' | xargs)

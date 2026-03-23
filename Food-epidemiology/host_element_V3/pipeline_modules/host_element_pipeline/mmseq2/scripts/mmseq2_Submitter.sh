@@ -9,7 +9,7 @@
 
 # Small changes to fit ugerm made by Jon Slotved
 
-config_file="Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 #Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"

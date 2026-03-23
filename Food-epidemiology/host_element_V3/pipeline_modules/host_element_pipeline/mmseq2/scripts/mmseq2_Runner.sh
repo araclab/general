@@ -17,7 +17,7 @@ conda activate mmseq2_env
 # Modules - Please add any modules required
 #module load python3/3.10.11
 #config
-config_file="Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
 
 # Script and Tool Locations - Include any additional script path as needed
 #Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
