@@ -10,15 +10,20 @@ Detection of mobile genetic elements in conjunction with core-genome features (p
 BLCM uses multivariate binary responses that indicate presence or absence of 17 host-associated accessory elements, identified previously, to infer the latent host-origins. The latent classes and model parameters can be learned in an unsupervised fashion or using a training set. Markov chain Monte Carlo algorithms are used to iteratively produce samples from the posterior distribution of the unobserved host-origins, based on which we calculate posterior probabilities of host-origins for each isolate.
 
 
+## Tool & database dependancies:
+MLST - [Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)
+mmseq - https://github.com/soedinglab/MMseqs2
+kmodes python package
+JAGS - https://mcmc-jags.sourceforge.io/
+cgmlst database & KMA - https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
 
 ## Pipeline Structure:
-Refer to **[Host_Element_GitHub.pdf](pipeline_modules/Host_Element_GitHub.pdf)** for an infographic overview of the pipeline. It also includes command line instructions on how to run the modules. Note: MLST is a necessary part of the pipeline, but not included directly in this repo. Please install and use MLST by **[tseemann](https://github.com/tseemann/mlst)** or by **[Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)**.
+Refer to **[Host_Element_GitHub.pdf](pipeline_modules/Host_Element_GitHub.pdf)** for an infographic overview of the pipeline. It also includes command line instructions on how to run the modules.
 
 ### [example_run](example_run/)
 Example run of the pipeline from start to end using 5 publicly availabe E. coli genomes. Please utilize this to cross-check to ensure your pipeline has been correctly installed and run for each of the modules.
 
 ### [pipeline_modules](pipeline_modules/)
-* **conda_envs** - contains yaml files to install the necessary conda enviroments used in the pipeline modules.
 * **cgmlstFinder** - performs cgmlst identification using Genomic Epidemiology (CGE) **[cgMLSTFinder](https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/)**. This has been modified to convert and utilize **[md5 versions of sequences](pipeline_modules/cgmlstFinder/cgMLSTFinder_git/CGE_cgMLST_md5_converter.py)**
 * **kmodes** - performs **[kmodes](https://pypi.org/project/kmodes/)** supervised predictions using feature data based on cgMLST with a pre-trained model.
 * **host_element_pipeline** - Utilizes **[mmseq2](https://github.com/soedinglab/MMseqs2)** to search for host-associated accessory elements within the E. coli genomes and generate a presence absence matrix.
@@ -30,7 +35,7 @@ Example run of the pipeline from start to end using 5 publicly availabe E. coli 
 ## MLST
 Please install and use MLST by **[tseemann](https://github.com/tseemann/mlst)** or by **[Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)**.
 
-The example used in this pipeline is the **[Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)**. The ST number is parsed and pulled from the results.txt file under "**Sequence Type:**" line and then compiled into a single two column **mlst_calls.txt**.
+The demo run uses the **[Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)**. The ST number is parsed and pulled from the results.txt file under "**Sequence Type:**" line and then compiled into a single two column **mlst_calls.txt**.
 
 Please note the the **[database used is ecoli](https://bitbucket.org/genomicepidemiology/mlst_db/src/master/)**, but this is dependent on the version used in the CGE mlst software. At the time of checking the database (1/20/2026) it is named ecoli1 now.
 
