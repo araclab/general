@@ -1,4 +1,9 @@
 #!/bin/sh
+#SBATCH --time 30:00
+#SBATCH -p project
+#SBATCH -e cgmlstFinder_Submitter_%j.err
+#SBATCH -o cgmlstFinder_Submitter_%j.out
+
 
 # NOTE: This is a modified script from https://github.com/araclab/general/tree/main/Food-epidemiology/host_element_v2
 # modified version author: Jon Sztuk Slotved 
@@ -40,6 +45,12 @@ jobname=${Job_Name_input}
 # Create File System
 mkdir ${Job_Name_input}_output
 mkdir ${Job_Name_input}_output/processing_files
+mkdir ${Job_Name_input}_output/slurm_out
+
+#move slurm output
+mv cgmlstFinder_Submitter_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurm_out
+mv cgmlstFinder_Submitter_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurm_out
+
 
 # Start-Up / Generate SLURM-ARRAY-READY samplelist
 # Convert samplelist to SLURM-ARRAY-READY format: appends indexing and __@__ to each sample name in file. 

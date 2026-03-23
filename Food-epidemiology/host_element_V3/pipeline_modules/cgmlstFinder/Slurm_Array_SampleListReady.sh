@@ -1,4 +1,9 @@
 #!/bin/bash
+#SBATCH --time 30:00
+#SBATCH -p project
+#SBATCH -e array_%j.err
+#SBATCH -o array_%j.out
+
 
 # This script is to be used for Edward's (edward.sung@gwu.edu) slurm array scripts.
 # It adds the indexing numbers and "__@__" separator/identifier in front of each sample name in the sample list.
