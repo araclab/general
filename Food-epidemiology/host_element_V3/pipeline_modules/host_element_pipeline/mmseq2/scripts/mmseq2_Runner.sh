@@ -6,8 +6,6 @@
 
 # Created by Edward Sung (edward.sung@gwu.edu) on 2/18/2025
 
-# -p tiny,small-gpu,debug
-
 STARTTIMER="$(date +%s)"
 
 
@@ -18,13 +16,14 @@ conda activate mmseq2_env
 
 # Modules - Please add any modules required
 #module load python3/3.10.11
-
+#config
+config_file="Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
 
 # Script and Tool Locations - Include any additional script path as needed
 #Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/mmseq2/scripts"
+Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@ | awk -F'__:' '{print $2}' | xargs)
 #Slurm_Array_python="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts/python_scripts"
-Slurm_Array_python="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/mmseq2/scripts/python_scripts"
+Slurm_Array_python=$(cat $config_file | grep __Slurm_Array_python__@ | awk -F'__:' '{print $2}' | xargs)
 
 
 # User Input

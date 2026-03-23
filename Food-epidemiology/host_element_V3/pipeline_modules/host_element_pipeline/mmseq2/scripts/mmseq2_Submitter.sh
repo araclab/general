@@ -9,9 +9,11 @@
 
 # Small changes to fit ugerm made by Jon Slotved
 
+config_file="Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
+
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 #Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/mmseq2/scripts"
+Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@ | awk -F'__:' '{print $2}' | xargs)
 
 
 # User Inputs
@@ -99,7 +101,7 @@ fi
 # Manually Set Slurm_CalcRunParallel for this special case (to speed up process)
 # If you need to speed-up the process, you can manually select the number of nodes to be used per SlurmArray job.
 # Uncomment (delete the #) and type in your int number.
-Slurm_CalcRunParallel=2
+#Slurm_CalcRunParallel=2
 
 # Splits up the samplelist by index_set and runs the SlurmArray jobs based on the start and end of each set
 for ((i=0; i<$Slurm_chunks; i++))

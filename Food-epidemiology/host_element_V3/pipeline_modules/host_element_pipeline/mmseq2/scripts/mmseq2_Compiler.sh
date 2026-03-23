@@ -13,9 +13,11 @@ STARTTIMER="$(date +%s)"
 #. /GWSPH/groups/liu_price_lab/tools/anaconda3/etc/profile.d/conda.sh
 . /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
 
+#config file
+config_file="Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
 # Script and Tool Locations - Include any additional script path as needed
 #Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-Slurm_Array_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/mmseq2/scripts"
+Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@ | awk -F'__:' '{print $2}' | xargs)
 
 # Inputs
 main_output_folder_input=$1
