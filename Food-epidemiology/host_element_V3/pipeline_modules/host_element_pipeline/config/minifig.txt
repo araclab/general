@@ -3,3 +3,9 @@ this is a crude config file for running the host_element_pipeline.
 mmseq2:
 __Slurm_Array_scripts__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/mmseq2/scripts
 __Slurm_Array_python__@__:/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/mmseq2/scripts/python_scripts
+
+host_element_pipeline:
+__element_genes_screen__@__:
+__host_element_scipts__@__:
+__helper_scripts__@__:
+__mmseq2_scripts__@__:
