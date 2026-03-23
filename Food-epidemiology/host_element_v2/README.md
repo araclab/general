@@ -11,11 +11,11 @@ BLCM uses multivariate binary responses that indicate presence or absence of 17 
 
 
 ## Tool & database dependancies:
-MLST - [Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)
-mmseq - https://github.com/soedinglab/MMseqs2
-kmodes python package
-JAGS - https://mcmc-jags.sourceforge.io/
-cgmlst database & KMA - https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
++ MLST - [Genomic Epidemiology (CGE) MLST](https://bitbucket.org/genomicepidemiology/mlst/src/master/)
++ mmseq - https://github.com/soedinglab/MMseqs2
++ kmodes python package
++ JAGS - https://mcmc-jags.sourceforge.io/
++ cgmlst database & KMA - https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
 
 ## Pipeline Structure:
 Refer to **[Host_Element_GitHub.pdf](pipeline_modules/Host_Element_GitHub.pdf)** for an infographic overview of the pipeline. It also includes command line instructions on how to run the modules.
