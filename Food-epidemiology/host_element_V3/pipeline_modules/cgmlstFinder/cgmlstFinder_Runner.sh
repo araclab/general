@@ -14,19 +14,20 @@
 
 STARTTIMER="$(date +%s)"
 
-
+#config file:
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Conda Environment
-. /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
 # cge_tools_env can be created from scratch by just installing the necessary tools to run cgmlstfinder: https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
-conda activate araclab_blcm_cge_dependencies
+conda_source=$(cat "$config_file" | grep '^GLOBAL__CONDA_SH__=' | awk -F'__=' '{print $2}' | xargs)
+conda_env=$(cat "$config_file" | grep '^CGE__CONDA_ENV__=' | awk -F'__=' '{print $2}' | xargs)
+. "$conda_source"
+conda activate "$conda_env"
 
-#config file:
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/config/minifig.txt"
 # Script and Tools Paths
-CGE_DB_Path=$(cat $config_file | grep __CGE_DB_Path__@__ | awk -F'__:' '{print $2}' | xargs)
-CGE_KMA_Tool_Path=$(cat $config_file | grep __CGE_KMA_Tool_Path__@__ | awk -F'__:' '{print $2}' | xargs)
-CGE_Tool_Path=$(cat $config_file | grep __CGE_Tool_Path__@__ | awk -F'__:' '{print $2}' | xargs)
+CGE_DB_Path=$(grep '^CGE__DB_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+CGE_KMA_Tool_Path=$(grep '^CGE__KMA_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+CGE_Tool_Path=$(grep '^CGE__TOOL_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 
 # make sure paths exit
 for path in "$CGE_DB_Path" "$CGE_KMA_Tool_Path" "$CGE_Tool_Path"; 

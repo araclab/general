@@ -10,10 +10,10 @@
 # It also cleans up the remaining file system.
 
 #config file:
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/cgmlstFinder/config/minifig.txt"
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 #get path to main script loc
-cgmlstfinder_scripts=$(cat $config_file | grep __cgmlstfinder_scripts__@__ | awk -F'__:' '{print $2}' | xargs)
+cgmlstfinder_scripts=$(cat "$config_file" | grep '^CGE__SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
 
 
 # Inputs
@@ -43,4 +43,4 @@ rm tmpfilelist
 mkdir $main_output_folder_input/compiled_files/slurm_files
 mv cgmlstFinder_Compiler_${SLURM_JOB_ID}.out $main_output_folder_input/compiled_files/slurm_files
 mv cgmlstFinder_Compiler_${SLURM_JOB_ID}.err $main_output_folder_input/compiled_files/slurm_files
-mv ${slurm_array_ready_file} $main_output_folder_input
+mv "$slurm_array_ready_file" $main_output_folder_input
