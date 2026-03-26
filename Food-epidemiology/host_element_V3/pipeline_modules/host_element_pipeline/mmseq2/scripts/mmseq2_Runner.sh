@@ -8,22 +8,17 @@
 
 STARTTIMER="$(date +%s)"
 
+#config
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Conda Enviroment - Please change to load your conda environment
-#. /GWSPH/groups/liu_price_lab/tools/anaconda3/etc/profile.d/conda.sh
-. /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
-conda activate mmseq2_env
-
-# Modules - Please add any modules required
-#module load python3/3.10.11
-#config
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
+conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+conda_env=$(grep '^HEP__MMSEQ2_ENV__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+. "$conda_source"
+conda activate "$conda_env"
 
 # Script and Tool Locations - Include any additional script path as needed
-#Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@ | awk -F'__:' '{print $2}' | xargs)
-#Slurm_Array_python="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts/python_scripts"
-Slurm_Array_python=$(cat $config_file | grep __Slurm_Array_python__@ | awk -F'__:' '{print $2}' | xargs)
+mmseq2_python_scripts=$(cat $config_file | grep HEP__MMSEQ2_PYTHON_SCRIPTS__= | awk -F'__=' '{print $2}' | xargs)
 
 
 # User Input
@@ -152,7 +147,7 @@ run_mmseqs_replicate 2
 
 # Python helper function to combine the result replicates and remove any duplicates
 ref_file_numsize=$(grep -c "^>" $Reference_File_input)
-python $Slurm_Array_python/mmseq2_results_replicate_combine.py $main_output_folder_input/processing_files/$filename/results_replicates $Reference_File_input $ref_file_numsize $filename
+python $mmseq2_python_scripts/mmseq2_results_replicate_combine.py $main_output_folder_input/processing_files/$filename/results_replicates $Reference_File_input $ref_file_numsize $filename
 
 mv ${filename}_mmseq2_result_compiled.tsv $main_output_folder_input/processing_files/$filename
 

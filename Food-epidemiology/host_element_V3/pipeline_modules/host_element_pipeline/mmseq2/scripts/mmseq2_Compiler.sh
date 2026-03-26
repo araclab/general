@@ -8,16 +8,15 @@
 
 STARTTIMER="$(date +%s)"
 
+#config file
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Conda Enviroment - Please change to load your conda environment
-#. /GWSPH/groups/liu_price_lab/tools/anaconda3/etc/profile.d/conda.sh
-. /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
+conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+conda_env=$(grep '^HEP__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+. "$conda_source"
+conda activate "$conda_env"
 
-#config file
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules/host_element_pipeline/config/minifig.txt"
-# Script and Tool Locations - Include any additional script path as needed
-#Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-Slurm_Array_scripts=$(cat $config_file | grep __Slurm_Array_scripts__@ | awk -F'__:' '{print $2}' | xargs)
 
 # Inputs
 main_output_folder_input=$1
