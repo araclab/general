@@ -6,48 +6,39 @@
 #SBATCH -e host_element_pipeline_%j.err
 #SBATCH -o host_element_pipeline_%j.out
 
-# Updated Version: 	v4.0.1
-# Updated By:		Edward Sung (edward.sung@gwu.edu)
-# Updated Date: 	08/18/25
+# Updated Version: 	v4.0.2
+# Updated By:		Jon Slotved (JOSS@ssi.dk)
+# Updated Date: 	03/23/26
 
 
 STARTTIMER="$(date +%s)"
 
-# Environments, Modules, Exports, Variables
-#. /GWSPH/groups/liu_price_lab/tools/anaconda3/etc/profile.d/conda.sh
-. /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
-conda activate araclab_blcm_host_element_pipeline_dependencies
 
 # pegasus modules
 #module load perl5
 
 
-# paths
-#element_genes_screen="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/databases/20250818_elementgeneList.fasta"
-#host_element_scipts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts"
-#helper_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
-#mmseq2_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
+#config
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+
+#activate conda
+#source
+conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+conda_env=$(grep HEP__CONDA_ENV__= "$config_file" | awk -F'__=' '{print $2}' | xargs)
+. "$conda_source"
+conda activate "$conda_env"
 
 #Jon configured
-element_genes_screen="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/databases/20250818_elementgeneList.fasta"
-host_element_scipts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts"
-helper_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
-mmseq2_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/mmseq2/scripts"
-
-
-
-
+element_genes_screen=$(cat $config_file | grep __element_genes_screen__@ | awk -F'__:' '{print $2}' | xargs)
+host_element_scipts=$(cat $config_file | grep __host_element_scipts__@ | awk -F'__:' '{print $2}' | xargs)
+helper_scripts=$(cat $config_file | grep __helper_script__@ | awk -F'__:' '{print $2}' | xargs)
+mmseq2_scripts=$(cat $config_file | grep __mmseq2_scripts__@ | awk -F'__:' '{print $2}' | xargs)
 
 # User Inputs
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Data_Folder_Hostlist_input=$3
 Job_Name_input=$4
-
-
-
-
-
 
 # Error for required number of inputs
 if [ $# -lt 4 ]

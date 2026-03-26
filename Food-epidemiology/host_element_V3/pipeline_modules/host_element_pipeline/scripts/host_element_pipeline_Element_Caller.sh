@@ -11,9 +11,10 @@ STARTTIMER="$(date +%s)"
 . /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
 #conda activate python381
 
-# paths
+# config file
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 #helper_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
-helper_scripts="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/Jon_Proj/MODIFIED_general_clone_14112025/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
+helper_scripts=$(grep HEP__HELPER_SCRIPTS__= "$config_file" | awk -F'__=' '{print $2}' | xargs)
 
 # Pipeline Inputs
 mmseq2_output_name=$1
