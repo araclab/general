@@ -13,26 +13,21 @@
 
 STARTTIMER="$(date +%s)"
 
-
-# pegasus modules
-#module load perl5
-
-
 #config
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 #activate conda
 #source
 conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
-conda_env=$(grep HEP__CONDA_ENV__= "$config_file" | awk -F'__=' '{print $2}' | xargs)
+conda_env=$(grep '^HEP__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 . "$conda_source"
 conda activate "$conda_env"
 
-#Jon configured
-element_genes_screen=$(cat $config_file | grep __element_genes_screen__@ | awk -F'__:' '{print $2}' | xargs)
-host_element_scipts=$(cat $config_file | grep __host_element_scipts__@ | awk -F'__:' '{print $2}' | xargs)
-helper_scripts=$(cat $config_file | grep __helper_script__@ | awk -F'__:' '{print $2}' | xargs)
-mmseq2_scripts=$(cat $config_file | grep __mmseq2_scripts__@ | awk -F'__:' '{print $2}' | xargs)
+
+element_genes_screen=$(grep '^HEP__ELEMENT_GENES_SCREEN__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+host_element_scipts=$(cat $config_file | grep '^HEP__HOST_ELEMENT_SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
+helper_scripts=$(cat $config_file | grep '^HEP__HELPER_SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
+mmseq2_scripts=$(cat $config_file | grep '^HEP__MMSEQ2_SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
 
 # User Inputs
 Data_Folder_input=$1
