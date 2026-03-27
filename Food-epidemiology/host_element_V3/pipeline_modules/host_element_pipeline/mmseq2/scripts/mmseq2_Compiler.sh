@@ -1,6 +1,6 @@
 #!/bin/sh
 #SBATCH --time 4:00:00
-#SBATCH -p project
+#SBATCH -p standard
 #SBATCH -o mmseq2_Compiler_%j.out
 #SBATCH -e mmseq2_Compiler_%j.err
 
