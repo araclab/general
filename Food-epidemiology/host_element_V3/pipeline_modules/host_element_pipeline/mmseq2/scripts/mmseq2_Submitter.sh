@@ -12,8 +12,9 @@
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
-#Slurm_Array_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-Slurm_Array_scripts=$(grep '^HEP__MMSEQ2_SCRIPTS__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+#HEP_mmseq2_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
+HEP_mmseq2_scripts=$(grep '^HEP__MMSEQ2_SCRIPTS__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+
 
 # User Inputs
 Data_Folder_input=$1
@@ -35,7 +36,7 @@ fi
 
 # Start-Up / Generate SLURM-ARRAY-READY samplelist
 # Convert samplelist to SLURM-ARRAY-READY format: appends indexing and __@__ to each sample name in file
-$Slurm_Array_scripts/Slurm_Array_SampleListReady.sh $Data_Folder_Samplelist_input
+$HEP_mmseq2_scripts/Slurm_Array_SampleListReady.sh $Data_Folder_Samplelist_input
 samplelist_filename=${Data_Folder_Samplelist_input%.*} # Strip extensions
 echo 
 echo
@@ -113,11 +114,11 @@ do
    array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $Slurm_Array_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $Slurm_Array_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
+   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J $Job_Name_input $Slurm_Array_scripts/mmseq2_Compiler.sh ${Job_Name_input}_output $Reference_File_input $Job_Name_input
+sbatch --dependency=singleton -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Compiler.sh ${Job_Name_input}_output $Reference_File_input $Job_Name_input
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
