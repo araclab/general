@@ -92,8 +92,8 @@ result_folder <- file.path(curr_dir, opts$o)
 # fit Bayesian model:
 mcmc_options <- list(debugstatus= TRUE,
                      n.chains   = 1,
-                     n.itermcmc = 10000, #default=10000
-                     n.burnin   = 5000, # default=5000
+                     n.itermcmc = 1000, #default=10000
+                     n.burnin   = 500, # default=5000
                      n.thin     = 1,
                      result.folder = result_folder,
                      bugsmodel.dir = result_folder
