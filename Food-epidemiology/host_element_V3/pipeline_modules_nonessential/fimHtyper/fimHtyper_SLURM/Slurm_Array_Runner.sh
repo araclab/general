@@ -1,6 +1,6 @@
 #!/bin/sh
 #SBATCH --time 30:00
-#SBATCH -p nano
+#SBATCH -p project
 #SBATCH -e Slurm_Array_Runner_%A_%a.err
 #SBATCH -o Slurm_Array_Runner_%A_%a.out
 
