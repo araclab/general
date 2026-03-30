@@ -65,9 +65,10 @@ echo
 # Create File System
 mkdir -p "${Job_Name_input}_output"
 mkdir -p "${Job_Name_input}_output/processing_files"
+mkdir -p "${Job_Name_input}_output/slurm"
 if [ -n "$SLURM_JOB_ID" ]; then
-   mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.out" "${Job_Name_input}_output"
-   mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.err" "${Job_Name_input}_output"
+   mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.out" "${Job_Name_input}_output/slurm"
+   mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.err" "${Job_Name_input}_output/slurm"
 fi
 
 # SLURM array settings
