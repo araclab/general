@@ -32,13 +32,13 @@ if [ ! -f "$Slurm_Array_scripts/Slurm_Array_SampleListReady.sh" ]; then
    exit 1
 fi
 
-if [ ! -f "$Slurm_Array_scripts/fimH_Runner.sh" ]; then
-   echo "Error: fimH_Runner.sh not found in: $Slurm_Array_scripts"
+if [ ! -f "$Slurm_Array_scripts/Slurm_Array_Runner.sh" ]; then
+   echo "Error: Slurm_Array_Runner.sh not found in: $Slurm_Array_scripts"
    exit 1
 fi
 
-if [ ! -f "$Slurm_Array_scripts/fimH_Compiler.sh" ]; then
-   echo "Error: fimH_Compiler.sh not found in: $Slurm_Array_scripts"
+if [ ! -f "$Slurm_Array_scripts/Slurm_Array_Compiler.sh" ]; then
+   echo "Error: Slurm_Array_Compiler.sh not found in: $Slurm_Array_scripts"
    exit 1
 fi
 
@@ -125,11 +125,11 @@ do
    array_end="$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/fimH_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
+   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/fimH_Compiler.sh" "${Job_Name_input}_output"
+sbatch --dependency=singleton --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Compiler.sh" "${Job_Name_input}_output"
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
