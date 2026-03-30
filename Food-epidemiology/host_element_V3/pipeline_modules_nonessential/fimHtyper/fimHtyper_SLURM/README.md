@@ -32,19 +32,20 @@ These keys are read from config.env:
 - Data folder: directory containing input fasta files
 - Sample list: plain text file with one fasta filename per line
 - Job name: label used for SLURM jobs and output folder prefix
+- Partition: SLURM partition name to run both the runner and compiler jobs on (optional; defaults to `project`)
 
 ## Run
 
 From this folder:
 
 ```bash
-bash fimH_Submitter.sh <data_folder> <sample_list.txt> <job_name>
+bash fimH_Submitter.sh <data_folder> <sample_list.txt> <job_name> <partition>
 ```
 
 Example:
 
 ```bash
-bash fimH_Submitter.sh /path/to/Test_data sample_list_example.txt test
+bash fimH_Submitter.sh /path/to/Test_data sample_list_example.txt test project
 ```
 
 ## What The Submitter Does

@@ -12,12 +12,13 @@ Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
+Partition_input=${4:-project}  # optional; defaults to "project"
 
 
 # Error for required number of inputs
 if [ $# -lt 3 ]
 then
-   echo "Please give all 3 arugments: (Data_Folder_input) (Data_Folder_Samplelist_input) (Job_Name_input)"
+   echo "Please give at least 3 arguments: (Data_Folder_input) (Data_Folder_Samplelist_input) (Job_Name_input) [Partition_input]"
    exit 1
 fi
 
@@ -124,11 +125,11 @@ do
    array_end="$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J "$jobname" "$Slurm_Array_scripts/fimH_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
+   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/fimH_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J "$jobname" "$Slurm_Array_scripts/fimH_Compiler.sh" "${Job_Name_input}_output"
+sbatch --dependency=singleton --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/fimH_Compiler.sh" "${Job_Name_input}_output"
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
