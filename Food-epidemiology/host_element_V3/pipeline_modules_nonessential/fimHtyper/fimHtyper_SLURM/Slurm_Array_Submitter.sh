@@ -1,4 +1,6 @@
 #!/bin/bash
+#SBATCH -e Slurm_Array_Submitter_%A_%a.err
+#SBATCH -o Slurm_Array_Submitter_%A_%a.out
 
 # created by Jon slotved
 
