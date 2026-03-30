@@ -52,8 +52,7 @@ rm tmplist_output_folders
 mkdir -p "$main_output_folder_input/compiled_files/slurm_files"
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.out $main_output_folder_input/compiled_files/slurm_files
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.err $main_output_folder_input/compiled_files/slurm_files
-mv Slurm_Array_Submitter_${SLURM_JOB_ID}.out $main_output_folder_input
-mv Slurm_Array_Submitter_${SLURM_JOB_ID}.err $main_output_folder_input
+mv *_SLURM-ARRAY-READY.txt $main_output_folder_input
 
 # Script Timer
 ENDTIMER="$(date +%s)"

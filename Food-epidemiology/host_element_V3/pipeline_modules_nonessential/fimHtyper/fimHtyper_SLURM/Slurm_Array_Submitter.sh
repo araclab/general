@@ -1,6 +1,7 @@
 #!/bin/bash
-#SBATCH -e Slurm_Array_Submitter_%A_%a.err
-#SBATCH -o Slurm_Array_Submitter_%A_%a.out
+#SBATCH -e Slurm_Array_Submitter_%j.err
+#SBATCH -o Slurm_Array_Submitter_%j.out
+#SBATCH --time 30:00
 
 # created by Jon slotved
 
@@ -64,7 +65,10 @@ echo
 # Create File System
 mkdir -p "${Job_Name_input}_output"
 mkdir -p "${Job_Name_input}_output/processing_files"
-
+if [ -n "$SLURM_JOB_ID" ]; then
+   mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.out" "${Job_Name_input}_output"
+   mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.err" "${Job_Name_input}_output"
+fi
 
 # SLURM array settings
 numFiles=$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | wc -l) # Total number of samples
