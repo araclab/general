@@ -6,7 +6,7 @@
 
 
 # Created by Edward Sung (edward.sung@gwu.edu) on 2/25/2024
-
+#modifed by Jon Slotved
 
 STARTTIMER="$(date +%s)"
 

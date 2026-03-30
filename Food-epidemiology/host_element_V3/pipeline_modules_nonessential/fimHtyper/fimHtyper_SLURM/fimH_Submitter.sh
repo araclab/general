@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Created by Edward Sung (edward.sung@gwu.edu) on
-# Version v1
+# created by Jon slotved
 
 #config
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"

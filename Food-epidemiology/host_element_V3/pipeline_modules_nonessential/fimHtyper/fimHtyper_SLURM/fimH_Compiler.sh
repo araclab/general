@@ -5,7 +5,7 @@
 #SBATCH -e Slurm_Array_Compiler_%j.err
 
 # Created by Edward Sung (edward.sung@gwu.edu) on 2/25/2024
-
+#modified by Jon Slotved
 
 STARTTIMER="$(date +%s)"
 
