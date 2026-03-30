@@ -47,7 +47,7 @@ mkdir -p "$main_output_folder_input/processing_files/$filename/tmp"
 
 # Run Tool command hers
 echo "Performing mlst on: $fileInput"
-"$mlst/mlst" "$Data_Folder_input/$fileInput" > "$main_output_folder_input/processing_files/$filename"
+"$mlst/mlst" "$Data_Folder_input/$fileInput" > "$main_output_folder_input/processing_files/$filename/results_tab.txt"
 
 # Clean-up File System
 mv Slurm_Array_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/processing_files/$filename/slurm_outputs

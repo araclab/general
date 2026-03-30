@@ -24,7 +24,7 @@ i=0
 j=1
 
 # Initialize SLURM-ARRAY-READY.txt file
-touch ${samplelist_filename}_SLURM-ARRAY-READY.txt
+> ${samplelist_filename}_SLURM-ARRAY-READY.txt
 
 while read -r line
 do
