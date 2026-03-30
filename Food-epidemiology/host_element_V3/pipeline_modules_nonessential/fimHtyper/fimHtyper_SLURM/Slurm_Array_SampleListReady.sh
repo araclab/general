@@ -5,6 +5,7 @@
 # The slurm array scripts uses these indexing numbers in association with the slurm task ID call to parses out the filenames.
 
 # Created by Edward Sung (edward.sung@gwu.edu) on 2/25/2024
+# Modified by Jon Slotved
 
 # User Inputs
 samplelist_input=$1

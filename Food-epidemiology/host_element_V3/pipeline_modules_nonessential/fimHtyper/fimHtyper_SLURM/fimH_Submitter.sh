@@ -3,9 +3,11 @@
 # Created by Edward Sung (edward.sung@gwu.edu) on
 # Version v1
 
+#config
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
-Slurm_Array_scripts="/Users/B328695/Documents/GitHub/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
+Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
 
 # User Inputs
 Data_Folder_input=$1
@@ -99,11 +101,11 @@ do
    array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
+   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J $jobname $Slurm_Array_scripts/Slurm_Array_Compiler.sh ${Job_Name_input}_output ${Job_Name_input}_output/compiled_results $samplelist_filename
+sbatch --dependency=singleton -J $jobname $Slurm_Array_scripts/fimH_Compiler.sh ${Job_Name_input}_output ${Job_Name_input}_output/compiled_results $samplelist_filename
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"

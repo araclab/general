@@ -10,22 +10,17 @@
 STARTTIMER="$(date +%s)"
 
 
-# Conda Enviroment - Please change to load your conda environment
-# . /GWSPH/groups/liu_price_lab/tools/anaconda3/etc/profile.d/conda.sh
-# conda activate your_enviroment
-
-
 # Modules - Please add any modules required
 # module load (module)
 
+#config
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Script and Tool Locations - Include any additional script path as needed
-Slurm_Array_scripts="path/to/fimHtyper_SLURM"
-
+Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
 
 # Inputs
 main_output_folder_input=$1
-
 
 mkdir $main_output_folder_input/compiled_files
 

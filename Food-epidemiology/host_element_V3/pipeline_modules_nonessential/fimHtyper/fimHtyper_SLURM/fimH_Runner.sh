@@ -25,9 +25,9 @@ conda activate "$conda_env"
 
 
 # Script and Tool Locations - Include any additional script path as needed
-Slurm_Array_scripts="/Users/B328695/Documents/GitHub/general_JonThesis/Food-epidemiology/host_element_V3/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
-fimtyper="/Users/B328695/Documents/GitHub/Fimtyper"
-fimtyper_db="/Users/B328695/Documents/GitHub/Fimtyper/fimtyper_db"
+Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
+fimtyper=$(grep "^FIMHTYPER__TOOL_LOCATION__=" "$config_file" | awk -F'__=' '{print $2}')
+fimtyper_db=$(grep "^FIMHTYPER__DATABASE__=" "$config_file" | awk -F'__=' '{print $2}')
 
 # User Input
 Data_Folder_input=$1
