@@ -39,7 +39,7 @@ do
    echo "Extracting results from: $line"
    tab_file="$main_output_folder_input/processing_files/${line}/results_tab.txt"
    if [ ! -f "$tab_file" ]; then
-      mlst_type="None_Found"
+      mlst_type="0"
       # awk validation: Check if column 3 (ST) exists, is not empty, and not a dash
       # NR==1: Process first line only (header)
       # $3 != "" && $3 != "-": Ensure field 3 is populated and meaningful
@@ -49,9 +49,9 @@ do
       # awk extraction: Print column 3 (ST value) from first line and exit
       mlst_type=$(awk -F'\t' 'NR==1 {print $3; exit}' "$tab_file")
    else
-      mlst_type="None_Found"
+      mlst_type="0"
    fi
-   echo -e "${line}\t${mlst_type}" >> "$main_output_folder_input/compiled_files/results_compiled.txt"
+   echo -e "${line}\tST${mlst_type}" >> "$main_output_folder_input/compiled_files/results_compiled.txt"
 done < "tmplist_output_folders"
 
 
