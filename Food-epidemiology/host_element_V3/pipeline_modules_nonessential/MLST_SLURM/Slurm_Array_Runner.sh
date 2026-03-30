@@ -22,7 +22,7 @@ conda activate "$conda_env"
 
 # Script and Tool Locations - Include any additional script path as needed
 Slurm_Array_scripts=$(grep "^MLST__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
-mlst=$(grep "^MLST__TOOL_LOCATION__=" "$config_file" | awk -F'__=' '{print $2}')
+mlst=$(grep "^MLST__EXECUTABLE__=" "$config_file" | awk -F'__=' '{print $2}')
 
 # User Input
 Data_Folder_input=$1
