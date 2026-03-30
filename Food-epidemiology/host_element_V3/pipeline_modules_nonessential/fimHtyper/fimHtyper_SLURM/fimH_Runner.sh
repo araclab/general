@@ -45,9 +45,9 @@ filename=${fileInput%.*}
 
 
 # Create sample folder for outputs
-mkdir $main_output_folder_input/processing_files/$filename
-mkdir $main_output_folder_input/processing_files/$filename/slurm_outputs
-mkdir -p $main_output_folder_input/processing_files/$filename/tmp
+mkdir -p "$main_output_folder_input/processing_files/$filename"
+mkdir -p "$main_output_folder_input/processing_files/$filename/slurm_outputs"
+mkdir -p "$main_output_folder_input/processing_files/$filename/tmp"
 
 
 # Run Tool command hers

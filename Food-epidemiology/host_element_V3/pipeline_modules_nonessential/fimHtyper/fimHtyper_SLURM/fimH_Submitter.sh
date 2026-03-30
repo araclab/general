@@ -21,6 +21,26 @@ then
    exit 1
 fi
 
+if [ ! -f "$Data_Folder_Samplelist_input" ]; then
+   echo "Error: sample list file not found: $Data_Folder_Samplelist_input"
+   exit 1
+fi
+
+if [ ! -f "$Slurm_Array_scripts/Slurm_Array_SampleListReady.sh" ]; then
+   echo "Error: Slurm_Array_SampleListReady.sh not found in: $Slurm_Array_scripts"
+   exit 1
+fi
+
+if [ ! -f "$Slurm_Array_scripts/fimH_Runner.sh" ]; then
+   echo "Error: fimH_Runner.sh not found in: $Slurm_Array_scripts"
+   exit 1
+fi
+
+if [ ! -f "$Slurm_Array_scripts/fimH_Compiler.sh" ]; then
+   echo "Error: fimH_Compiler.sh not found in: $Slurm_Array_scripts"
+   exit 1
+fi
+
 
 # Names the slurm job, as well as used in the singleton dependency
 jobname=${Job_Name_input}
@@ -28,19 +48,23 @@ jobname=${Job_Name_input}
 
 # Start-Up / Generate SLURM-ARRAY-READY samplelist
 # Convert samplelist to SLURM-ARRAY-READY format: appends indexing and __@__ to each sample name in file
-bash $Slurm_Array_scripts/Slurm_Array_SampleListReady.sh $Data_Folder_Samplelist_input
+bash "$Slurm_Array_scripts/Slurm_Array_SampleListReady.sh" "$Data_Folder_Samplelist_input"
 samplelist_filename=${Data_Folder_Samplelist_input%.*} # Strip extensions
+if [ ! -f "${samplelist_filename}_SLURM-ARRAY-READY.txt" ]; then
+   echo "Error: failed to generate ${samplelist_filename}_SLURM-ARRAY-READY.txt"
+   exit 1
+fi
 echo 
 echo
 
 
 # Create File System
-mkdir ${Job_Name_input}_output
-mkdir ${Job_Name_input}_output/processing_files
+mkdir -p "${Job_Name_input}_output"
+mkdir -p "${Job_Name_input}_output/processing_files"
 
 
 # SLURM array settings
-numFiles=$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | wc -l) # Total number of samples
+numFiles=$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | wc -l) # Total number of samples
 Slurm_MaxArraySize=1000 # Maximum number of tasks allowed in one array job
 
 # Calculate how many array jobs are needed
@@ -96,15 +120,15 @@ do
    index_set=$i
 
    # Identifes the start and end of the array to be submitted
-   array_start="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | head -1 | awk -F "__@__" '{print $2}')"
-   array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
+   array_start="$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | grep "^${i}__" | head -1 | awk -F "__@__" '{print $2}')"
+   array_end="$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
    echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/fimH_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J "$jobname" "$Slurm_Array_scripts/fimH_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J $jobname $Slurm_Array_scripts/fimH_Compiler.sh ${Job_Name_input}_output ${Job_Name_input}_output/compiled_results $samplelist_filename
+sbatch --dependency=singleton -J "$jobname" "$Slurm_Array_scripts/fimH_Compiler.sh" "${Job_Name_input}_output"
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"

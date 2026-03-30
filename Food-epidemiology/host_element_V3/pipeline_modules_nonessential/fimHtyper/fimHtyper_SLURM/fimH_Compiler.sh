@@ -22,7 +22,7 @@ Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -
 # Inputs
 main_output_folder_input=$1
 
-mkdir $main_output_folder_input/compiled_files
+mkdir -p "$main_output_folder_input/compiled_files"
 
 
 # Create a file to store youre results -- this is just an example of a method to compile results
@@ -49,7 +49,7 @@ done < tmplist_output_folders
 
 # Clean-up file system
 rm tmplist_output_folders
-mkdir $main_output_folder_input/compiled_files/slurm_files
+mkdir -p "$main_output_folder_input/compiled_files/slurm_files"
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.out $main_output_folder_input/compiled_files/slurm_files
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.err $main_output_folder_input/compiled_files/slurm_files
 
