@@ -10,8 +10,9 @@
 # User Inputs
 samplelist_input=$1
 
+# Use basename so the SLURM-ARRAY-READY file is always created in the current directory
 # Adds two indexes (first number tracks set per 1000, second number tracks the sample in the set (1-1000) to the start of each row for the sample names
-samplelist_filename=${samplelist_input%.*}
+samplelist_filename=$(basename "${samplelist_input%.*}")
 
 # This Surm_MaxArraySize to be adjusted based on the HPC system's MaxArraySize allowed. For Pegasus, this is 1000
 Slurm_MaxArraySize=1000

@@ -52,7 +52,7 @@ jobname=${Job_Name_input}
 # Start-Up / Generate SLURM-ARRAY-READY samplelist
 # Convert samplelist to SLURM-ARRAY-READY format: appends indexing and __@__ to each sample name in file
 bash "$Slurm_Array_scripts/Slurm_Array_SampleListReady.sh" "$Data_Folder_Samplelist_input"
-samplelist_filename=${Data_Folder_Samplelist_input%.*} # Strip extensions
+samplelist_filename=$(basename "${Data_Folder_Samplelist_input%.*}") # Strip path and extension; array-ready file goes in current dir
 if [ ! -f "${samplelist_filename}_SLURM-ARRAY-READY.txt" ]; then
    echo "Error: failed to generate ${samplelist_filename}_SLURM-ARRAY-READY.txt"
    exit 1
