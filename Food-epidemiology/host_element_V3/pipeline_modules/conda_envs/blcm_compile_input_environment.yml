@@ -1,8 +1,0 @@
-name: araclab_blcm-compile-input
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - r-base>=4.1.1
-  - r-tidyverse
-  - r-optparse=1.7.3
