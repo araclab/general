@@ -40,13 +40,8 @@ do
    tab_file="$main_output_folder_input/processing_files/${line}/results_tab.txt"
    if [ ! -f "$tab_file" ]; then
       mlst_type="0"
-      # awk validation: Check if column 3 (ST) exists, is not empty, and not a dash
-      # NR==1: Process first line only (header)
-      # $3 != "" && $3 != "-": Ensure field 3 is populated and meaningful
-      # {found=1}: If conditions pass, set flag
-      # END{exit !found}: Exit with 0 (success) if found=1, exit with 1 (failure) if found=0
-   elif awk -F'\t' 'NR==1 && $3 != "" && $3 != "-" {found=1} END{exit !found}' "$tab_file"; then
-      # awk extraction: Print column 3 (ST value) from first line and exit
+
+   elif awk -F'\t' 'NR==1 && $3 != "" && $3 != "-" {found=1} END{exit (found == 0)}' "$tab_file"; then
       mlst_type=$(awk -F'\t' 'NR==1 {print $3; exit}' "$tab_file")
    else
       mlst_type="0"
