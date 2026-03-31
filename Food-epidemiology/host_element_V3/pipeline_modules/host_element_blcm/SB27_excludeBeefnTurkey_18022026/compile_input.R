@@ -1,6 +1,6 @@
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(optparse))
-suppressPackageStartupMessages(library())
+
 
 ## command line options
 opt_lst <- list(
