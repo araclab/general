@@ -1,4 +1,3 @@
-suppressPackageStartupMessages(library(readxl))
 suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(optparse))
 
