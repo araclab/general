@@ -8,33 +8,14 @@
 
 STARTTIMER="$(date +%s)"
 
-get_config_value() {
-	config_key="$1"
-	config_line=$(grep "^${config_key}=" "$config_file")
-
-	if [ -z "$config_line" ]; then
-		print_error_and_exit "Missing config key: ${config_key}"
-	fi
-
-	config_value=$(echo "$config_line" | awk -F'__=' '{print $2}')
-
-	if [ -z "$config_value" ]; then
-		print_error_and_exit "Empty config value for key: ${config_key}"
-	fi
-
-	echo "$config_value"
-}
-
 #config file
-script_dir=$(CDPATH= cd -- "$(dirname "$0")" && pwd)
-config_file="$script_dir/../../../config/config.env"
-
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 #paths
-host_element_blcm_scripts=$(get_config_value "BLCM__SCRIPTS__")
+host_element_blcm_scripts=$(grep "^BLCM__SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
 #conda envs
-conda_source=$(get_config_value "GLOBAL__CONDA_SH__")
-conda_env=$(get_config_value "BLCM__CONDA_ENV__")
+conda_source=$(grep "^GLOBAL__CONDA_SH__=" "$config_file" | awk -F'__=' '{print $2}')
+conda_env=$(grep "^BLCM__CONDA_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
 
 . "$conda_source"
 conda activate "$conda_env"
@@ -46,7 +27,7 @@ module load R/4.1.1
 CSV_Input=$1
 Folder_Output=$2
 
-Rscript "$host_element_blcm_scripts/hostelement_blca_kmodes_CLUST2_SSI_noBeefnTurkey_20260204.R" -i "$CSV_Input" -o "$Folder_Output"
+Rscript $host_element_blcm_scripts/hostelement_blca_kmodes_CLUST2_SSI_noBeefnTurkey_20260204.R -i $CSV_Input -o $Folder_Output
 
 # Script Timer
 ENDTIMER="$(date +%s)"
