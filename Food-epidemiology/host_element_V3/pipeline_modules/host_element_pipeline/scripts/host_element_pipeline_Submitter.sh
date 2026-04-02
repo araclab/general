@@ -23,11 +23,11 @@ conda_env=$(grep '^HEP__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $2}' 
 . "$conda_source"
 conda activate "$conda_env"
 
-
-element_genes_screen=$(grep '^HEP__ELEMENT_GENES_SCREEN__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
-host_element_scipts=$(cat $config_file | grep '^HEP__HOST_ELEMENT_SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
-helper_scripts=$(cat $config_file | grep '^HEP__HELPER_SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
-mmseq2_scripts=$(cat $config_file | grep '^HEP__MMSEQ2_SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+element_genes_screen="$project_root/pipeline_modules/host_element_pipeline/databases/20250818_elementgeneList.fasta"
+host_element_scipts="$project_root/pipeline_modules/host_element_pipeline/scripts"
+helper_scripts="$project_root/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
+mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts"
 
 # User Inputs
 Data_Folder_input=$1

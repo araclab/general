@@ -18,7 +18,8 @@ conda_env=$(grep '^HEP__MMSEQ2_ENV__=' "$config_file" | awk -F'__=' '{print $2}'
 conda activate "$conda_env"
 
 # Script and Tool Locations - Include any additional script path as needed
-mmseq2_python_scripts=$(cat $config_file | grep HEP__MMSEQ2_PYTHON_SCRIPTS__= | awk -F'__=' '{print $2}' | xargs)
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+mmseq2_python_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts/python_scripts"
 
 
 # User Input

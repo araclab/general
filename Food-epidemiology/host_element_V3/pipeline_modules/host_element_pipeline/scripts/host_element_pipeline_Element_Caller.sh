@@ -14,7 +14,8 @@ STARTTIMER="$(date +%s)"
 # config file
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 #helper_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
-helper_scripts=$(grep HEP__HELPER_SCRIPTS__= "$config_file" | awk -F'__=' '{print $2}' | xargs)
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+helper_scripts="$project_root/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
 
 # Pipeline Inputs
 mmseq2_output_name=$1

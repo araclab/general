@@ -13,7 +13,8 @@ config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/genera
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 #HEP_mmseq2_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
-HEP_mmseq2_scripts=$(grep '^HEP__MMSEQ2_SCRIPTS__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+HEP_mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts"
 
 
 # User Inputs
