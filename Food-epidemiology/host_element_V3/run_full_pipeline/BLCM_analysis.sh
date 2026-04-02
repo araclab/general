@@ -13,29 +13,42 @@
 #how to use 
 print_usage() {
 	echo
-    echo "Usage: bash BLCM_analysis.sh -i <assembly_folder> -t <host_tsv> -o <output_directory>"
+    echo "Usage: sbatch/bash BLCM_analysis.sh <assembly_folder> <host_tsv> <output_directory> [partition]"
 	echo
-	echo "Options:"
-	echo "  -i  Folder containing genome assemblies in fasta/fa/fna format"
-	echo "  -t  TSV file with two columns: sampleID and Host"
-	echo "  -o  Destination folder for intermediate and final outputs"
-	echo "  -h  Show this help message"
+	echo "Arguments:"
+	echo "  assembly_folder  Folder containing genome assemblies in fasta/fa/fna format"
+	echo "  host_tsv         TSV file with two columns: sampleID and Host"
+	echo "  output_directory Destination folder for intermediate and final outputs"
+	echo "  partition        SLURM partition to use (optional, default: project)"
     echo
-    echo
-    echo "PLEASE NOTE: avoid any unusual filenames, such as fasta files, with spaces, commas or dots"
-    echo "They should only inc"
+    echo "PLEASE NOTE: avoid unusual filenames with spaces, commas or dots"
+	echo "It is also recommended that full paths are used when filling arguments"
+    echo 
 }
+
 #get input
-getopts "i:t:o:h"
+input_folder="$1"
+host_info="$2"
+main_output_folder="$3"
+partition=${4:-project}
+
 #check input and print_usage if bad
-if [ $# -lt 4 ];then
-print_usage
+if [ -z "$input_folder" ] || [ -z "$host_info" ] || [ -z "$main_output_folder" ]; then
+    print_usage
+	echo
+	echo "found information:"
+	echo "input_folder: ${input_folder}"
+	echo "host_info: ${host_info}"
+	echo "output_loc: ${main_output_folder}"
+	echo "partition: ${partition}"
+    exit 1
 fi
 
-#handle input
-
-
 #create file system
+mkdir "$main_output_folder"/tmp_analysis
+cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/\.fasta/$/' > "$main_output_folder"/tmp_analysis/sample_list.txt
+
+
 
 #run modules
 
