@@ -21,7 +21,8 @@
 
 #config
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
-Slurm_Array_scripts=$(cat "$config_file" | grep '^CGE__SCRIPTS__=' | awk -F'__=' '{print $2}' | xargs)
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+Slurm_Array_scripts="$project_root/pipeline_modules/cgmlstFinder"
 
 
 # User Inputs

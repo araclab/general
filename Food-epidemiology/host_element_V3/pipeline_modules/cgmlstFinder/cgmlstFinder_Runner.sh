@@ -25,9 +25,10 @@ conda_env=$(cat "$config_file" | grep '^CGE__CONDA_ENV__=' | awk -F'__=' '{print
 conda activate "$conda_env"
 
 # Script and Tools Paths
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 CGE_DB_Path=$(grep '^CGE__DB_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 CGE_KMA_Tool_Path=$(grep '^CGE__KMA_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
-CGE_Tool_Path=$(grep '^CGE__TOOL_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+CGE_Tool_Path="$project_root/pipeline_modules/cgmlstFinder/cgMLSTFinder_git"
 
 # make sure paths exit
 for path in "$CGE_DB_Path" "$CGE_KMA_Tool_Path" "$CGE_Tool_Path"; 
