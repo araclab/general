@@ -1,6 +1,6 @@
 #!/bin/sh
 #SBATCH --time 4:00:00
-#SBATCH -p standard
+#SBATCH -p project
 #SBATCH -e host_element_pipeline_Element_Caller_%j.err
 #SBATCH -o host_element_pipeline_Element_Caller_%j.out
 

@@ -2,7 +2,7 @@
 #SBATCH --time 8:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH -p standard
+#SBATCH -p project
 #SBATCH -e host_element_pipeline_%j.err
 #SBATCH -o host_element_pipeline_%j.out
 

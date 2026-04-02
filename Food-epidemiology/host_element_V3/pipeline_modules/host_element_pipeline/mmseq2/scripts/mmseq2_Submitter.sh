@@ -5,7 +5,7 @@
 # Version v1.2
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH -p standard
+#SBATCH -p project
 
 # Small changes to fit ugerm made by Jon Slotved
 
