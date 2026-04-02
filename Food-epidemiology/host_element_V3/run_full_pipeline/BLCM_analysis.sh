@@ -14,7 +14,8 @@
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 #paths
-project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}')
+project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
+echo "main path: $project_root"
 
 #how to use 
 print_usage() {
@@ -56,6 +57,48 @@ cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > "
 
 
 #run modules
+
+#cgmlst
+cgmlst="$project_root/pipeline_modules/cgmlstFinder"
+cgmlst_jid=$(sbatch --parsable -p "${partition}" \
+    -J cgmlst_analysis \
+    "$cgmlst/cgmlstFinder_Submitter.sh" \
+    "$input_folder" \
+    "$main_output_folder/tmp_analysis/sample_list.txt" \
+    cgmlst_analysis)
+echo "cgmlst job ID: $cgmlst_jid"
+
+#host element pipeline
+hep="$project_root/pipeline_modules/host_element_pipeline/scripts"
+hep_jid=$(sbatch --parsable -p "${partition}" \
+    -J hep_analysis \
+    "$hep/host_element_pipeline_Submitter.sh" \
+    "$input_folder" \
+    "$main_output_folder/tmp_analysis/sample_list.txt" \
+    "$host_info" \
+    hep_analysis)
+echo "HEP job ID: $hep_jid"
+
+#kmodes
+kmodes="$project_root/pipeline_modules/kmodes"
+kmodes_jid=$(sbatch --parsable -p "${partition}" \
+    -J kmodes_analysis \
+    --dependency=afterok:"${cgmlst_jid}" \
+    "$kmodes/kmodes_SLURM_Submitter.sh" \
+    "$main_output_folder/tmp_analysis/sample_list.txt")
+echo "kmodes job ID: $kmodes_jid"
+
+#BLCM #TODO
+
+#generate blcm_input
+
+# blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
+# sbatch -p "${partition}" \
+#     -J blcm_analysis \
+#     --dependency=afterok:"${kmodes_jid}":"${hep_jid}" \
+#     "$blcm/run_hostelement_blca.sh" \
+#     "$main_output_folder/tmp_analysis/blcm_input.csv" \
+#     "$main_output_folder/blcm_output"
 
 
 #compile results
