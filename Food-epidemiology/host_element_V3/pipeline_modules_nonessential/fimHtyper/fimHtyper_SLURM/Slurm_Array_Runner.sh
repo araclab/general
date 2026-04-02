@@ -25,7 +25,6 @@ conda activate "$conda_env"
 
 
 # Script and Tool Locations - Include any additional script path as needed
-Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
 fimtyper=$(grep "^FIMHTYPER__TOOL_LOCATION__=" "$config_file" | awk -F'__=' '{print $2}')
 fimtyper_db=$(grep "^FIMHTYPER__DATABASE__=" "$config_file" | awk -F'__=' '{print $2}')
 

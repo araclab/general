@@ -9,7 +9,8 @@
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
-Slurm_Array_scripts=$(grep "^FIMHTYPER__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
+Slurm_Array_scripts="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
 
 # User Inputs
 Data_Folder_input=$1

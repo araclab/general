@@ -22,10 +22,12 @@ SLURM array wrapper scripts for running FimTyper on a list of fasta files.
 These keys are read from config.env:
 
 - GLOBAL__CONDA_SH__
+- GLOBAL__PROJECT_ROOT__
 - FIMHTYPER__CONDA_ENV__
-- FIMHTYPER__SLURM_SCRIPTS__
 - FIMHTYPER__TOOL_LOCATION__
 - FIMHTYPER__DATABASE__
+
+Repo-local script paths are derived inside the wrapper scripts from `GLOBAL__PROJECT_ROOT__`.
 
 ## Input Files
 

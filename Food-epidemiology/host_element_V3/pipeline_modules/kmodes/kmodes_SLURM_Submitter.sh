@@ -13,8 +13,9 @@ conda_name=$(grep '^KMODES__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $
 #conda activated in job acttivation
 
 #kmodes
-kmodes_loc=$(grep KMODES__SCRIPTS__= "$config_file" | awk -F'__=' '{print $2}' | xargs)
-trained_model=$(grep KMODES__TRAINED_MODEL__= "$config_file" | awk -F'__=' '{print $2}' | xargs)
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+kmodes_loc="$project_root/pipeline_modules/kmodes"
+trained_model="$project_root/pipeline_modules/kmodes/trained_models/cluster_2/FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl"
 
 
 #input

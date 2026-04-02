@@ -12,7 +12,8 @@ STARTTIMER="$(date +%s)"
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
 #paths
-host_element_blcm_scripts=$(grep "^BLCM__SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
+host_element_blcm_scripts="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
 #conda envs
 conda_source=$(grep "^GLOBAL__CONDA_SH__=" "$config_file" | awk -F'__=' '{print $2}')
 conda_env=$(grep "^BLCM__CONDA_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
@@ -27,7 +28,7 @@ module load R/4.1.1
 CSV_Input=$1
 Folder_Output=$2
 
-Rscript $host_element_blcm_scripts/hostelement_blca_kmodes_CLUST2_SSI_noBeefnTurkey_20260204.R -i $CSV_Input -o $Folder_Output
+Rscript "$host_element_blcm_scripts/hostelement_blca_kmodes_CLUST2_SSI_noBeefnTurkey_20260204.R" -i "$CSV_Input" -o "$Folder_Output"
 
 # Script Timer
 ENDTIMER="$(date +%s)"

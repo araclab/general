@@ -16,9 +16,6 @@ STARTTIMER="$(date +%s)"
 #config
 config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
 
-# Script and Tool Locations - Include any additional script path as needed
-Slurm_Array_scripts=$(grep "^MLST__SLURM_SCRIPTS__=" "$config_file" | awk -F'__=' '{print $2}')
-
 # Inputs
 main_output_folder_input=$1
 

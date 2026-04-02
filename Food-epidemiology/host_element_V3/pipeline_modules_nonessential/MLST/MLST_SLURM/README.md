@@ -22,9 +22,11 @@ SLURM array wrapper scripts for running MLST on a list of fasta files.
 These keys are read from config.env:
 
 - GLOBAL__CONDA_SH__
+- GLOBAL__PROJECT_ROOT__
 - MLST__CONDA_ENV__
-- MLST__SLURM_SCRIPTS__
 - MLST__EXECUTABLE__
+
+Repo-local script paths are derived inside the wrapper scripts from `GLOBAL__PROJECT_ROOT__`.
 
 ## Scheme
 
