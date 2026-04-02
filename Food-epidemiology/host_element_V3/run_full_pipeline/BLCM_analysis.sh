@@ -45,7 +45,7 @@ if [ -z "$input_folder" ] || [ -z "$host_info" ] || [ -z "$main_output_folder" ]
 fi
 
 #create file system
-mkdir "$main_output_folder"/tmp_analysis
+mkdir -p "$main_output_folder"/tmp_analysis
 cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/\.fasta/$/' > "$main_output_folder"/tmp_analysis/sample_list.txt
 
 
