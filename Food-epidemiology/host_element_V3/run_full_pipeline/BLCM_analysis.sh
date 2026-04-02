@@ -10,6 +10,12 @@
 #blcm pipeline wrapper, written by Jon Slotved on 02/04/2026
 #please contact via: JOSS@dksund.dk
 
+#config
+config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+
+#paths
+project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}')
+
 #how to use 
 print_usage() {
 	echo
@@ -49,7 +55,7 @@ mkdir -p "$main_output_folder"/tmp_analysis
 cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > "$main_output_folder"/tmp_analysis/sample_list.txt
 
 
-
 #run modules
+
 
 #compile results
