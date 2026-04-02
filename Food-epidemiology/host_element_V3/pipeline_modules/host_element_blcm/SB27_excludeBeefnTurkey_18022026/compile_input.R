@@ -68,9 +68,6 @@ output_df <- output_df %>%
   left_join(mlst_df, by = "Sample_Name") 
 
 #creating Class representation based on kmodes and host
-colnames(sb27_df)
-head(kmodes_df,5)
-head(host_df,5)
 kmodes_host_df <- host_df %>%
   left_join(kmodes_df, by = "Sample_Name")
 kmodes_host_df$Human_CL1 <- ifelse(kmodes_host_df$cluster_2 == 1 & kmodes_host_df$Host == "Human", 1, 0)
