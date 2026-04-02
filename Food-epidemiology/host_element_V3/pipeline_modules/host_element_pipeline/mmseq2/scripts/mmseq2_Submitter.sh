@@ -25,7 +25,7 @@ SearchType_input=$4		# {'prot' or 'nucl'}
 Percent_Identity_input=$5	# {0.8}
 Percent_Coverage_input=$6	# {0.8}
 Job_Name_input=$7
-
+partition=${8:-project}
 
 # Error for required number of inputs
 if [ $# -lt 7 ]
@@ -115,11 +115,11 @@ do
    array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
+   echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output"
+   sbatch -p $partition --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Compiler.sh ${Job_Name_input}_output $Reference_File_input $Job_Name_input
+sbatch -p $partition --dependency=singleton -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Compiler.sh ${Job_Name_input}_output $Reference_File_input $Job_Name_input
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"

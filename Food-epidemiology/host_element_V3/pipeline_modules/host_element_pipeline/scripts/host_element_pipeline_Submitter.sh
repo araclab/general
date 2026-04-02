@@ -34,6 +34,7 @@ Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Data_Folder_Hostlist_input=$3
 Job_Name_input=$4
+partition=${5:-project}
 
 # Error for required number of inputs
 if [ $# -lt 4 ]
@@ -79,7 +80,7 @@ bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpT
 
 echo "-------------------- STEP 2. Submitted Host Element Caller Compiler Job, Waits on completion of MMSEQ2 Screening --------------------"
 
-sbatch --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input
+sbatch -p $partition --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input
 
 
 

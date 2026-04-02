@@ -29,6 +29,7 @@ Slurm_Array_scripts="$project_root/pipeline_modules/cgmlstFinder"
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
+partition=${4:-project}
 
 
 # Error for required number of inputs
@@ -130,10 +131,10 @@ do
    array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
+   echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
+   sbatch -p $partition --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
+sbatch --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"

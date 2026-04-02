@@ -65,7 +65,8 @@ cgmlst_jid=$(sbatch --parsable -p "${partition}" \
     "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$input_folder" \
     "$main_output_folder/tmp_analysis/sample_list.txt" \
-    cgmlst_analysis)
+    cgmlst_analysis \
+	$partition)
 echo "cgmlst job ID: $cgmlst_jid"
 
 #host element pipeline
@@ -76,7 +77,8 @@ hep_jid=$(sbatch --parsable -p "${partition}" \
     "$input_folder" \
     "$main_output_folder/tmp_analysis/sample_list.txt" \
     "$host_info" \
-    hep_analysis)
+    hep_analysis \
+	$partition)
 echo "HEP job ID: $hep_jid"
 
 #kmodes
@@ -85,7 +87,8 @@ kmodes_jid=$(sbatch --parsable -p "${partition}" \
     -J kmodes_analysis \
     --dependency=afterok:"${cgmlst_jid}" \
     "$kmodes/kmodes_SLURM_Submitter.sh" \
-    "$main_output_folder/tmp_analysis/sample_list.txt")
+    "$main_output_folder/tmp_analysis/sample_list.txt" \
+	$partition)
 echo "kmodes job ID: $kmodes_jid"
 
 #BLCM #TODO
