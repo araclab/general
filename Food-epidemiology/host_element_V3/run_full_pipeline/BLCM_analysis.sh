@@ -46,7 +46,7 @@ fi
 
 #create file system
 mkdir -p "$main_output_folder"/tmp_analysis
-cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/\.fasta/$/' > "$main_output_folder"/tmp_analysis/sample_list.txt
+cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > "$main_output_folder"/tmp_analysis/sample_list.txt
 
 
 
