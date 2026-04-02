@@ -41,7 +41,7 @@ mv ${output_name}_Main_Data.xlsx $main_output_folder/compiled_files
 mv ${output_name}_element_presence.tsv $main_output_folder/compiled_files
 mv host_element_pipeline_Element_Caller_${SLURM_JOB_ID}.err $main_output_folder/compiled_files/slurmFiles
 mv host_element_pipeline_Element_Caller_${SLURM_JOB_ID}.out $main_output_folder/compiled_files/slurmFiles
-
+mv *_SLURM-ARRAY-READY.txt $main_output_folder
 
 # Script Timer
 ENDTIMER="$(date +%s)"
