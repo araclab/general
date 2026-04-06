@@ -80,13 +80,14 @@ bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpT
 
 echo "-------------------- STEP 2. Submitted Host Element Caller Compiler Job, Waits on completion of MMSEQ2 Screening --------------------"
 
-sbatch -p $partition --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input
+caller_jid=$(sbatch --parsable -p $partition --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input)
 
 
 
 echo "-------------------- STEP 3. Cleaning Up Files and Folders --------------------"
 mv host_element_pipeline_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurmFiles
 mv host_element_pipeline_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurmFiles
+echo "$caller_jid"
 
 
 

@@ -138,6 +138,7 @@ do
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Compiler.sh" "${Job_Name_input}_output"
+compiler_jid=$(sbatch --parsable --dependency=singleton --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Compiler.sh" "${Job_Name_input}_output")
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
+echo "$compiler_jid"

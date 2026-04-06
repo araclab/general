@@ -146,6 +146,7 @@ do
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --parsable --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
+compiler_jid=$(sbatch --parsable --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt)
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
+echo "$compiler_jid"

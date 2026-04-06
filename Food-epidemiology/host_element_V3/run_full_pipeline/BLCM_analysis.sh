@@ -63,40 +63,31 @@ sample_list="$main_output_folder/tmp_analysis/sample_list.txt"
 
 #cgmlst
 cgmlst="$project_root/pipeline_modules/cgmlstFinder"
-bash "$cgmlst/cgmlstFinder_Submitter.sh" \
+cgmlst_compiler_jid=$(bash "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     cgmlst_analysis \
-    "$partition"
-cgmlst_sentinel_jid=$(sbatch --parsable -p "${partition}" \
-    -J cgmlst_analysis --dependency=singleton \
-    --wrap "echo cgmlst done")
-echo "cgmlst sentinel: $cgmlst_sentinel_jid"
+    "$partition" | tail -1)
+echo "cgmlst compiler: $cgmlst_compiler_jid"
 
 #host element pipeline
 hep="$project_root/pipeline_modules/host_element_pipeline/scripts"
-bash "$hep/host_element_pipeline_Submitter.sh" \
+hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     "$host_info" \
     hep_analysis \
-    "$partition"
-hep_sentinel_jid=$(sbatch --parsable -p "${partition}" \
-    -J hep_analysis_mmseq2 --dependency=singleton \
-    --wrap "echo HEP done")
-echo "HEP sentinel: $hep_sentinel_jid"
+    "$partition" | tail -1)
+echo "HEP caller: $hep_caller_jid"
 
 #MLST
 mlst="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
-bash "$mlst/Slurm_Array_Submitter.sh" \
+mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     mlst_analysis \
-    "$partition"
-mlst_sentinel_jid=$(sbatch --parsable -p "${partition}" \
-    -J mlst_analysis --dependency=singleton \
-    --wrap "echo MLST done")
-echo "MLST sentinel: $mlst_sentinel_jid"
+    "$partition" | tail -1)
+echo "MLST compiler: $mlst_compiler_jid"
 
 #fimH (informational only, not needed for BLCM)
 fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
@@ -114,7 +105,7 @@ cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/c
 kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
     "$cgmlst_kmodes_input" \
     "$partition" \
-    "$cgmlst_sentinel_jid" | grep -E '^[0-9]+$')
+    "$cgmlst_compiler_jid" | grep -E '^[0-9]+$')
 echo "kmodes pred: $kmodes_pred_jid"
 
 # ── WAVE 3: BLCM, depends on kmodes + HEP + MLST ─────────────────────────────
@@ -127,7 +118,7 @@ blcm_output="$main_output_folder/blcm_output"
 
 sbatch -p "${partition}" \
     -J blcm_analysis \
-    --dependency=afterok:"${kmodes_pred_jid}":"${hep_sentinel_jid}":"${mlst_sentinel_jid}" \
+    --dependency=afterok:"${kmodes_pred_jid}":"${hep_caller_jid}":"${mlst_compiler_jid}" \
     "$blcm/run_hostelement_blca.sh" \
     "$kmodes_predictions" \
     "$hep_elements" \
@@ -139,9 +130,9 @@ sbatch -p "${partition}" \
 echo
 echo "========================================"
 echo "All jobs submitted:"
-echo "  cgmlst sentinel : $cgmlst_sentinel_jid"
-echo "  HEP sentinel    : $hep_sentinel_jid"
-echo "  MLST sentinel   : $mlst_sentinel_jid"
+echo "  cgmlst compiler : $cgmlst_compiler_jid"
+echo "  HEP caller      : $hep_caller_jid"
+echo "  MLST compiler   : $mlst_compiler_jid"
 echo "  kmodes pred     : $kmodes_pred_jid"
 echo "  fimH            : independent"
 echo "  output folder   : $main_output_folder"
