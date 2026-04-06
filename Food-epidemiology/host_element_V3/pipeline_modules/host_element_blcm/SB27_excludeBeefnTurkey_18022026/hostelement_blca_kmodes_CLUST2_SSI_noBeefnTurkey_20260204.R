@@ -62,8 +62,7 @@ arguments <- parse_args(parser,
                         positional_arguments = TRUE)
 opts <- arguments$options
 
-curr_dir <-  getwd() 
-dir.create(file.path(curr_dir, opts$o), showWarnings = FALSE)
+dir.create(opts$o, recursive = TRUE, showWarnings = FALSE)
 
 
 # read in data:
@@ -87,7 +86,7 @@ test_id <- which(dat[1:ntrain,]$training==0)
 # the "class_label" dataframe determines the test/train. Y is sent in as a whole since we need output probabilities for the test. there is no class_label value for test set
 Y <- as.matrix(dat[1:ntrain,-(1:8)])
 
-result_folder <- file.path(curr_dir, opts$o)
+result_folder <- opts$o
 
 # fit Bayesian model:
 mcmc_options <- list(debugstatus= TRUE,

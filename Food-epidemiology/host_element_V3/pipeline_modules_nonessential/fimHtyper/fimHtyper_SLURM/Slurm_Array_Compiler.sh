@@ -27,7 +27,7 @@ echo -e "sampleID\tfimHtype" > $main_output_folder_input/compiled_files/results_
 
 
 # Create a list of your output folders
-ls $main_output_folder_input/processing_files > tmplist_output_folders
+ls $main_output_folder_input/processing_files > $main_output_folder_input/tmplist_output_folders
 
 
 # Loop through your output folders to compile your results
@@ -35,21 +35,23 @@ while read -r line
 do
    echo "Extracting results from: $line"
    tab_file=$main_output_folder_input/processing_files/${line}/results_tab.txt
-   if grep -q "$line" "$tab_file"; then
+   if [ ! -f "$tab_file" ]; then
+      fimh_type="None_Found"
+   elif grep -q "$line" "$tab_file"; then
       fimh_type=$(grep "$line" "$tab_file" | awk -F'\t' 'NR==1 {print $1}')
    else
       fimh_type="None_Found"
    fi
    echo -e "${line}\t${fimh_type}" >> $main_output_folder_input/compiled_files/results_compiled.txt
-done < tmplist_output_folders
+done < "$main_output_folder_input/tmplist_output_folders"
 
 
 # Clean-up file system
-rm tmplist_output_folders
+rm $main_output_folder_input/tmplist_output_folders
 mkdir -p "$main_output_folder_input/compiled_files/slurm_files"
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.out $main_output_folder_input/compiled_files/slurm_files
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.err $main_output_folder_input/compiled_files/slurm_files
-mv *_SLURM-ARRAY-READY.txt $main_output_folder_input
+mv "$main_output_folder_input"/*_SLURM-ARRAY-READY.txt "$main_output_folder_input/compiled_files/"
 
 # Script Timer
 ENDTIMER="$(date +%s)"

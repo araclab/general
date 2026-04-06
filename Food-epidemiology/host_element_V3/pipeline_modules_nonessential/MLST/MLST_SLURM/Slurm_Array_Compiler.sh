@@ -3,8 +3,6 @@
 #SBATCH -p project
 #SBATCH -o Slurm_Array_Compiler_%j.out
 #SBATCH -e Slurm_Array_Compiler_%j.err
-
-# Created by Edward Sung (edward.sung@gwu.edu) on 2/25/2024
 #modified by Jon Slotved
 
 STARTTIMER="$(date +%s)"
@@ -27,7 +25,7 @@ echo -e "sampleID\tMLST" > $main_output_folder_input/compiled_files/results_comp
 
 
 # Create a list of your output folders
-ls $main_output_folder_input/processing_files > tmplist_output_folders
+ls $main_output_folder_input/processing_files > $main_output_folder_input/tmplist_output_folders
 
 
 # Loop through your output folders to compile your results
@@ -44,15 +42,15 @@ do
       mlst_type="0"
    fi
    echo -e "${line}\tST${mlst_type}" >> "$main_output_folder_input/compiled_files/results_compiled.txt"
-done < "tmplist_output_folders"
+done < "$main_output_folder_input/tmplist_output_folders"
 
 
 # Clean-up file system
-rm tmplist_output_folders
+rm $main_output_folder_input/tmplist_output_folders
 mkdir -p "$main_output_folder_input/compiled_files/slurm_files"
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.out $main_output_folder_input/compiled_files/slurm_files
 mv Slurm_Array_Compiler_${SLURM_JOB_ID}.err $main_output_folder_input/compiled_files/slurm_files
-mv *_SLURM-ARRAY-READY.txt $main_output_folder_input
+mv "$main_output_folder_input"/*_SLURM-ARRAY-READY.txt "$main_output_folder_input/compiled_files/"
 
 # Script Timer
 ENDTIMER="$(date +%s)"
