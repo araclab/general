@@ -54,7 +54,7 @@ fi
 #create file system
 mkdir -p "$main_output_folder"/tmp_analysis
 cd "$main_output_folder" || { echo "ERROR: cannot cd to $main_output_folder"; exit 1; }
-cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > "$main_output_folder"/tmp_analysis/sample_list.txt
+cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > tmp_analysis/sample_list.txt
 sample_list="$main_output_folder/tmp_analysis/sample_list.txt"
 
 #run modules
@@ -110,7 +110,7 @@ echo "fimH submitted (independent)"
 # ── WAVE 2: kmodes, depends on cgmlst ────────────────────────────────────────
 
 kmodes="$project_root/pipeline_modules/kmodes"
-cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt" #check name here
+cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt"
 kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
     "$cgmlst_kmodes_input" \
     "$partition" \
