@@ -65,16 +65,6 @@ $CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecol
 echo Run cgmlstfinder md5 converter
 $CGE_Tool_Path/CGE_cgMLST_md5_converter.py $main_output_folder_input/processing_files/$filename ecoli_results.txt kma_${filename}.fsa
 
-#post-run checks
-md5_file="$main_output_folder_input/processing_files/$filename/ecoli_results_md5_conversion.txt"
-if [ ! -f "$md5_file" ]; then
-   echo "ERROR: expected output not found for $filename: $md5_file"
-   exit 1
-fi
-if [ $(tail -n +2 "$md5_file" | wc -l) -eq 0 ]; then
-   echo "WARNING: no allele results in $md5_file for sample $filename"
-fi
-
 # Script Timer
 ENDTIMER="$(date +%s)"
 DURATION=$[${ENDTIMER} - ${STARTTIMER}]

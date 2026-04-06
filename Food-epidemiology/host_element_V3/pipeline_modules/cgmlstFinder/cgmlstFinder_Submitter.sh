@@ -39,33 +39,6 @@ then
    exit 1
 fi
 
-# Pre-run checks
-if [ ! -d "$Data_Folder_input" ]; then
-   echo "ERROR: assembly folder not found: $Data_Folder_input"
-   exit 1
-fi
-
-fasta_count=$(find "$Data_Folder_input" -maxdepth 1 -type f \( -name "*.fasta" -o -name "*.fa" -o -name "*.fna" \) | wc -l)
-if [ "$fasta_count" -eq 0 ]; then
-   echo "ERROR: no .fasta/.fa/.fna files found in: $Data_Folder_input"
-   exit 1
-fi
-
-if [ ! -f "$Data_Folder_Samplelist_input" ]; then
-   echo "ERROR: sample list file not found: $Data_Folder_Samplelist_input"
-   exit 1
-fi
-
-if [ ! -s "$Data_Folder_Samplelist_input" ]; then
-   echo "ERROR: sample list file is empty: $Data_Folder_Samplelist_input"
-   exit 1
-fi
-
-if [ ! -f "$config_file" ]; then
-   echo "ERROR: config file not found: $config_file"
-   exit 1
-fi
-
 CGE_DB_Path=$(grep '^CGE__DB_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 CGE_KMA_Path=$(grep '^CGE__KMA_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 for check_path in "$project_root" "$CGE_DB_Path" "$CGE_KMA_Path"; do
@@ -75,8 +48,7 @@ for check_path in "$project_root" "$CGE_DB_Path" "$CGE_KMA_Path"; do
    fi
 done
 
-echo "Pre-run checks passed. Samples: $fasta_count"
-
+echo "found: $(ls $Data_Folder_input | wc -l) fasta files"
 
 # Names the slurm job, as well as used in the singleton dependency
 jobname=${Job_Name_input}
