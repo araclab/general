@@ -81,7 +81,8 @@ hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$sample_list" \
     "$host_info" \
     hep_analysis \
-    "$partition" | tail -1)
+    "$partition" \
+    "$cgmlst_compiler_jid" | tail -1)
 echo "HEP caller: $hep_caller_jid"
 
 #MLST
@@ -90,7 +91,8 @@ mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     mlst_analysis \
-    "$partition" | tail -1)
+    "$partition" \
+    "$hep_caller_jid" | tail -1)
 echo "MLST compiler: $mlst_compiler_jid"
 
 #fimH (informational only, not needed for BLCM)
@@ -99,7 +101,8 @@ bash "$fimh/Slurm_Array_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     fimh_analysis \
-    "$partition"
+    "$partition" \
+    "$mlst_compiler_jid"
 echo "fimH submitted (independent)"
 
 # ── WAVE 2: kmodes, depends on cgmlst ────────────────────────────────────────

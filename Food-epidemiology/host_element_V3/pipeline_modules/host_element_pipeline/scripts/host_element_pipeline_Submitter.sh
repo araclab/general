@@ -35,6 +35,7 @@ Data_Folder_Samplelist_input=$2
 Data_Folder_Hostlist_input=$3
 Job_Name_input=$4
 partition=${5:-project}
+dependency=${6:-}
 
 # Error for required number of inputs
 if [ $# -lt 4 ]
@@ -74,7 +75,7 @@ done < $Data_Folder_Samplelist_input
 # Run mmseq2 on the 500bpTrimmed data
 ls $mmseq2_screening_folder/rawData_500bpTrimmed > $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt
 
-bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpTrimmed $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt $element_genes_screen nucl 0.8 0.8 ${Job_Name_input}_mmseq2
+bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpTrimmed $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt $element_genes_screen nucl 0.8 0.8 ${Job_Name_input}_mmseq2 $partition "$dependency"
 
 
 
