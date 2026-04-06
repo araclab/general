@@ -60,8 +60,10 @@ mkdir ${Job_Name_input}_output/processing_files
 mkdir ${Job_Name_input}_output/slurm_out
 
 #move slurm output
-mv cgmlstFinder_Submitter_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurm_out
-mv cgmlstFinder_Submitter_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurm_out
+if [ -n "$SLURM_JOB_ID" ]; then
+   mv cgmlstFinder_Submitter_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurm_out
+   mv cgmlstFinder_Submitter_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurm_out
+fi
 
 
 # Start-Up / Generate SLURM-ARRAY-READY samplelist

@@ -85,8 +85,10 @@ caller_jid=$(sbatch --parsable -p $partition --dependency=singleton -J ${Job_Nam
 
 
 echo "-------------------- STEP 3. Cleaning Up Files and Folders --------------------"
-mv host_element_pipeline_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurmFiles
-mv host_element_pipeline_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurmFiles
+if [ -n "$SLURM_JOB_ID" ]; then
+   mv host_element_pipeline_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurmFiles
+   mv host_element_pipeline_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurmFiles
+fi
 echo "$caller_jid"
 
 

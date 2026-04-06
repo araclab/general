@@ -52,6 +52,10 @@ if [ -z "$input_folder" ] || [ -z "$host_info" ] || [ -z "$main_output_folder" ]
 fi
 
 #create file system
+input_folder=$(cd "$input_folder" && pwd)
+host_info=$(readlink -f "$host_info")
+mkdir -p "$main_output_folder"
+main_output_folder=$(cd "$main_output_folder" && pwd)
 mkdir -p "$main_output_folder"/tmp_analysis
 cd "$main_output_folder" || { echo "ERROR: cannot cd to $main_output_folder"; exit 1; }
 cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > tmp_analysis/sample_list.txt
