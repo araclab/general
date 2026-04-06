@@ -18,11 +18,6 @@ HEP_mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/
 
 
 # User Inputs
-dep_flag=""
-if [[ "$1" == --dependency=* ]]; then
-   dep_flag="$1"
-   shift
-fi
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Reference_File_input=$3
@@ -31,6 +26,10 @@ Percent_Identity_input=$5	# {0.8}
 Percent_Coverage_input=$6	# {0.8}
 Job_Name_input=$7
 partition=${8:-project}
+dependency=${9:-}
+
+dep_flag=""
+[ -n "$dependency" ] && dep_flag="--dependency=afterok:${dependency}"
 
 # Error for required number of inputs
 if [ $# -lt 7 ]

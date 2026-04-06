@@ -30,16 +30,15 @@ helper_scripts="$project_root/pipeline_modules/host_element_pipeline/scripts/hel
 mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts"
 
 # User Inputs
-dep_flag=""
-if [[ "$1" == --dependency=* ]]; then
-   dep_flag="$1"
-   shift
-fi
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Data_Folder_Hostlist_input=$3
 Job_Name_input=$4
 partition=${5:-project}
+dependency=${6:-}
+
+dep_flag=""
+[ -n "$dependency" ] && dep_flag="--dependency=afterok:${dependency}"
 
 # Error for required number of inputs
 if [ $# -lt 4 ]
@@ -79,7 +78,7 @@ done < $Data_Folder_Samplelist_input
 # Run mmseq2 on the 500bpTrimmed data
 ls $mmseq2_screening_folder/rawData_500bpTrimmed > $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt
 
-bash $mmseq2_scripts/mmseq2_Submitter.sh $dep_flag $mmseq2_screening_folder/rawData_500bpTrimmed $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt $element_genes_screen nucl 0.8 0.8 ${Job_Name_input}_mmseq2
+bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpTrimmed $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt $element_genes_screen nucl 0.8 0.8 ${Job_Name_input}_mmseq2 $partition "$dependency"
 
 
 
