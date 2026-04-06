@@ -18,6 +18,11 @@ HEP_mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/
 
 
 # User Inputs
+dep_flag=""
+if [[ "$1" == --dependency=* ]]; then
+   dep_flag="$1"
+   shift
+fi
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Reference_File_input=$3
@@ -116,7 +121,7 @@ do
    
    # Submit the jobs to HPC
    echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output"
-   sbatch -p $partition --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
+   sbatch -p $partition $dep_flag --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
 done
 
 # Compile the results data and Clean-up file system script

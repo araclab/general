@@ -72,10 +72,22 @@ cgmlst_compiler_jid=$(bash "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$partition" | tail -1)
 echo "cgmlst compiler: $cgmlst_compiler_jid"
 
+#host element pipeline
+hep="$project_root/pipeline_modules/host_element_pipeline/scripts"
+hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
+	--dependency=afterok:"${cgmlst_compiler_jid}" \
+    "$input_folder" \
+    "$sample_list" \
+    "$host_info" \
+    hep_analysis \
+    "$partition" | tail -1)
+echo "HEP caller: $hep_caller_jid"
+
 echo
 echo "========================================"
 echo "Jobs submitted:"
 echo "  cgmlst compiler JID : $cgmlst_compiler_jid"
+echo "  HEP caller JID      : $hep_caller_jid"
 echo "========================================"
 
 
