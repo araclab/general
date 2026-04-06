@@ -30,11 +30,6 @@ Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
 partition=${4:-project}
-dependency=${5:-}
-dep_flag=""
-if [ -n "$dependency" ]; then
-   dep_flag="--dependency=afterok:${dependency}"
-fi
 
 
 # Error for required number of inputs
@@ -149,7 +144,7 @@ do
    
    # Submit the jobs to HPC
    echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch -p $partition $dep_flag --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
+   sbatch -p $partition --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
 done
 
 # Compile the results data and Clean-up file system script
