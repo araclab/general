@@ -17,6 +17,12 @@ Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
 Partition_input=${4:-project}  # optional; defaults to "project"
+dependency=${5:-}
+
+dep_flag=""
+if [ -n "$dependency" ]; then
+    dep_flag="--dependency=afterok:${dependency}"
+fi
 
 
 # Error for required number of inputs
@@ -26,25 +32,6 @@ then
    exit 1
 fi
 
-if [ ! -f "$Data_Folder_Samplelist_input" ]; then
-   echo "Error: sample list file not found: $Data_Folder_Samplelist_input"
-   exit 1
-fi
-
-if [ ! -f "$Slurm_Array_scripts/Slurm_Array_SampleListReady.sh" ]; then
-   echo "Error: Slurm_Array_SampleListReady.sh not found in: $Slurm_Array_scripts"
-   exit 1
-fi
-
-if [ ! -f "$Slurm_Array_scripts/Slurm_Array_Runner.sh" ]; then
-   echo "Error: Slurm_Array_Runner.sh not found in: $Slurm_Array_scripts"
-   exit 1
-fi
-
-if [ ! -f "$Slurm_Array_scripts/Slurm_Array_Compiler.sh" ]; then
-   echo "Error: Slurm_Array_Compiler.sh not found in: $Slurm_Array_scripts"
-   exit 1
-fi
 
 
 # Names the slurm job, as well as used in the singleton dependency
@@ -134,7 +121,7 @@ do
    
    # Submit the jobs to HPC
    echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel $dep_flag --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
 done
 
 # Compile the results data and Clean-up file system script

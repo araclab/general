@@ -15,7 +15,7 @@ config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/genera
 
 #paths
 project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
-echo "main path: $project_root"
+#echo "main path: $project_root"
 
 #how to use 
 print_usage() {
@@ -83,11 +83,43 @@ hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$cgmlst_compiler_jid" | tail -1)
 echo "HEP caller: $hep_caller_jid"
 
+#mlst analysis
+mlst="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
+mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
+    "$input_folder" \
+    "$sample_list" \
+    mlst_analysis \
+    "$partition" \
+    "$hep_caller_jid" | tail -1)
+echo "MLST compiler: $mlst_compiler_jid"
+
+#fimhtyper
+fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
+fimh_compiler_jid=$(bash "$fimh/Slurm_Array_Submitter.sh" \
+    "$input_folder" \
+    "$sample_list" \
+    fimhtyper_analysis \
+    "$partition" \
+    "$mlst_compiler_jid" | tail -1)
+echo "fimHtyper compiler: $fimh_compiler_jid"
+
+#kmodes
+kmodes="$project_root/pipeline_modules/kmodes"
+kmodes_rdy_inputfile="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt"
+kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
+    "$kmodes_rdy_inputfile" \
+    "$partition" \
+    "$cgmlst_compiler_jid" | tail -1)
+echo "kmodes pred: $kmodes_pred_jid"
+
 echo
 echo "========================================"
 echo "Jobs submitted:"
 echo "  cgmlst compiler JID : $cgmlst_compiler_jid"
 echo "  HEP caller JID      : $hep_caller_jid"
+echo "  MLST compiler JID   : $mlst_compiler_jid"
+echo "  fimHtyper compiler JID : $fimh_compiler_jid"
+echo "  kmodes pred JID        : $kmodes_pred_jid"
 echo "========================================"
 
 

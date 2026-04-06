@@ -38,7 +38,9 @@ partition=${5:-project}
 dependency=${6:-}
 
 dep_flag=""
-[ -n "$dependency" ] && dep_flag="--dependency=afterok:${dependency}"
+if [ -n "$dependency" ]; then
+    dep_flag="--dependency=afterok:${dependency}"
+fi
 
 # Error for required number of inputs
 if [ $# -lt 4 ]
@@ -93,7 +95,7 @@ if [ -n "$SLURM_JOB_ID" ]; then
    mv host_element_pipeline_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurmFiles
    mv host_element_pipeline_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurmFiles
 fi
-echo "$caller_jid"
+
 
 
 
@@ -105,3 +107,4 @@ HOURS=$((${DURATION} / 3600))
 MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
+echo "$caller_jid"

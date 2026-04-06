@@ -21,7 +21,13 @@ trained_model="$project_root/pipeline_modules/kmodes/trained_models/cluster_2/FU
 #input
 kmodes_rdy_inputfile=$1
 partition=${2:-project}
-dependency=$3
+dependency=${3:-}
+
+#build dependency flag if provided
+dep_flag=""
+if [ -n "$dependency" ]; then
+	dep_flag="--dependency=afterok:${dependency}"
+fi
 
 #check input
 if [ $# -lt 1 ]; then
@@ -31,11 +37,6 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-#build dependency flag if provided
-dep_flag=""
-if [ -n "$dependency" ]; then
-	dep_flag="--dependency=afterok:${dependency}"
-fi
 
 kmodes_pred_jid=$(sbatch --parsable -J kmodes_pred \
 	-p "$partition" \
