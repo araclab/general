@@ -75,66 +75,67 @@ echo "cgmlst compiler: $cgmlst_compiler_jid"
 #host element pipeline
 hep="$project_root/pipeline_modules/host_element_pipeline/scripts"
 hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
+	--dependency=afterok:"${cgmlst_compiler_jid}" \
     "$input_folder" \
     "$sample_list" \
     "$host_info" \
     hep_analysis \
-    "$partition" \
-    "$cgmlst_compiler_jid" | tail -1)
+    "$partition" | tail -1)
 echo "HEP caller: $hep_caller_jid"
 
-#MLST
-mlst="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
-mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
-    "$input_folder" \
-    "$sample_list" \
-    mlst_analysis \
-    "$partition" \
-    "$hep_caller_jid" | tail -1)
-echo "MLST compiler: $mlst_compiler_jid"
+# #MLST
+# mlst="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
+# mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
+# 	--dependency=afterok:"${cgmlst_compiler_jid}":"${hep_caller_jid}" \
+#     "$input_folder" \
+#     "$sample_list" \
+#     mlst_analysis \
+#     "$partition" | tail -1)
+# echo "MLST compiler: $mlst_compiler_jid"
 
-#fimH (informational only, not needed for BLCM)
-fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
-bash "$fimh/Slurm_Array_Submitter.sh" \
-    "$input_folder" \
-    "$sample_list" \
-    fimh_analysis \
-    "$partition" \
-    "$mlst_compiler_jid"
-echo "fimH submitted (independent)"
+# #fimH (informational only, not needed for BLCM)
+# fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
+# bash "$fimh/Slurm_Array_Submitter.sh" \
+# 	--dependency=afterok:"${cgmlst_compiler_jid}":"${hep_caller_jid}":"${mlst_compiler_jid}" \
+#     "$input_folder" \
+#     "$sample_list" \
+#     fimh_analysis \
+#     "$partition"
+# echo "fimH submitted (independent)"
 
-kmodes="$project_root/pipeline_modules/kmodes"
-cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt"
-kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
-    "$cgmlst_kmodes_input" \
-    "$partition" \
-    "$cgmlst_compiler_jid" | grep -E '^[0-9]+$')
-echo "kmodes pred: $kmodes_pred_jid"
+# kmodes="$project_root/pipeline_modules/kmodes"
+# cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt"
+# kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
+# 	--dependency=afterok:"${cgmlst_compiler_jid}":"${hep_caller_jid}" \
+#     "$cgmlst_kmodes_input" \
+#     "$partition" \
+#     "$cgmlst_compiler_jid" | grep -E '^[0-9]+$')
+# echo "kmodes pred: $kmodes_pred_jid"
 
-blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
-kmodes_predictions="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile__Cluster_2__kmodes_cgmlst_clustering_predictions.csv"
-hep_elements="$main_output_folder/hep_analysis_output/compiled_files/hep_analysis_element_presence.tsv"
-mlst_results="$main_output_folder/mlst_analysis_output/compiled_files/results_compiled.txt"
-blcm_output="$main_output_folder/blcm_output"
+# blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
+# kmodes_predictions="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile__Cluster_2__kmodes_cgmlst_clustering_predictions.csv"
+# hep_elements="$main_output_folder/hep_analysis_output/compiled_files/hep_analysis_element_presence.tsv"
+# mlst_results="$main_output_folder/mlst_analysis_output/compiled_files/results_compiled.txt"
+# blcm_output="$main_output_folder/blcm_output"
 
-sbatch -p "${partition}" \
-    -J blcm_analysis \
-    --dependency=afterok:"${kmodes_pred_jid}":"${hep_caller_jid}":"${mlst_compiler_jid}" \
-    "$blcm/run_hostelement_blca.sh" \
-    "$kmodes_predictions" \
-    "$hep_elements" \
-    "$host_info" \
-    "$mlst_results" \
-    "$blcm_output"
+# sbatch -p "${partition}" \
+#     -J blcm_analysis \
+#     --dependency=afterok:"${kmodes_pred_jid}":"${hep_caller_jid}":"${mlst_compiler_jid}" \
+#     "$blcm/run_hostelement_blca.sh" \
+#     "$kmodes_predictions" \
+#     "$hep_elements" \
+#     "$host_info" \
+#     "$mlst_results" \
+#     "$blcm_output"
 
-# ── Summary ───────────────────────────────────────────────────────────────────
-echo
-echo "========================================"
-echo "All jobs submitted:"
-echo "  cgmlst compiler : $cgmlst_compiler_jid"
-echo "  HEP caller      : $hep_caller_jid"
-echo "  MLST compiler   : $mlst_compiler_jid"
-echo "  kmodes pred     : $kmodes_pred_jid"
-echo "  fimH            : independent"
-echo "  output folder   : $main_output_folder"
-echo "========================================"
+# # ── Summary ───────────────────────────────────────────────────────────────────
+# echo
+# echo "========================================"
+# echo "All jobs submitted:"
+# echo "  cgmlst compiler : $cgmlst_compiler_jid"
+# echo "  HEP caller      : $hep_caller_jid"
+# echo "  MLST compiler   : $mlst_compiler_jid"
+# echo "  kmodes pred     : $kmodes_pred_jid"
+# echo "  fimH            : independent"
+# echo "  output folder   : $main_output_folder"
+# echo "========================================"
