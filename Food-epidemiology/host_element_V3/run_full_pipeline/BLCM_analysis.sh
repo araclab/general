@@ -40,7 +40,7 @@ main_output_folder=${3:-output_blca}
 partition=${4:-project}
 
 #check input and print_usage if bad
-if [ -z "$input_folder" ] || [ -z "$host_info" ] || [ -z "$main_output_folder" ]; then
+if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
     print_usage
 	echo
 	echo "found information:"
@@ -62,8 +62,6 @@ cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > t
 sample_list="$main_output_folder/tmp_analysis/sample_list.txt"
 
 #run modules
-
-# ── WAVE 1: all modules that only need assemblies, run in parallel ────────────
 
 #cgmlst
 cgmlst="$project_root/pipeline_modules/cgmlstFinder"
@@ -105,8 +103,6 @@ bash "$fimh/Slurm_Array_Submitter.sh" \
     "$mlst_compiler_jid"
 echo "fimH submitted (independent)"
 
-# ── WAVE 2: kmodes, depends on cgmlst ────────────────────────────────────────
-
 kmodes="$project_root/pipeline_modules/kmodes"
 cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt"
 kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
@@ -114,8 +110,6 @@ kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
     "$partition" \
     "$cgmlst_compiler_jid" | grep -E '^[0-9]+$')
 echo "kmodes pred: $kmodes_pred_jid"
-
-# ── WAVE 3: BLCM, depends on kmodes + HEP + MLST ─────────────────────────────
 
 blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
 kmodes_predictions="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile__Cluster_2__kmodes_cgmlst_clustering_predictions.csv"
