@@ -59,8 +59,12 @@ if [ -n "$SLURM_JOB_ID" ]; then
    mv "Slurm_Array_Submitter_${SLURM_JOB_ID}.err" "${Job_Name_input}_output/slurm"
 fi
 
+#move SLURM-ARRAY-READY file into job output folder to avoid collisions when multiple modules run from the same current wd
+mv "${samplelist_filename}_SLURM-ARRAY-READY.txt" "${Job_Name_input}_output/"
+slurm_array_ready_file="${Job_Name_input}_output/${samplelist_filename}_SLURM-ARRAY-READY.txt"
+
 # SLURM array settings
-numFiles=$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | wc -l) # Total number of samples
+numFiles=$(cat "$slurm_array_ready_file" | wc -l) # Total number of samples
 Slurm_MaxArraySize=1000 # Maximum number of tasks allowed in one array job
 
 # Calculate how many array jobs are needed
@@ -116,12 +120,12 @@ do
    index_set=$i
 
    # Identifes the start and end of the array to be submitted
-   array_start="$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | grep "^${i}__" | head -1 | awk -F "__@__" '{print $2}')"
-   array_end="$(cat "${samplelist_filename}_SLURM-ARRAY-READY.txt" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
+   array_start="$(cat "$slurm_array_ready_file" | grep "^${i}__" | head -1 | awk -F "__@__" '{print $2}')"
+   array_end="$(cat "$slurm_array_ready_file" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel $dep_flag --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "${samplelist_filename}_SLURM-ARRAY-READY.txt" "$index_set" "${Job_Name_input}_output"
+   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input $slurm_array_ready_file $index_set ${Job_Name_input}_output"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel $dep_flag --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "$slurm_array_ready_file" "$index_set" "${Job_Name_input}_output"
 done
 
 # Compile the results data and Clean-up file system script
