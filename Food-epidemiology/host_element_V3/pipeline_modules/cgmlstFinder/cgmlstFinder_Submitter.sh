@@ -39,6 +39,44 @@ then
    exit 1
 fi
 
+# Pre-run checks
+if [ ! -d "$Data_Folder_input" ]; then
+   echo "ERROR: assembly folder not found: $Data_Folder_input"
+   exit 1
+fi
+
+fasta_count=$(find "$Data_Folder_input" -maxdepth 1 -type f \( -name "*.fasta" -o -name "*.fa" -o -name "*.fna" \) | wc -l)
+if [ "$fasta_count" -eq 0 ]; then
+   echo "ERROR: no .fasta/.fa/.fna files found in: $Data_Folder_input"
+   exit 1
+fi
+
+if [ ! -f "$Data_Folder_Samplelist_input" ]; then
+   echo "ERROR: sample list file not found: $Data_Folder_Samplelist_input"
+   exit 1
+fi
+
+if [ ! -s "$Data_Folder_Samplelist_input" ]; then
+   echo "ERROR: sample list file is empty: $Data_Folder_Samplelist_input"
+   exit 1
+fi
+
+if [ ! -f "$config_file" ]; then
+   echo "ERROR: config file not found: $config_file"
+   exit 1
+fi
+
+CGE_DB_Path=$(grep '^CGE__DB_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+CGE_KMA_Path=$(grep '^CGE__KMA_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+for check_path in "$project_root" "$CGE_DB_Path" "$CGE_KMA_Path"; do
+   if [ -z "$check_path" ] || [ ! -e "$check_path" ]; then
+      echo "ERROR: required path not found or missing from config: $check_path"
+      exit 1
+   fi
+done
+
+echo "Pre-run checks passed. Samples: $fasta_count"
+
 
 # Names the slurm job, as well as used in the singleton dependency
 jobname=${Job_Name_input}
@@ -136,5 +174,6 @@ do
 done
 
 # Compile the results data and Clean-up file system script
-sbatch --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
+sbatch --parsable --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt
+
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"

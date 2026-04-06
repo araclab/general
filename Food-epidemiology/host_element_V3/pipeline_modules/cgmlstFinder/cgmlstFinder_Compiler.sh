@@ -38,6 +38,24 @@ do
    cat $main_output_folder_input/processing_files/$line/ecoli_results_md5_conversion.txt | tail -n +2  >> $main_output_folder_input/compiled_files/${jobname_input}_kmodes_ready_inputfile.txt
 done < tmpfilelist
 
+# Post-compile checks
+expected_samples=$(wc -l < tmpfilelist)
+compiled_rows=$(tail -n +2 "$main_output_folder_input/compiled_files/${jobname_input}_kmodes_ready_inputfile.txt" | wc -l)
+if [ "$compiled_rows" -ne "$expected_samples" ]; then
+   echo "WARNING: compiled kmodes file has $compiled_rows rows but expected $expected_samples (one per sample)"
+fi
+
+missing=0
+while read -r sample; do
+   if [ ! -f "$main_output_folder_input/processing_files/$sample/ecoli_results_md5_conversion.txt" ]; then
+      echo "WARNING: missing results for sample: $sample"
+      missing=$((missing + 1))
+   fi
+done < tmpfilelist
+if [ "$missing" -gt 0 ]; then
+   echo "WARNING: $missing sample(s) are missing results in compiled output"
+fi
+
 # Cleanup file system
 rm tmpfilelist
 

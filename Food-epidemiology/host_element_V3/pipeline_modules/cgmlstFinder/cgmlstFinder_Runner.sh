@@ -35,7 +35,7 @@ for path in "$CGE_DB_Path" "$CGE_KMA_Tool_Path" "$CGE_Tool_Path";
 do
     if [ ! -d "$path" ] && [ ! -f "$path" ]; then
         echo "ERROR: Path not found or invalid: $path"
-        # exit 1  # Uncomment this to stop the script if a path is missing
+        exit 1
     fi
 done
 
@@ -65,6 +65,15 @@ $CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecol
 echo Run cgmlstfinder md5 converter
 $CGE_Tool_Path/CGE_cgMLST_md5_converter.py $main_output_folder_input/processing_files/$filename ecoli_results.txt kma_${filename}.fsa
 
+# Post-run checks
+md5_file="$main_output_folder_input/processing_files/$filename/ecoli_results_md5_conversion.txt"
+if [ ! -f "$md5_file" ]; then
+   echo "ERROR: expected output not found for $filename: $md5_file"
+   exit 1
+fi
+if [ $(tail -n +2 "$md5_file" | wc -l) -eq 0 ]; then
+   echo "WARNING: no allele results in $md5_file for sample $filename"
+fi
 
 # Clean-up File System
 mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/processing_files/$filename/slurm_outputs
