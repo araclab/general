@@ -1,6 +1,6 @@
 #!/bin/sh
 #SBATCH --time 3-00:00:00
-#SBATCH -j BLCM
+#SBATCH -J BLCM
 #SBATCH -p project
 #SBATCH -o run_hostelement_blca_%j.out
 #SBATCH -e run_hostelement_blca_%j.err
@@ -22,7 +22,7 @@ conda_env_r_basics=$(grep "^BLCM__R_BASICS_ENV__=" "$config_file" | awk -F'__=' 
 . "$conda_source"
 
 # HPC Modules
-module load R/4.1.1
+#module load R/4.1.1
 
 # User Inputs
 # $1: kmodes predictions CSV (output of kmodes_clustering_predicting.py)
