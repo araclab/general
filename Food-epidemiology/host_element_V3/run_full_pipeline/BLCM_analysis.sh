@@ -20,12 +20,12 @@ project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{pr
 #how to use 
 print_usage() {
 	echo
-    echo "Usage: sbatch/bash BLCM_analysis.sh <assembly_folder> <host_tsv> <output_directory> [partition]"
+    echo "Usage: sbatch/bash BLCM_analysis.sh <assembly_folder> <host_tsv> [output_directory] [partition]"
 	echo
 	echo "Arguments:"
 	echo "  assembly_folder  Folder containing genome assemblies in fasta/fa/fna format"
 	echo "  host_tsv         TSV file with two columns: sampleID and Host"
-	echo "  output_directory Destination folder for intermediate and final outputs"
+	echo "  output_directory Destination folder for intermediate and final outputs (optional, default: creates output_blca in current dir)"
 	echo "  partition        SLURM partition to use (optional, default: project)"
     echo
     echo "PLEASE NOTE: avoid unusual filenames with spaces, commas or dots"
