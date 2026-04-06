@@ -36,7 +36,7 @@ print_usage() {
 #get input
 input_folder="$1"
 host_info="$2"
-main_output_folder="$3"
+main_output_folder=${3:-output_blca}
 partition=${4:-project}
 
 #check input and print_usage if bad

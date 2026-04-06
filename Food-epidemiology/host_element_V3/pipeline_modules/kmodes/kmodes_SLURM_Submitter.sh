@@ -20,22 +20,32 @@ trained_model="$project_root/pipeline_modules/kmodes/trained_models/cluster_2/FU
 
 #input
 kmodes_rdy_inputfile=$1
+partition=${2:-project}
+dependency=$3
 
 #check input
-if [ $# -lt 1 ]
-then
+if [ $# -lt 1 ]; then
 	echo "add input (kmodes_rdy_inputfile)"
-	echo	
+	echo
 	echo "note: do not have at dots '.' in inputfile path, as it may ruin output writing!"
+	exit 1
 fi
 
-sbatch -J kmodes_pred \
-	-p project \
+#build dependency flag if provided
+dep_flag=""
+if [ -n "$dependency" ]; then
+	dep_flag="--dependency=afterok:${dependency}"
+fi
+
+kmodes_pred_jid=$(sbatch --parsable -J kmodes_pred \
+	-p "$partition" \
+	$dep_flag \
 	-t 04:00:00 \
 	-o kmodes_pred_%j.out \
 	-e kmodes_pred_%j.err \
 	--cpus-per-task=4 \
 	--mem=8GB \
-	--wrap ". '$conda_base' && conda activate '$conda_name' && python '$kmodes_loc/kmodes_clustering_predicting.py' '$kmodes_rdy_inputfile' '$trained_model'"
+	--wrap ". '$conda_base' && conda activate '$conda_name' && python '$kmodes_loc/kmodes_clustering_predicting.py' '$kmodes_rdy_inputfile' '$trained_model'")
+echo "$kmodes_pred_jid"
 
 #move slurm files
