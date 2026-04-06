@@ -86,7 +86,6 @@ HOURS=$((${DURATION} / 3600))
 MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
-
 #mv SLURM output
 mv "run_hostelement_blca_${SLURM_JOB_ID}.out" "$Folder_Output"
 mv "run_hostelement_blca_${SLURM_JOB_ID}.err" "$Folder_Output"

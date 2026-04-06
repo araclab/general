@@ -112,14 +112,34 @@ kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
     "$cgmlst_compiler_jid" | tail -1)
 echo "kmodes pred: $kmodes_pred_jid"
 
+#blcm
+blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
+#combine all input from previous analysis
+kmodes_predictions="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile__Cluster_2__kmodes_cgmlst_clustering_predictions.csv"
+hep_elements="$main_output_folder/hep_analysis_output/compiled_files/hep_analysis_element_presence.tsv"
+mlst_results="$main_output_folder/mlst_analysis_output/compiled_files/results_compiled.txt"
+
+blcm_jid=$(sbatch --parsable \
+    --dependency=afterok:${kmodes_pred_jid}:${hep_caller_jid}:${mlst_compiler_jid} \
+    -p "$partition" \
+    "$blcm/run_hostelement_blca.sh" \
+    "$kmodes_predictions" \
+    "$hep_elements" \
+    "$host_info" \
+    "$mlst_results" \
+    "$main_output_folder/blcm_output")
+echo "BLCM: $blcm_jid"
+
 echo
 echo "========================================"
 echo "Jobs submitted:"
+echo "all jobs should have IDS, if they do not, retry. If they still don't contact Jon Slotved (JOSS@dksund.dk)"
 echo "  cgmlst compiler JID : $cgmlst_compiler_jid"
-echo "  HEP caller JID      : $hep_caller_jid"
+echo "  HEP  caller JID      : $hep_caller_jid"
 echo "  MLST compiler JID   : $mlst_compiler_jid"
 echo "  fimHtyper compiler JID : $fimh_compiler_jid"
 echo "  kmodes pred JID        : $kmodes_pred_jid"
+echo "  BLCM JID               : $blcm_jid"
 echo "========================================"
 
 
