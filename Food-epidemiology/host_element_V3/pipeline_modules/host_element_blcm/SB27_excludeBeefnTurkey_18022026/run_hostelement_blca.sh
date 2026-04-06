@@ -28,6 +28,7 @@ conda_env_r_basics=$(grep "^BLCM__R_BASICS_ENV__=" "$config_file" | awk -F'__=' 
 # $1: kmodes predictions CSV (output of kmodes_clustering_predicting.py)
 # $2: HEP element presence TSV (output of host_element_pipeline)
 # $3: Host TSV (two columns: sampleID and Host)
+# $4: mlst SampleID and st
 # $4: Output folder
 kmodes_input=$1
 elements_input=$2
@@ -35,7 +36,7 @@ host_tsv=$3
 mlst_input=$4
 Folder_Output=$5
 
-if [ -z "$kmodes_input" ] || [ -z "$elements_input" ] || [ -z "$host_tsv" ] || [ -z "$Folder_Output" ] || [ -z "$mlst_input"]; then
+if [ -z "$kmodes_input" ] || [ -z "$elements_input" ] || [ -z "$host_tsv" ] || [ -z "$Folder_Output" ] || [ -z "$mlst_input" ]; then
     echo "Usage: sbatch run_hostelement_blca.sh <kmodes_predictions.csv> <element_presence.tsv> <host.tsv> <mlst.txt> <output_folder>"
     exit 1
 fi
@@ -73,6 +74,11 @@ echo "--- Running BLCM ---"
 conda activate "$conda_env_blcm"
 Rscript "$host_element_blcm_scripts/hostelement_blca_kmodes_CLUST2_SSI_noBeefnTurkey_20260204.R" -i "$blcm_input" -o "$Folder_Output"
 
+if [ -f "${Folder_Output}_pred_scores.csv" ]; then
+    echo "moving: ${Folder_Output}_pred_scores.csv"
+    mv "${Folder_Output}_pred_scores.csv" "$Folder_Output"
+fi
+
 # Script Timer
 ENDTIMER="$(date +%s)"
 DURATION=$[${ENDTIMER} - ${STARTTIMER}]
@@ -80,3 +86,7 @@ HOURS=$((${DURATION} / 3600))
 MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
+
+#mv SLURM output
+mv "run_hostelement_blca_${SLURM_JOB_ID}.out" "$Folder_Output"
+mv "run_hostelement_blca_${SLURM_JOB_ID}.err" "$Folder_Output"

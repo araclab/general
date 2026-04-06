@@ -53,55 +53,96 @@ fi
 
 #create file system
 mkdir -p "$main_output_folder"/tmp_analysis
+cd "$main_output_folder"
 cat "$host_info" | awk -F'\t' '{print $1}' | sed 's/$/\.fasta/' | tail -n +2 > "$main_output_folder"/tmp_analysis/sample_list.txt
-
+sample_list="$main_output_folder/tmp_analysis/sample_list.txt"
 
 #run modules
 
+# ── WAVE 1: all modules that only need assemblies, run in parallel ────────────
+
 #cgmlst
 cgmlst="$project_root/pipeline_modules/cgmlstFinder"
-cgmlst_jid=$(sbatch --parsable -p "${partition}" \
-    -J cgmlst_analysis \
-    "$cgmlst/cgmlstFinder_Submitter.sh" \
+bash "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$input_folder" \
-    "$main_output_folder/tmp_analysis/sample_list.txt" \
+    "$sample_list" \
     cgmlst_analysis \
-	$partition)
-echo "cgmlst job ID: $cgmlst_jid"
+    "$partition"
+cgmlst_sentinel_jid=$(sbatch --parsable -p "${partition}" \
+    -J cgmlst_analysis --dependency=singleton \
+    --wrap "echo cgmlst done")
+echo "cgmlst sentinel: $cgmlst_sentinel_jid"
 
 #host element pipeline
 hep="$project_root/pipeline_modules/host_element_pipeline/scripts"
-hep_jid=$(sbatch --parsable -p "${partition}" \
-    -J hep_analysis \
-    "$hep/host_element_pipeline_Submitter.sh" \
+bash "$hep/host_element_pipeline_Submitter.sh" \
     "$input_folder" \
-    "$main_output_folder/tmp_analysis/sample_list.txt" \
+    "$sample_list" \
     "$host_info" \
     hep_analysis \
-	$partition)
-echo "HEP job ID: $hep_jid"
+    "$partition"
+hep_sentinel_jid=$(sbatch --parsable -p "${partition}" \
+    -J hep_analysis_mmseq2 --dependency=singleton \
+    --wrap "echo HEP done")
+echo "HEP sentinel: $hep_sentinel_jid"
 
-#kmodes
+#MLST
+mlst="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
+bash "$mlst/Slurm_Array_Submitter.sh" \
+    "$input_folder" \
+    "$sample_list" \
+    mlst_analysis \
+    "$partition"
+mlst_sentinel_jid=$(sbatch --parsable -p "${partition}" \
+    -J mlst_analysis --dependency=singleton \
+    --wrap "echo MLST done")
+echo "MLST sentinel: $mlst_sentinel_jid"
+
+#fimH (informational only, not needed for BLCM)
+fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
+bash "$fimh/Slurm_Array_Submitter.sh" \
+    "$input_folder" \
+    "$sample_list" \
+    fimh_analysis \
+    "$partition"
+echo "fimH submitted (independent)"
+
+# ── WAVE 2: kmodes, depends on cgmlst ────────────────────────────────────────
+
 kmodes="$project_root/pipeline_modules/kmodes"
-kmodes_jid=$(sbatch --parsable -p "${partition}" \
-    -J kmodes_analysis \
-    --dependency=afterok:"${cgmlst_jid}" \
-    "$kmodes/kmodes_SLURM_Submitter.sh" \
-    "$main_output_folder/tmp_analysis/sample_list.txt" \
-	$partition)
-echo "kmodes job ID: $kmodes_jid"
+cgmlst_kmodes_input="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt" #check name here
+kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
+    "$cgmlst_kmodes_input" \
+    "$partition" \
+    "$cgmlst_sentinel_jid" | grep -E '^[0-9]+$')
+echo "kmodes pred: $kmodes_pred_jid"
 
-#BLCM #TODO
+# ── WAVE 3: BLCM, depends on kmodes + HEP + MLST ─────────────────────────────
 
-#generate blcm_input
+blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
+kmodes_predictions="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile__Cluster_2__kmodes_cgmlst_clustering_predictions.csv"
+hep_elements="$main_output_folder/hep_analysis_output/compiled_files/hep_analysis_element_presence.tsv"
+mlst_results="$main_output_folder/mlst_analysis_output/compiled_files/results_compiled.txt"
+blcm_output="$main_output_folder/blcm_output"
 
-# blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
-# sbatch -p "${partition}" \
-#     -J blcm_analysis \
-#     --dependency=afterok:"${kmodes_jid}":"${hep_jid}" \
-#     "$blcm/run_hostelement_blca.sh" \
-#     "$main_output_folder/tmp_analysis/blcm_input.csv" \
-#     "$main_output_folder/blcm_output"
+sbatch -p "${partition}" \
+    -J blcm_analysis \
+    --dependency=afterok:"${kmodes_pred_jid}":"${hep_sentinel_jid}":"${mlst_sentinel_jid}" \
+    "$blcm/run_hostelement_blca.sh" \
+    "$kmodes_predictions" \
+    "$hep_elements" \
+    "$host_info" \
+    "$mlst_results" \
+    "$blcm_output"
 
-
-#compile results
+# ── Summary ───────────────────────────────────────────────────────────────────
+echo
+echo "========================================"
+echo "All jobs submitted:"
+echo "  cgmlst sentinel : $cgmlst_sentinel_jid"
+echo "  HEP sentinel    : $hep_sentinel_jid"
+echo "  MLST sentinel   : $mlst_sentinel_jid"
+echo "  kmodes pred     : $kmodes_pred_jid"
+echo "  fimH            : independent"
+echo "  output folder   : $main_output_folder"
+echo "========================================"

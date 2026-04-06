@@ -75,11 +75,6 @@ if [ $(tail -n +2 "$md5_file" | wc -l) -eq 0 ]; then
    echo "WARNING: no allele results in $md5_file for sample $filename"
 fi
 
-# Clean-up File System
-mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/processing_files/$filename/slurm_outputs
-mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $main_output_folder_input/processing_files/$filename/slurm_outputs
-
-
 # Script Timer
 ENDTIMER="$(date +%s)"
 DURATION=$[${ENDTIMER} - ${STARTTIMER}]
@@ -88,3 +83,7 @@ MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
+
+# Clean-up File System
+mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/processing_files/$filename/slurm_outputs
+mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $main_output_folder_input/processing_files/$filename/slurm_outputs
