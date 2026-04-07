@@ -25,7 +25,7 @@ print_usage() {
 	echo "Arguments:"
 	echo "  assembly_folder  Folder containing genome assemblies in fasta/fa/fna format"
 	echo "  host_tsv         TSV file with two columns: sampleID and Host"
-	echo "  output_directory Destination folder for intermediate and final outputs (optional, default: creates output_blca in current dir)"
+	echo "  output_directory Destination folder for intermediate and final outputs (optional, default: creates OUTPUT_BLCA in current dir)"
 	echo "  partition        SLURM partition to use (optional, default: project)"
     echo
     echo "PLEASE NOTE: avoid unusual filenames with spaces, commas or dots"
@@ -36,7 +36,7 @@ print_usage() {
 #get input
 input_folder="$1"
 host_info="$2"
-main_output_folder=${3:-output_blca}
+main_output_folder=${3:-OUTPUT_BLCA}
 partition=${4:-project}
 
 #check input and print_usage if bad
@@ -130,16 +130,34 @@ blcm_jid=$(sbatch --parsable \
     "$main_output_folder/blcm_output")
 echo "BLCM: $blcm_jid"
 
+#compile final output csv
+compile_script="$project_root/run_full_pipeline/helper_scripts/run_compile_blcm_output.sh"
+blcm_pred_scores="$main_output_folder/blcm_output/blcm_output_pred_scores.csv"
+fimh_results="$main_output_folder/fimhtyper_analysis_output/compiled_files/results_compiled.txt"
+
+compile_jid=$(sbatch --parsable \
+    --dependency=afterok:${blcm_jid}:${fimh_compiler_jid} \
+    -p "$partition" \
+    "$compile_script" \
+    "$blcm_pred_scores" \
+    "$mlst_results" \
+    "$fimh_results" \
+    "$hep_elements" \
+    "$main_output_folder")
+echo "Compile output: $compile_jid"
+
 echo
 echo "========================================"
 echo "Jobs submitted:"
-echo "all jobs should have IDS, if they do not, retry. If they still don't contact Jon Slotved (JOSS@dksund.dk)"
+echo "all jobs should show IDS below. If they don't, restart the script and cancel what you currently is running with [scancel -u <your_name>]"
+echo "If they still don't show after a rerun, contact Jon Slotved (JOSS@dksund.dk)"
 echo "  cgmlst compiler JID : $cgmlst_compiler_jid"
 echo "  HEP  caller JID      : $hep_caller_jid"
 echo "  MLST compiler JID   : $mlst_compiler_jid"
 echo "  fimHtyper compiler JID : $fimh_compiler_jid"
 echo "  kmodes pred JID        : $kmodes_pred_jid"
 echo "  BLCM JID               : $blcm_jid"
+echo "  Compile output JID     : $compile_jid"
 echo "========================================"
 
 
