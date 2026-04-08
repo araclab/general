@@ -9,20 +9,17 @@
 # It is automatically queued up by the cgmlstFinder module.
 # It also cleans up the remaining file system.
 
-#config file:
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+# Inputs
+main_output_folder_input=$1
+jobname_input=$2
+slurm_array_ready_file=$3
+config_file=$4
 
 #get path to main script loc
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 cgmlstfinder_scripts="$project_root/pipeline_modules/cgmlstFinder"
 
 
-# Inputs
-main_output_folder_input=$1
-jobname_input=$2
-slurm_array_ready_file=$3
 
 #compile the results into this folder
 mkdir $main_output_folder_input/compiled_files

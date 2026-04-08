@@ -70,7 +70,8 @@ cgmlst_compiler_jid=$(bash "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     cgmlst_analysis \
-    "$partition" | tail -1)
+    "$partition" | tail -1 \
+	"$config_file" )
 echo "cgmlst compiler: $cgmlst_compiler_jid"
 
 #host element pipeline

@@ -15,9 +15,14 @@
 STARTTIMER="$(date +%s)"
 
 #config file:
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+
+
+# Input
+Data_Folder_input=$1
+Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
+Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
+main_output_folder_input=$4
+config_file=$5
 
 # Conda Environment
 # cge_tools_env can be created from scratch by just installing the necessary tools to run cgmlstfinder: https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/
@@ -41,11 +46,6 @@ do
     fi
 done
 
-# Input
-Data_Folder_input=$1
-Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
-Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
-main_output_folder_input=$4
 
 # Obtains the filename indicated by slurm_array_id
 fileInput="$(cat $Data_Folder_Samplelist_SLURM_ARRAY_READY_input | grep "^${Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input}__@__${SLURM_ARRAY_TASK_ID}__@__" | awk -F "__@__" '{print $3}')"

@@ -19,19 +19,17 @@
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 
-#config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
-project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
-Slurm_Array_scripts="$project_root/pipeline_modules/cgmlstFinder"
-
-
 # User Inputs
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
 partition=${4:-project}
+config_file=$5
+
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
+Slurm_Array_scripts="$project_root/pipeline_modules/cgmlstFinder"
+
+
 
 
 # Error for required number of inputs
@@ -145,12 +143,12 @@ do
    array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output"
-   sbatch -p $partition --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output
+   echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output $config_file"
+   sbatch -p $partition --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $jobname $Slurm_Array_scripts/cgmlstFinder_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set ${Job_Name_input}_output "$config_file"
 done
 
-# Compile the results data and Clean-up file system script
-compiler_jid=$(sbatch --parsable --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt)
+#compile the results data and Clean-up file system script
+compiler_jid=$(sbatch --parsable --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt "$config_file")
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
 echo "$compiler_jid"
