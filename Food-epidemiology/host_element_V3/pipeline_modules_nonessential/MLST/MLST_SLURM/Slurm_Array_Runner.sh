@@ -5,8 +5,7 @@
 #SBATCH -o Slurm_Array_Runner_%A_%a.out
 
 
-# Created by Edward Sung (edward.sung@gwu.edu) on 2/25/2024
-#modifed by Jon Slotved
+#created by Jon Slotved (JOSS@dksund.dk)
 
 STARTTIMER="$(date +%s)"
 

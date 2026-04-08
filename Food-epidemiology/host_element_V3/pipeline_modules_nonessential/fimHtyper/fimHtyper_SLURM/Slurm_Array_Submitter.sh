@@ -6,9 +6,7 @@
 # created by Jon slotved
 
 #config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+config_file=$6
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
@@ -126,8 +124,8 @@ do
    array_end="$(cat "$slurm_array_ready_file" | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input $slurm_array_ready_file $index_set ${Job_Name_input}_output"
-   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel $dep_flag --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "$slurm_array_ready_file" "$index_set" "${Job_Name_input}_output"
+   echo "sbatch --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} --partition=${Partition_input} -J $jobname $Slurm_Array_scripts/Slurm_Array_Runner.sh $Data_Folder_input $slurm_array_ready_file $index_set ${Job_Name_input}_output $config_file"
+   sbatch --array=$array_start-$array_end%$Slurm_CalcRunParallel $dep_flag --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Runner.sh" "$Data_Folder_input" "$slurm_array_ready_file" "$index_set" "${Job_Name_input}_output" "$config_file"
 done
 
 # Compile the results data and Clean-up file system script

@@ -8,10 +8,8 @@
 
 STARTTIMER="$(date +%s)"
 
-#config file
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+# Config file as last argument
+config_file=$6
 
 #paths
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')

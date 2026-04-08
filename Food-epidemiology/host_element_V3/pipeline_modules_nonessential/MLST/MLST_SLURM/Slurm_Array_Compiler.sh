@@ -3,18 +3,15 @@
 #SBATCH -p project
 #SBATCH -o Slurm_Array_Compiler_%j.out
 #SBATCH -e Slurm_Array_Compiler_%j.err
-#modified by Jon Slotved
+
+#created by Jon Slotved (JOSS@dksund.dk)
+
 
 STARTTIMER="$(date +%s)"
 
 
 # Modules - Please add any modules required
 # module load (module)
-
-#config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
 
 # Inputs
 main_output_folder_input=$1
