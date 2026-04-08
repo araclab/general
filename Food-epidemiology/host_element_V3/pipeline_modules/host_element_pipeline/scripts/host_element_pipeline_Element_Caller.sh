@@ -11,11 +11,14 @@ STARTTIMER="$(date +%s)"
 . /users/data/Tools/Conda/Miniconda3-py312_24.11.1-0-Linux-x86_64/etc/profile.d/conda.sh
 #conda activate python381
 
-# config file
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
-#helper_scripts="/scratch/liu_price_lab/ehsung/github/paper_shared_gits/general/Food-epidemiology/host_element_v2/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
+# Config file as last argument
+config_file=$6
+
+if [ -z "$config_file" ] || [ ! -f "$config_file" ]; then
+	echo "ERROR: Config file missing or not provided: $config_file"
+	exit 1
+fi
+
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 helper_scripts="$project_root/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
 

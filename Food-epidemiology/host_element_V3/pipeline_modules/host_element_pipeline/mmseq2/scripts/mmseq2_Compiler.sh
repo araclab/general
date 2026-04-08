@@ -6,14 +6,17 @@
 
 # -p tiny,small-gpu,debug
 
+#modified high level by Jon Slotved (JOSS@dksund.dk)
+
+
 STARTTIMER="$(date +%s)"
 
-#config file
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+# Config file as last argument
+config_file=$4
+
 
 # Conda Enviroment - Please change to load your conda environment
+
 conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 conda_env=$(grep '^HEP__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 . "$conda_source"

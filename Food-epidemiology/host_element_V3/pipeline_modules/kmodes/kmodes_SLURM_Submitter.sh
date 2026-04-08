@@ -4,10 +4,11 @@
 #SBATCH -e kmodes_Submitter_%j.err
 #SBATCH -o kmodes_Submitter_%j.out
 
-#config file
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+#input
+kmodes_rdy_inputfile=$1
+partition=${2:-project}
+dependency=${3:-}
+config_file=$4
 
 #conda
 conda_base=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
@@ -20,10 +21,7 @@ kmodes_loc="$project_root/pipeline_modules/kmodes"
 trained_model="$project_root/pipeline_modules/kmodes/trained_models/cluster_2/FULL_sb27_training_context_kmodes_output_Cluster_2_model.pkl"
 
 
-#input
-kmodes_rdy_inputfile=$1
-partition=${2:-project}
-dependency=${3:-}
+
 
 #build dependency flag if provided
 dep_flag=""

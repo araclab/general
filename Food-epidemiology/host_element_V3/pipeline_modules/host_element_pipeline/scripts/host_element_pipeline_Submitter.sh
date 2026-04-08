@@ -13,13 +13,13 @@
 
 STARTTIMER="$(date +%s)"
 
-#config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+# Config file as last argument (like cgmlstFinder_Submitter.sh)
+config_file=${7}
+
 
 #activate conda
 #source
+
 conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 conda_env=$(grep '^HEP__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 . "$conda_source"
@@ -38,6 +38,8 @@ Data_Folder_Hostlist_input=$3
 Job_Name_input=$4
 partition=${5:-project}
 dependency=${6:-}
+# $7 TAKEN
+
 
 dep_flag=""
 if [ -n "$dependency" ]; then
@@ -82,13 +84,13 @@ done < $Data_Folder_Samplelist_input
 # Run mmseq2 on the 500bpTrimmed data
 ls $mmseq2_screening_folder/rawData_500bpTrimmed > $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt
 
-bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpTrimmed $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt $element_genes_screen nucl 0.8 0.8 ${Job_Name_input}_mmseq2 $partition "$dependency"
+bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpTrimmed $mmseq2_screening_folder/${Job_Name_input}_mmseq2_samplelist.txt $element_genes_screen nucl 0.8 0.8 ${Job_Name_input}_mmseq2 $partition "$dependency" "$config_file"
 
 
 
 echo "-------------------- STEP 2. Submitted Host Element Caller Compiler Job, Waits on completion of MMSEQ2 Screening --------------------"
 
-caller_jid=$(sbatch --parsable -p $partition --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input)
+caller_jid=$(sbatch --parsable -p $partition --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input "$config_file")
 
 
 

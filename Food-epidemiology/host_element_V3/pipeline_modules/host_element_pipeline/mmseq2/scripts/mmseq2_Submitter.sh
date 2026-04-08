@@ -7,11 +7,15 @@
 #SBATCH --mem=16G
 #SBATCH -p project
 
-# Small changes to fit ugerm made by Jon Slotved
+#modified high level by Jon Slotved (JOSS@dksund.dk)
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+# Config file as last argument
+config_file=${10}
+
+if [ -z "$config_file" ] || [ ! -f "$config_file" ]; then
+   echo "ERROR: Config file missing or not provided: $config_file"
+   exit 1
+fi
 
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 #HEP_mmseq2_scripts="/scratch/liu_price_lab/ehsung/github/Development/ehsung/microbiome/mmseq2/scripts"
@@ -121,11 +125,11 @@ do
    array_end="$(cat ${samplelist_filename}_SLURM-ARRAY-READY.txt | grep "^${i}__" | tail -1 | awk -F "__@__" '{print $2}')"
    
    # Submit the jobs to HPC
-   echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output"
-   sbatch -p $partition $dep_flag --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output
+   echo "sbatch -p $partition --array=${array_start}-${array_end}%${Slurm_CalcRunParallel} -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output $config_file"
+   sbatch -p $partition $dep_flag --array=$array_start-$array_end%$Slurm_CalcRunParallel -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Runner.sh $Data_Folder_input ${samplelist_filename}_SLURM-ARRAY-READY.txt $index_set $Reference_File_input $SearchType_input $Percent_Identity_input $Percent_Coverage_input ${Job_Name_input}_output "$config_file"
 done
 
 # Compile the results data and Clean-up file system script
-sbatch -p $partition --dependency=singleton -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Compiler.sh ${Job_Name_input}_output $Reference_File_input $Job_Name_input
+sbatch -p $partition --dependency=singleton -J $Job_Name_input $HEP_mmseq2_scripts/mmseq2_Compiler.sh ${Job_Name_input}_output $Reference_File_input $Job_Name_input "$config_file"
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"

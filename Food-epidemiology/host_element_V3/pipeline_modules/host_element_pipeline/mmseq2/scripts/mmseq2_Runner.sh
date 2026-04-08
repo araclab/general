@@ -5,15 +5,16 @@
 #SBATCH -o mmseq2_Runner_%A_%a.out
 
 # Created by Edward Sung (edward.sung@gwu.edu) on 2/18/2025
+#modified high level by Jon Slotved (JOSS@dksund.dk)
 
 STARTTIMER="$(date +%s)"
 
-#config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+# Config file as last argument
+config_file=$9
+
 
 # Conda Enviroment - Please change to load your conda environment
+
 conda_source=$(grep '^GLOBAL__CONDA_SH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 conda_env=$(grep '^HEP__MMSEQ2_ENV__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 . "$conda_source"
