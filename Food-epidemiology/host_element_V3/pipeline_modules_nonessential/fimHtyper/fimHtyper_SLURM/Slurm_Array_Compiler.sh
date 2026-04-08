@@ -14,7 +14,9 @@ STARTTIMER="$(date +%s)"
 # module load (module)
 
 #config
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+config_file="$PROJECT_DIR/config/config.env"
 
 # Inputs
 main_output_folder_input=$1

@@ -5,9 +5,12 @@
 #SBATCH -e compile_output_%j.err
 
 #config
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+CONFIG_FILE="$PROJECT_DIR/config/config.env"
 
-#paths
+
+#paths 
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
 compile_script="$project_root/run_full_pipeline/helper_scripts/compile_blcm_output_csvfile.R"
 

@@ -6,7 +6,9 @@
 # created by Jon slotved
 
 #config
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+config_file="$PROJECT_DIR/config/config.env"
 echo "config: $config_file"
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')

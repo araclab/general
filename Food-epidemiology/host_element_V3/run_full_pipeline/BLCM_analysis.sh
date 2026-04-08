@@ -11,7 +11,9 @@
 #please contact via: JOSS@dksund.dk
 
 #config
-config_file="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+config_file="$PROJECT_DIR/config/config.env"
 
 #paths
 project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
@@ -46,8 +48,8 @@ if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
 	echo "found information:"
 	echo "input_folder: ${input_folder}"
 	echo "host_info: ${host_info}"
-	echo "output_loc: ${main_output_folder}"
-	echo "partition: ${partition}"
+	echo "output_loc: ${main_output_folder} (creates OUTPUT_BLCA if no output folder is set)"
+	echo "partition: ${partition} (default: project)"
     exit 1
 fi
 
