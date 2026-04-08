@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#BLCA - Host Element BLCM Analysis Pipeline
+#Wrapper command for BLCM_analysis.sh
+#Written by Jon Slotved (JOSS@dksund.dk)
+
+config_file="${BLCA_CONFIG:?ERROR: BLCA_CONFIG not set. Activate BLCA_analysis env first.}"
+
+if [ ! -f "$config_file" ]; then
+    echo "ERROR: config file not found: $config_file"
+    exit 1
+fi
+
+project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
+
+bash "$project_root/run_full_pipeline/BLCM_analysis.sh" "$@"

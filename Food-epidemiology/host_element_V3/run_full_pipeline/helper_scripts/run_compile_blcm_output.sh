@@ -20,7 +20,7 @@ blcm_preds=$1
 mlst_results=$2
 fimh_results=$3
 hep_elements=$4
-output_dir=${5:-.}
+output_dir=$5
 
 if [ -z "$blcm_preds" ] || [ -z "$mlst_results" ] || [ -z "$fimh_results" ] || [ -z "$hep_elements" ] || [ -z "$output_dir" ]; then
     echo "Usage: sbatch run_compile_blcm_output.sh <blcm_pred_scores.csv> <mlst_results.txt> <fimh_results.txt> <element_presence.tsv> <output_dir>"
