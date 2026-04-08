@@ -9,11 +9,10 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 ENV_YML="$PROJECT_DIR/pipeline_modules/conda_envs/BLCA_analysis.yml"
 BLCA_SCRIPT="$PROJECT_DIR/pipeline_modules/conda_envs/scripts/BLCA"
 CONFIG_FILE="$PROJECT_DIR/config/config.env"
-
 # echo "Script dir:####################################"
 # echo "${SCRIPT_DIR}"
 # echo
