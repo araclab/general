@@ -70,8 +70,8 @@ cgmlst_compiler_jid=$(bash "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     cgmlst_analysis \
-    "$partition" | tail -1 \
-	"$config_file" )
+    "$partition" \
+    "$config_file" | tail -1)
 echo "cgmlst compiler: $cgmlst_compiler_jid"
 
 #host element pipeline
@@ -82,7 +82,8 @@ hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$host_info" \
     hep_analysis \
     "$partition" \
-    "$cgmlst_compiler_jid" | tail -1)
+    "$cgmlst_compiler_jid" \
+    "$config_file" | tail -1)
 echo "HEP caller: $hep_caller_jid"
 
 #mlst analysis
@@ -92,7 +93,8 @@ mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
     "$sample_list" \
     mlst_analysis \
     "$partition" \
-    "$hep_caller_jid" | tail -1)
+    "$hep_caller_jid" \
+    "$config_file" | tail -1)
 echo "MLST compiler: $mlst_compiler_jid"
 
 #fimhtyper
@@ -102,7 +104,8 @@ fimh_compiler_jid=$(bash "$fimh/Slurm_Array_Submitter.sh" \
     "$sample_list" \
     fimhtyper_analysis \
     "$partition" \
-    "$mlst_compiler_jid" | tail -1)
+    "$mlst_compiler_jid" \
+    "$config_file" | tail -1)
 echo "fimHtyper compiler: $fimh_compiler_jid"
 
 #kmodes
@@ -111,7 +114,8 @@ kmodes_rdy_inputfile="$main_output_folder/cgmlst_analysis_output/compiled_files/
 kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
     "$kmodes_rdy_inputfile" \
     "$partition" \
-    "$cgmlst_compiler_jid" | tail -1)
+    "$cgmlst_compiler_jid" \
+    "$config_file" | tail -1)
 echo "kmodes pred: $kmodes_pred_jid"
 
 #blcm
