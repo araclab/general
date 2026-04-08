@@ -46,6 +46,6 @@ mkdir -p "$main_output_folder/tmp_analysis"
 cp "$config_file" "$main_output_folder/tmp_analysis/config.env"
 
 # Submit job, passing config as last argument
-sbatch "$project_root/run_full_pipeline/BLCM_analysis.sh" "$input_folder" "$host_info" "$main_output_folder" "$partition" "$main_output_folder/tmp_analysis/config.env"
+sbatch "$project_root/run_full_pipeline/BLCM_analysis.sh" "$input_folder" "$host_info" "$main_output_folder" "$partition" "$config_file"
 
 
