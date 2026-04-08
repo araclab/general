@@ -10,36 +10,35 @@
 #blcm pipeline wrapper, written by Jon Slotved on 02/04/2026
 #please contact via: JOSS@dksund.dk
 
-#config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
-
-#paths
-project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
-#echo "main path: $project_root"
-
-#how to use 
-print_usage() {
-	echo
-    echo "Usage: sbatch/bash BLCM_analysis.sh <assembly_folder> <host_tsv> [output_directory] [partition]"
-	echo
-	echo "Arguments:"
-	echo "  assembly_folder  Folder containing genome assemblies in fasta/fa/fna format"
-	echo "  host_tsv         TSV file with two columns: sampleID and Host"
-	echo "  output_directory Destination folder for intermediate and final outputs (optional, default: creates OUTPUT_BLCA in current dir)"
-	echo "  partition        SLURM partition to use (optional, default: project)"
-    echo
-    echo "PLEASE NOTE: avoid unusual filenames with spaces, commas or dots"
-	echo "It is also recommended that full paths are used when filling arguments"
-    echo 
-}
-
 #get input
 input_folder="$1"
 host_info="$2"
 main_output_folder=${3:-OUTPUT_BLCA}
 partition=${4:-project}
+config_file=$5
+
+
+#paths
+project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
+#echo "main path: $project_root"
+
+
+
+#how to use 
+print_usage() {
+    echo
+    echo "Usage: sbatch/bash BLCM_analysis.sh <assembly_folder> <host_tsv> [output_directory] [partition]"
+    echo
+    echo "Arguments:"
+    echo "  assembly_folder  Folder containing genome assemblies in fasta/fa/fna format"
+    echo "  host_tsv         TSV file with two columns: sampleID and Host"
+    echo "  output_directory Destination folder for intermediate and final outputs (optional, default: creates OUTPUT_BLCA in current dir)"
+    echo "  partition        SLURM partition to use (optional, default: project)"
+    echo
+    echo "PLEASE NOTE: avoid unusual filenames with spaces, commas or dots"
+    echo "It is also recommended that full paths are used when filling arguments"
+    echo 
+}
 
 #check input and print_usage if bad
 if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
@@ -53,7 +52,6 @@ if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
     exit 1
 fi
 
-exit 1
 #create file system
 input_folder=$(cd "$input_folder" && pwd)
 host_info=$(readlink -f "$host_info")
