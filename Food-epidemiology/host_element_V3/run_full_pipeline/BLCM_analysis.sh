@@ -53,6 +53,7 @@ if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
     exit 1
 fi
 
+exit 1
 #create file system
 input_folder=$(cd "$input_folder" && pwd)
 host_info=$(readlink -f "$host_info")
