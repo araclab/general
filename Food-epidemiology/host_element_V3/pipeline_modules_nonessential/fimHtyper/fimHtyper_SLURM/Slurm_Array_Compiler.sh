@@ -14,9 +14,6 @@ STARTTIMER="$(date +%s)"
 # module load (module)
 
 #config
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
 
 # Inputs
 main_output_folder_input=$1
