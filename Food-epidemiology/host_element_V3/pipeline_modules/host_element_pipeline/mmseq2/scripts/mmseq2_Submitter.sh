@@ -9,8 +9,19 @@
 
 #modified high level by Jon Slotved (JOSS@dksund.dk)
 
-# Config file as last argument
-config_file=${10}
+# User Inputs
+Data_Folder_input=$1
+Data_Folder_Samplelist_input=$2
+Reference_File_input=$3
+SearchType_input=$4		# {'prot' or 'nucl'}
+Percent_Identity_input=$5	# {0.8}
+Percent_Coverage_input=$6	# {0.8}
+Job_Name_input=$7
+partition=${8:-project}
+dependency=${9:-}
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${10:-${config_file_local}}
 
 if [ -z "$config_file" ] || [ ! -f "$config_file" ]; then
    echo "ERROR: Config file missing or not provided: $config_file"
@@ -22,17 +33,6 @@ fi
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 HEP_mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts"
 
-
-# User Inputs
-Data_Folder_input=$1
-Data_Folder_Samplelist_input=$2
-Reference_File_input=$3
-SearchType_input=$4		# {'prot' or 'nucl'}
-Percent_Identity_input=$5	# {0.8}
-Percent_Coverage_input=$6	# {0.8}
-Job_Name_input=$7
-partition=${8:-project}
-dependency=${9:-}
 
 dep_flag=""
 [ -n "$dependency" ] && dep_flag="--dependency=afterok:${dependency}"

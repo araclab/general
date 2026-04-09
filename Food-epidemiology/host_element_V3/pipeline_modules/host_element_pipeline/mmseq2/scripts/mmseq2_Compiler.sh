@@ -11,8 +11,13 @@
 
 STARTTIMER="$(date +%s)"
 
-# Config file as last argument
-config_file=$4
+# Inputs
+main_output_folder_input=$1
+reference_input=$2
+jobname_input=$3
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${4:-${config_file_local}}
 
 
 # Conda Enviroment - Please change to load your conda environment
@@ -23,10 +28,6 @@ conda_env=$(grep '^HEP__CONDA_ENV__=' "$config_file" | awk -F'__=' '{print $2}' 
 conda activate "$conda_env"
 
 
-# Inputs
-main_output_folder_input=$1
-reference_input=$2
-jobname_input=$3
 
 
 # Create file system

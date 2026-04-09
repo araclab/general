@@ -15,14 +15,13 @@ input_folder="$1"
 host_info="$2"
 main_output_folder=${3:-OUTPUT_BLCA}
 partition=${4:-project}
-config_file=$5
-
+# Config file as last argument
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${5:-${config_file_local}}
 
 #paths
 project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
 #echo "main path: $project_root"
-
-
 
 #how to use 
 print_usage() {

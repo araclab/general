@@ -8,22 +8,6 @@
 
 STARTTIMER="$(date +%s)"
 
-# Config file as last argument
-config_file=$6
-
-#paths
-project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
-host_element_blcm_scripts="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
-#conda envs
-conda_source=$(grep "^GLOBAL__CONDA_SH__=" "$config_file" | awk -F'__=' '{print $2}')
-conda_env_blcm=$(grep "^BLCM__CONDA_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
-conda_env_r_basics=$(grep "^BLCM__R_BASICS_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
-
-. "$conda_source"
-
-# HPC Modules
-#module load R/4.1.1
-
 # User Inputs
 # $1: kmodes predictions CSV (output of kmodes_clustering_predicting.py)
 # $2: HEP element presence TSV (output of host_element_pipeline)
@@ -35,6 +19,24 @@ elements_input=$2
 host_tsv=$3
 mlst_input=$4
 Folder_Output=$5
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${6:-${config_file_local}}
+
+#paths
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
+host_element_blcm_scripts="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_18022026"
+#conda envs
+conda_source=$(grep "^GLOBAL__CONDA_SH__=" "$config_file" | awk -F'__=' '{print $2}')
+#for running latent class model
+conda_env_blcm=$(grep "^BLCM__CONDA_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
+#for compiling input
+conda_env_r_basics=$(grep "^BLCM__R_BASICS_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
+
+. "$conda_source"
+
+# HPC Modules
+#module load R/4.1.1
 
 if [ -z "$kmodes_input" ] || [ -z "$elements_input" ] || [ -z "$host_tsv" ] || [ -z "$Folder_Output" ] || [ -z "$mlst_input" ]; then
     echo "Usage: sbatch run_hostelement_blca.sh <kmodes_predictions.csv> <element_presence.tsv> <host.tsv> <mlst.txt> <output_folder>"

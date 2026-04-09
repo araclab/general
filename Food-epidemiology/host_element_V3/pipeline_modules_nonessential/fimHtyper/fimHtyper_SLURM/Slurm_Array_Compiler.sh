@@ -13,8 +13,6 @@ STARTTIMER="$(date +%s)"
 # Modules - Please add any modules required
 # module load (module)
 
-#config
-
 # Inputs
 main_output_folder_input=$1
 

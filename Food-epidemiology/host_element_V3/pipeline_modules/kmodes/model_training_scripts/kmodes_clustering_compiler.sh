@@ -10,11 +10,6 @@
 conda activate sklearn-env
 
 
-
-
-
-
-
 # User Inputs
 main_output_folder=$1
 output_name_input=$2

@@ -22,7 +22,9 @@ Data_Folder_input=$1
 Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
 Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
 main_output_folder_input=$4
-config_file=$5
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${5:-${config_file_local}}
 
 # Conda Environment
 # cge_tools_env can be created from scratch by just installing the necessary tools to run cgmlstfinder: https://bitbucket.org/genomicepidemiology/cgmlstfinder/src/master/

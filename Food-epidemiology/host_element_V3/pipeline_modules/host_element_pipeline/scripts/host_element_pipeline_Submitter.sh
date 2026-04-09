@@ -13,9 +13,21 @@
 
 STARTTIMER="$(date +%s)"
 
-# Config file as last argument (like cgmlstFinder_Submitter.sh)
-config_file=${7}
+# User Inputs
+Data_Folder_input=$1
+Data_Folder_Samplelist_input=$2
+Data_Folder_Hostlist_input=$3
+Job_Name_input=$4
+partition=${5:-project}
+dependency=${6:-}
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${7:-${config_file_local}}
 
+dep_flag=""
+if [ -n "$dependency" ]; then
+    dep_flag="--dependency=afterok:${dependency}"
+fi
 
 #activate conda
 #source
@@ -30,21 +42,6 @@ element_genes_screen="$project_root/pipeline_modules/host_element_pipeline/datab
 host_element_scipts="$project_root/pipeline_modules/host_element_pipeline/scripts"
 helper_scripts="$project_root/pipeline_modules/host_element_pipeline/scripts/helper_scripts"
 mmseq2_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts"
-
-# User Inputs
-Data_Folder_input=$1
-Data_Folder_Samplelist_input=$2
-Data_Folder_Hostlist_input=$3
-Job_Name_input=$4
-partition=${5:-project}
-dependency=${6:-}
-# $7 TAKEN
-
-
-dep_flag=""
-if [ -n "$dependency" ]; then
-    dep_flag="--dependency=afterok:${dependency}"
-fi
 
 # Error for required number of inputs
 if [ $# -lt 4 ]

@@ -6,26 +6,26 @@
 #created by Jon Slotved (JOSS@dksund.dk)
 
 
-# Config file as last argument
-config_file=$6
-
-echo "config from MLST_Submitter: $config_file"
-# Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
-project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
-Slurm_Array_scripts="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
-
 # User Inputs
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
 Partition_input=${4:-project}  # optional; defaults to "project"
 dependency=${5:-}
+# Config file as last argument
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${6:-${config_file_local}}
+
+echo "config from MLST_Submitter: $config_file"
+# Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
+Slurm_Array_scripts="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
+
 
 dep_flag=""
 if [ -n "$dependency" ]; then
     dep_flag="--dependency=afterok:${dependency}"
 fi
-
 
 # Names the slurm job, as well as used in the singleton dependency
 jobname=${Job_Name_input}

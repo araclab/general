@@ -24,7 +24,9 @@ Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
 partition=${4:-project}
-config_file=$5
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${5:-${config_file_local}}
 
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 Slurm_Array_scripts="$project_root/pipeline_modules/cgmlstFinder"

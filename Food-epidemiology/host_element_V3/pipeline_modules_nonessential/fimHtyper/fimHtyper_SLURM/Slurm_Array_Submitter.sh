@@ -5,19 +5,21 @@
 
 # created by Jon slotved
 
-#config
-config_file=$6
-
-# Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
-project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
-Slurm_Array_scripts="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
-
 # User Inputs
 Data_Folder_input=$1
 Data_Folder_Samplelist_input=$2
 Job_Name_input=$3
 Partition_input=${4:-project}  # optional; defaults to "project"
 dependency=${5:-}
+#config file as last argument
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${6:-${config_file_local}}
+
+# Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
+project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
+Slurm_Array_scripts="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
+
+
 
 dep_flag=""
 if [ -n "$dependency" ]; then

@@ -13,7 +13,9 @@
 main_output_folder_input=$1
 jobname_input=$2
 slurm_array_ready_file=$3
-config_file=$4
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${4:-${config_file_local}}
 
 #get path to main script loc
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)

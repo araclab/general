@@ -15,7 +15,9 @@ mlst_results=$2
 fimh_results=$3
 hep_elements=$4
 output_dir=$5
-config_file=$6
+# Config file as last argument
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${6:-${config_file_local}}
 
 #paths 
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')

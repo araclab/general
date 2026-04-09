@@ -10,7 +10,14 @@
 
 STARTTIMER="$(date +%s)"
 
-config_file=$5
+# User Input
+Data_Folder_input=$1
+Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
+Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
+main_output_folder_input=$4
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${5:-${config_file_local}}
 
 
 # Conda Enviroment - Please change to load your conda environment
@@ -28,11 +35,6 @@ conda activate "$conda_env"
 fimtyper=$(grep "^FIMHTYPER__TOOL_LOCATION__=" "$config_file" | awk -F'__=' '{print $2}')
 fimtyper_db=$(grep "^FIMHTYPER__DATABASE__=" "$config_file" | awk -F'__=' '{print $2}')
 
-# User Input
-Data_Folder_input=$1
-Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
-Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
-main_output_folder_input=$4
 
 
 # Obtains the filename indicated by slurm_array_id

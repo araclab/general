@@ -9,8 +9,18 @@
 
 STARTTIMER="$(date +%s)"
 
-# Config file as last argument
-config_file=$9
+# User Input
+Data_Folder_input=$1
+Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
+Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
+Reference_File_input=$4
+SearchType_input=$5
+Percent_Identity_input=$6
+Percent_Coverage_input=$7
+main_output_folder_input=$8
+#config (defaults to local path)
+config_file_local="/dpssi/data/Projects/mtg_host_elements_files_and_output/proj/general_JonThesis/Food-epidemiology/host_element_V3/config/config.env"
+config_file=${9:-${config_file_local}}
 
 
 # Conda Enviroment - Please change to load your conda environment
@@ -25,15 +35,6 @@ project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{pr
 mmseq2_python_scripts="$project_root/pipeline_modules/host_element_pipeline/mmseq2/scripts/python_scripts"
 
 
-# User Input
-Data_Folder_input=$1
-Data_Folder_Samplelist_SLURM_ARRAY_READY_input=$2
-Data_Folder_Samplelist_SLURM_ARRAY_READY_index_set_input=$3
-Reference_File_input=$4
-SearchType_input=$5
-Percent_Identity_input=$6
-Percent_Coverage_input=$7
-main_output_folder_input=$8
 
 threads=20
 
