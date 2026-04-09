@@ -15,6 +15,7 @@ mlst_results=$2
 fimh_results=$3
 hep_elements=$4
 output_dir=$5
+config_file=$6
 
 #paths 
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
@@ -23,8 +24,6 @@ compile_script="$project_root/run_full_pipeline/helper_scripts/compile_blcm_outp
 #conda
 conda_source=$(grep "^GLOBAL__CONDA_SH__=" "$config_file" | awk -F'__=' '{print $2}')
 conda_env_r_basics=$(grep "^BLCM__R_BASICS_ENV__=" "$config_file" | awk -F'__=' '{print $2}')
-
-
 
 
 if [ -z "$blcm_preds" ] || [ -z "$mlst_results" ] || [ -z "$fimh_results" ] || [ -z "$hep_elements" ] || [ -z "$output_dir" ]; then
