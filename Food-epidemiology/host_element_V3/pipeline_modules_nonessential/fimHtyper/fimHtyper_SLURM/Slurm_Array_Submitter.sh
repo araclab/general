@@ -24,16 +24,6 @@ if [ -n "$dependency" ]; then
    dep_flag="--dependency=afterok:${dependency}"
 fi
 
-
-# Error for required number of inputs
-if [ $# -lt 3 ]
-then
-   echo "Please give at least 3 arguments: (Data_Folder_input) (Data_Folder_Samplelist_input) (Job_Name_input) [Partition_input]"
-   exit 1
-fi
-
-
-
 # Names the slurm job, as well as used in the singleton dependency
 jobname=${Job_Name_input}
 

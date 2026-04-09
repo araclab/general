@@ -9,7 +9,7 @@
 # Config file as last argument
 config_file=$6
 
-
+echo "config from MLST_Submitter: $condig_file"
 # Script Locations (Path to where all slurm-array scripts live, use `pwd` to find path.
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}')
 Slurm_Array_scripts="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
@@ -25,15 +25,6 @@ dep_flag=""
 if [ -n "$dependency" ]; then
     dep_flag="--dependency=afterok:${dependency}"
 fi
-
-
-# Error for required number of inputs
-if [ $# -lt 3 ]
-then
-   echo "Please give at least 3 arguments: (Data_Folder_input) (Data_Folder_Samplelist_input) (Job_Name_input) [Partition_input]"
-   exit 1
-fi
-
 
 
 # Names the slurm job, as well as used in the singleton dependency
