@@ -9,9 +9,7 @@
 
 STARTTIMER="$(date +%s)"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-config_file="$PROJECT_DIR/config/config.env"
+config_file=$5
 
 
 # Conda Enviroment - Please change to load your conda environment
