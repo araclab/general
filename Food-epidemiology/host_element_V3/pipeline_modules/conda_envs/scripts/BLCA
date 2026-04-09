@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#BLCA - Host Element BLCM Analysis Pipeline
+#Wrapper command for BLCM_analysis.sh
+#Written by Jon Slotved (JOSS@dksund.dk)
+
+
+config_file="${BLCA_CONFIG:?ERROR: BLCA_CONFIG not set. Activate BLCA_analysis env first.}"
+
+if [ ! -f "$config_file" ]; then
+    echo "ERROR: config file not found: $config_file"
+    exit 1
+fi
+
+#check inputs
+input_folder="$1"
+host_info="$2"
+main_output_folder=${3:-OUTPUT_BLCA}
+partition=${4:-project}
+
+
+if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
+    echo "Usage: BLCA <assembly_folder> <host_tsv> [output_directory] [partition]"
+    exit 1
+fi
+
+if [ ! -d "$input_folder" ]; then
+    echo "ERROR: assembly folder not found: $input_folder"
+    exit 1
+fi
+
+if [ ! -f "$host_info" ]; then
+    echo "ERROR: host TSV file not found: $host_info"
+    exit 1
+fi
+
+if [ $(wc -l < "$host_info") -lt 2 ]; then
+    echo "ERROR: host TSV must have a header + at least 1 data row"
+    exit 1
+fi
+
+project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
+
+# Create out dir and copy config as config.env
+mkdir -p "$main_output_folder/tmp_analysis"
+cp "$config_file" "$main_output_folder/tmp_analysis/config.env"
+
+# Submit job, passing config as last argument
+sbatch "$project_root/run_full_pipeline/BLCM_analysis.sh" "$input_folder" "$host_info" "$main_output_folder" "$partition" "$config_file"
+
+
