@@ -71,6 +71,9 @@ if [ ! -f "$blcm_input" ]; then
     exit 1
 fi
 
+#### NOTE: handle NAs in input
+
+
 # Step 2: run BLCM (uses jags env)
 echo "--- Running BLCM ---"
 conda activate "$conda_env_blcm"

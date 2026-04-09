@@ -20,7 +20,20 @@ partition=${4:-project}
 
 
 if [ -z "$input_folder" ] || [ -z "$host_info" ]; then
+    echo
     echo "Usage: BLCA <assembly_folder> <host_tsv> [output_directory] [partition]"
+    echo
+    echo "Arguments:"
+    echo "  assembly_folder    Folder containing genome assemblies in fasta, fa or fna format"
+    echo "  host_tsv           TSV file with two columns: Genome_Ref Host - Host can be: Human, Chicken or Pork (WRITTEN EXACTLY LIKE THIS)"
+    echo "  output_directory   Destination for outputs (optional, default: OUTPUT_BLCA)"
+    echo "  partition          SLURM partition (optional, default: project)"
+    echo
+    echo "IMPORTANT NOTES:"
+    echo "  - Do NOT use dots (.) or spaces in fasta filenames or sample IDs."
+    echo "  - Use full paths for arguments to avoid path issues. (should not be, but better safe than sorry -Jon)"
+    echo
+    echo "If you encounter issues, contact Jon Slotved (JOSS@dksund.dk)."
     exit 1
 fi
 

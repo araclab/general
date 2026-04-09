@@ -35,7 +35,7 @@ print_usage() {
     echo "  partition        SLURM partition to use (optional, default: project)"
     echo
     echo "PLEASE NOTE: avoid unusual filenames with spaces, commas or dots"
-    echo "It is also recommended that full paths are used when filling arguments"
+    echo "PLEASE NOTE: It is also recommended that full paths are used when filling arguments"
     echo 
 }
 

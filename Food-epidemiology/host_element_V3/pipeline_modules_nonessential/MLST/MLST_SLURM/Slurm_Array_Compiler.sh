@@ -32,10 +32,12 @@ while read -r line
 do
    echo "Extracting results from: $line"
    tab_file="$main_output_folder_input/processing_files/${line}/results_tab.txt"
-   if [ ! -f "$tab_file" ]; then
+   if [ ! -f "$tab_file" ]; 
+   then
       mlst_type="0"
 
-   elif awk -F'\t' 'NR==1 && $3 != "" && $3 != "-" {found=1} END{exit (found == 0)}' "$tab_file"; then
+   elif awk -F'\t' 'NR==1 && $3 != "" && $3 != "-" {found=1} END{exit (found == 0)}' "$tab_file"; 
+   then
       mlst_type=$(awk -F'\t' 'NR==1 {print $3; exit}' "$tab_file")
    else
       mlst_type="0"

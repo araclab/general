@@ -69,3 +69,5 @@ echo "Setup complete!"
 echo "Usage:"
 echo "  conda activate BLCA_analysis"
 echo "  BLCA <assembly_folder> <host_tsv> [output_directory] [partition]"
+echo
+echo ""
