@@ -150,7 +150,8 @@ compile_jid=$(sbatch --parsable \
     "$mlst_results" \
     "$fimh_results" \
     "$hep_elements" \
-    "$main_output_folder")
+    "$main_output_folder" \
+	"$config_file")
 echo "Compile output: $compile_jid"
 
 echo
