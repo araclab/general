@@ -133,7 +133,8 @@ blcm_jid=$(sbatch --parsable \
     "$hep_elements" \
     "$host_info" \
     "$mlst_results" \
-    "$main_output_folder/blcm_output")
+    "$main_output_folder/blcm_output" \
+	"$config_file")
 echo "BLCM: $blcm_jid"
 
 #compile final output csv
