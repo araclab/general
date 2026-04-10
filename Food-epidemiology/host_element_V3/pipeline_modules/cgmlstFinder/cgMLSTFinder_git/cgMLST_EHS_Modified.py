@@ -556,8 +556,9 @@ class KMA():
             header = result_file.readline()
             header = header.strip().split("\t")
 
-            depth_index          = header.index("Depth")
+            
             query_id_index       = header.index("Query_Identity")
+            depth_index          = header.index("Depth")
             template_cover_index = header.index("Template_Coverage")
             q_val_index          = header.index("q_value")
 
