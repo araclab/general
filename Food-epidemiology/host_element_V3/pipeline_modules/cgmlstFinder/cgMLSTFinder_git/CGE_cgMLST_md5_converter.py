@@ -35,27 +35,38 @@ kma_fsa_file_input = args.kma_fsa_file
 # kma_fsa_file_input = "ESC_GA3724AA_AS/kma_ESC_GA3724AA_AS.fsa"
 
 #%%
-cgmlst_results = pd.read_csv(results_file_input, sep="\t")
-fasta_dict = SeqIO.index(kma_fsa_file_input, "fasta")
+
+try:
+    cgmlst_results = pd.read_csv(results_file_input, sep="\t")
+    fasta_dict = SeqIO.index(kma_fsa_file_input, "fasta")
+except Exception as e:
+    print(f"[ERROR] Failed to load input files: {e}")
+    exit(1)
 
 md5_return_List = [cgmlst_results["Genome"][0]]
 
 allele_List = cgmlst_results.columns.drop("Genome")
+print(f"[DEBUG] Allele list: {list(allele_List)}")
 
 for allele in allele_List:
-    # if cgMLST identifes "-", this is kept because its not a new allele, but not in database either
-    if cgmlst_results[allele][0] == "-":
-        md5_return = hashlib.md5(str(cgmlst_results[allele][0]).encode("utf-8")).hexdigest()
+    try:
+        # if cgMLST identifes "-", this is kept because its not a new allele, but not in database either
+        if cgmlst_results[allele][0] == "-":
+            md5_return = hashlib.md5(str(cgmlst_results[allele][0]).encode("utf-8")).hexdigest()
 
-    # if cgMLST identifies new allele, it already returns it as md5, keep this in the conversion
-    elif len(str(cgmlst_results[allele][0])) == 32:
-        md5_return = cgmlst_results[allele][0]
+        # if cgMLST identifies new allele, it already returns it as md5, keep this in the conversion
+        elif len(str(cgmlst_results[allele][0])) == 32:
+            md5_return = cgmlst_results[allele][0]
 
-    # else find the fasta sequence identified by kma for that allele and convert it to md5
-    else:
-        fasta_name = str(allele) + "_" + str(cgmlst_results[allele][0])
-        md5_return = hashlib.md5(str(fasta_dict[fasta_name].seq).encode("utf-8")).hexdigest()
+        # else find the fasta sequence identified by kma for that allele and convert it to md5
+        else:
+            fasta_name = str(allele) + "_" + str(cgmlst_results[allele][0])
+            md5_return = hashlib.md5(str(fasta_dict[fasta_name].seq).encode("utf-8")).hexdigest()
 
+        print(f"[DEBUG] Allele: {allele}, Value: {cgmlst_results[allele][0]}, md5_return: {md5_return}")
+    except Exception as e:
+        print(f"[ERROR] Exception for allele {allele}: {e}")
+        md5_return = "ERROR"
     md5_return_List.append(md5_return)
 
 md5_return_output = "\t".join(md5_return_List)

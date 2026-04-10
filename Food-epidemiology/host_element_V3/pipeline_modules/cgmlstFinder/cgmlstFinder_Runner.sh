@@ -33,6 +33,9 @@ conda_env=$(cat "$config_file" | grep '^CGE__CONDA_ENV__=' | awk -F'__=' '{print
 . "$conda_source"
 conda activate "$conda_env"
 
+echo "before"
+set -x
+
 # Script and Tools Paths
 project_root=$(grep '^GLOBAL__PROJECT_ROOT__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
 CGE_DB_Path=$(grep '^CGE__DB_PATH__=' "$config_file" | awk -F'__=' '{print $2}' | xargs)
@@ -81,3 +84,6 @@ echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
 # Clean-up File System
 mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err $main_output_folder_input/processing_files/$filename/slurm_outputs
 mv cgmlstFinder_Runner_${SLURM_ARRAY_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out $main_output_folder_input/processing_files/$filename/slurm_outputs
+
+set +x
+echo "after"
