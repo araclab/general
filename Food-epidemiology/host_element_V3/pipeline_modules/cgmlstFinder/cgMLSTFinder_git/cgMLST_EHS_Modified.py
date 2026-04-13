@@ -488,7 +488,7 @@ class KMA():
             "-o", result_file_tmp,
             "-tmp", tmp_dir,
             "-t_db", db,
-            "-mem_mode", "-cge", "-boot", "-1t1", "-and"]
+            "-cge", "-boot", "-1t1", "-and"]
 
         # Call kma externally
         print("# KMA call: " + " ".join(kma_call_list))
@@ -557,7 +557,7 @@ class KMA():
             # --debugging--
             header = result_file.readline()
             print("=====================================")
-            print("attempting to read {self.result_file}")
+            print(f"attempting to read {self.result_file}")
 
             if os.path.exists(self.result_file):
                 print(f"DEBUG KMA: File exists. Size: {os.path.getsize(self.result_file)} bytes")
@@ -566,15 +566,12 @@ class KMA():
 
             print(f"DEBUG KMA: Raw header line read: '{header}'")
 
-
             header = header.strip().split("\t")
-
             
             query_id_index       = header.index("Query_Identity")
             depth_index          = header.index("Depth")
             template_cover_index = header.index("Template_Coverage")
             q_val_index          = header.index("q_value")
-
             # --debugging--
 
             loci_allel = re.compile(r"(\S+)_(\d+)")
@@ -743,7 +740,9 @@ def runProd(assembly_path, prod_path, tmp_dir, outdir):
     # Process assembly input and define CDS filename
     filename = os.path.basename(assembly_path).split(".")[0] 
     CDS_file = os.path.join(outdir, filename + ".cds")
-        
+    
+    
+    
     # Execute prodigal and write coding regions to file
     cmd = "{} -c -q -i {} -d {}".format(prod_path,assembly_path,CDS_file)
     print("# Executing Prodigal on " + assembly_path)
