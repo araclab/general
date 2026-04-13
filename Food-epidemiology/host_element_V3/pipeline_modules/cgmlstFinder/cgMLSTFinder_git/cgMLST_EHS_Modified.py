@@ -492,8 +492,17 @@ class KMA():
 
         # Call kma externally
         print("# KMA call: " + " ".join(kma_call_list))
-        process = subprocess.Popen(kma_call_list, shell=False, stdout=subprocess.PIPE) #, stderr=subprocess.PIPE)
+        process = subprocess.Popen(kma_call_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE) #, stderr=subprocess.PIPE)
         out, err = process.communicate()
+        # -- debugging --
+        if process.returncode != 0:
+            print(f"==================================================")
+            print(f"FATAL ERROR: KMA crashed with code {process.returncode}")
+            print(f"KMA Error Log:\n{err.decode('utf-8')}")
+            print(f"==================================================")
+            sys.exit(1)
+            
+        # -- debugging --
         print("KMA call ended")
     
     def _extract_seq_from_fsa(self, locus):
