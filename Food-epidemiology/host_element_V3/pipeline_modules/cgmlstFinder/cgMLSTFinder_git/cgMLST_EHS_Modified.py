@@ -488,7 +488,7 @@ class KMA():
             "-o", result_file_tmp,
             "-tmp", tmp_dir,
             "-t_db", db,
-            "-cge", "-boot", "-1t1", "-and"]
+            "-mem_mode", "-cge", "-boot", "-1t1", "-and"]
 
         # Call kma externally
         print("# KMA call: " + " ".join(kma_call_list))
@@ -553,7 +553,20 @@ class KMA():
 
         # Create dict of locus and allel with the highest quality score
         with open(self.result_file, "r") as result_file:
+            
+            # --debugging--
             header = result_file.readline()
+            print("=====================================")
+            print("attempting to read {self.result_file}")
+
+            if os.path.exists(self.result_file):
+                print(f"DEBUG KMA: File exists. Size: {os.path.getsize(self.result_file)} bytes")
+            else:
+                print(f"DEBUG KMA: FATAL - File does not exist on disk!")
+
+            print(f"DEBUG KMA: Raw header line read: '{header}'")
+
+
             header = header.strip().split("\t")
 
             
@@ -561,6 +574,8 @@ class KMA():
             depth_index          = header.index("Depth")
             template_cover_index = header.index("Template_Coverage")
             q_val_index          = header.index("q_value")
+
+            # --debugging--
 
             loci_allel = re.compile(r"(\S+)_(\d+)")
             i = 0
@@ -735,7 +750,7 @@ def runProd(assembly_path, prod_path, tmp_dir, outdir):
     print("#")
     print("# Prodigal call: " + cmd)
     print("#")
-    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL).wait() 
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL).wait()
     print("Prodigal call ended")
     return CDS_file   
         
@@ -926,8 +941,9 @@ if __name__ == "__main__":
             
             # Run KMA to find alleles from fasta file
             seq_kma = KMA(CDS_file, tmp_dir, db_species_scheme, loci_list, kma_path, fasta = True)
-            cmd = "rm {}".format(CDS_file)
-            subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL)
+            
+            #cmd = "rm {}".format(CDS_file)
+            #subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL)
             
             # Get called allelel
             allel_output += seq_kma.best_allel_hits()
