@@ -488,7 +488,7 @@ class KMA():
             "-o", result_file_tmp,
             "-tmp", tmp_dir,
             "-t_db", db,
-            "-mem_mode", "-cge", "-boot", "-1t1", "-and"]
+            "-cge", "-boot", "-1t1", "-and"]
 
         # Call kma externally
         print("# KMA call: " + " ".join(kma_call_list))
