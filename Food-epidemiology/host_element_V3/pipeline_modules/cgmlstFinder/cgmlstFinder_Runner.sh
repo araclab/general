@@ -1,5 +1,5 @@
 #!/bin/sh
-#SBATCH --time 30:00
+#SBATCH --time 60:00
 #SBATCH -p project
 #SBATCH -e cgmlstFinder_Runner_%A_%a.err
 #SBATCH -o cgmlstFinder_Runner_%A_%a.out
@@ -63,10 +63,22 @@ filename=${fileInput%.*}
 mkdir $main_output_folder_input/processing_files/$filename
 mkdir $main_output_folder_input/processing_files/$filename/slurm_outputs
 
+#copying db into local file
+echo "Copying KMA database to isolate I/O traffic..."
+LOCAL_DB_DIR="$main_output_folder_input/processing_files/$filename/local_db"
+mkdir -p $LOCAL_DB_DIR/ecoli
+
+# Copy the entire ecoli database into this job's private folder
+cp ${CGE_DB_Path}/ecoli/* $LOCAL_DB_DIR/ecoli/
 
 # Run cgmlstfinder
+#echo "Performing cgmlstfinder on: $fileInput"
+#$CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecoli -db $CGE_DB_Path -k $CGE_KMA_Tool_Path -o $main_output_folder_input/processing_files/$filename
+
 echo "Performing cgmlstfinder on: $fileInput"
-$CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecoli -db $CGE_DB_Path -k $CGE_KMA_Tool_Path -o $main_output_folder_input/processing_files/$filename
+$CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecoli -db $LOCAL_DB_DIR -k $CGE_KMA_Tool_Path -o $main_output_folder_input/processing_files/$filename
+
+rm -rf $LOCAL_DB_DIR
 
 # Convert all results to md5
 echo Run cgmlstfinder md5 converter
