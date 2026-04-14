@@ -3,7 +3,7 @@
 #SBATCH -p project
 #SBATCH -e cgmlstFinder_Runner_%A_%a.err
 #SBATCH -o cgmlstFinder_Runner_%A_%a.out
-#SBATCH --cpus-per-task=2
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=15G
 
 # Main script to run the cgmlstfinder, modified for the md5sum return
@@ -64,22 +64,33 @@ filename=${fileInput%.*}
 mkdir $main_output_folder_input/processing_files/$filename
 mkdir $main_output_folder_input/processing_files/$filename/slurm_outputs
 
-#copying db into local file
-echo "Copying KMA database to isolate I/O traffic..."
-LOCAL_DB_DIR="$main_output_folder_input/processing_files/$filename/local_db"
-mkdir -p $LOCAL_DB_DIR/ecoli
+
 
 # Copy the entire ecoli database into this job's private folder
 cp ${CGE_DB_Path}/ecoli/* $LOCAL_DB_DIR/ecoli/
 
-# Run cgmlstfinder
-#echo "Performing cgmlstfinder on: $fileInput"
-#$CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecoli -db $CGE_DB_Path -k $CGE_KMA_Tool_Path -o $main_output_folder_input/processing_files/$filename
-
+# run cgmlstfinder with retry if KMA result file is missing or empty
 echo "Performing cgmlstfinder on: $fileInput"
-$CGE_Tool_Path/cgMLST_EHS_Modified.py -i ${Data_Folder_input}/$fileInput -s ecoli -db $LOCAL_DB_DIR -k $CGE_KMA_Tool_Path -o $main_output_folder_input/processing_files/$filename
 
-rm -rf $LOCAL_DB_DIR
+
+max_attempts=3
+attempt=1
+KMA_RES_FILE="$main_output_folder_input/processing_files/$filename/kma_${filename}.res"
+
+while [ $attempt -le $max_attempts ] && [ ! -s "$KMA_RES_FILE" ]; do
+    echo "Attempt $attempt: Running cgMLST_EHS_Modified.py"
+    $CGE_Tool_Path/cgMLST_EHS_Modified.py -i "${Data_Folder_input}/$fileInput" -s ecoli -db "$CGE_DB_Path" -k "$CGE_KMA_Tool_Path" -o "$main_output_folder_input/processing_files/$filename"
+    attempt=$((attempt + 1))
+    sleep 2 #make sure file is not mid write, when retrying 
+done
+
+if [ ! -s "$KMA_RES_FILE" ]; then
+    echo "ERROR: $KMA_RES_FILE missing or empty after $max_attempts attempts."
+fi
+
+if [ $success -ne 1 ]; then
+    echo "ERROR: cgMLST_EHS_Modified.py failed after $max_attempts attempts or $KMA_RES_FILE missing/empty."
+fi
 
 # Convert all results to md5
 echo Run cgmlstfinder md5 converter

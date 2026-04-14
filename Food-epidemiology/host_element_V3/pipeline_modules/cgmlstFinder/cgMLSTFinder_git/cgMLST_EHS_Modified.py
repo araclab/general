@@ -488,22 +488,12 @@ class KMA():
             "-o", result_file_tmp,
             "-tmp", tmp_dir,
             "-t_db", db,
-            "-t", "2" #added Jon
-            "-cge", "-boot", "-1t1", "-and"]
+            "-mem_mode", "-cge", "-boot", "-1t1", "-and"]
 
         # Call kma externally
         print("# KMA call: " + " ".join(kma_call_list))
-        process = subprocess.Popen(kma_call_list, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE) #, stderr=subprocess.PIPE)
+        process = subprocess.Popen(kma_call_list, shell=False, stdout=subprocess.PIPE) #, stderr=subprocess.PIPE)
         out, err = process.communicate()
-        # -- debugging --
-        if process.returncode != 0:
-            print(f"==================================================")
-            print(f"FATAL ERROR: KMA crashed with code {process.returncode}")
-            print(f"KMA Error Log:\n{err.decode('utf-8')}")
-            print(f"==================================================")
-            sys.exit(1)
-            
-        # -- debugging --
         print("KMA call ended")
     
     def _extract_seq_from_fsa(self, locus):
@@ -563,26 +553,13 @@ class KMA():
 
         # Create dict of locus and allel with the highest quality score
         with open(self.result_file, "r") as result_file:
-            
-            # --debugging--
             header = result_file.readline()
-            print("=====================================")
-            print(f"attempting to read {self.result_file}")
-
-            if os.path.exists(self.result_file):
-                print(f"DEBUG KMA: File exists. Size: {os.path.getsize(self.result_file)} bytes")
-            else:
-                print(f"DEBUG KMA: FATAL - File does not exist on disk!")
-
-            print(f"DEBUG KMA: Raw header line read: '{header}'")
-
             header = header.strip().split("\t")
-            
-            query_id_index       = header.index("Query_Identity")
+
             depth_index          = header.index("Depth")
+            query_id_index       = header.index("Query_Identity")
             template_cover_index = header.index("Template_Coverage")
             q_val_index          = header.index("q_value")
-            # --debugging--
 
             loci_allel = re.compile(r"(\S+)_(\d+)")
             i = 0
@@ -750,16 +727,14 @@ def runProd(assembly_path, prod_path, tmp_dir, outdir):
     # Process assembly input and define CDS filename
     filename = os.path.basename(assembly_path).split(".")[0] 
     CDS_file = os.path.join(outdir, filename + ".cds")
-    
-    
-    
+        
     # Execute prodigal and write coding regions to file
     cmd = "{} -c -q -i {} -d {}".format(prod_path,assembly_path,CDS_file)
     print("# Executing Prodigal on " + assembly_path)
     print("#")
     print("# Prodigal call: " + cmd)
     print("#")
-    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL).wait()
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL).wait() 
     print("Prodigal call ended")
     return CDS_file   
         
@@ -950,9 +925,8 @@ if __name__ == "__main__":
             
             # Run KMA to find alleles from fasta file
             seq_kma = KMA(CDS_file, tmp_dir, db_species_scheme, loci_list, kma_path, fasta = True)
-            
-            #cmd = "rm {}".format(CDS_file)
-            #subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL)
+            cmd = "rm {}".format(CDS_file)
+            subprocess.Popen(cmd, shell=True, stdout=subprocess.DEVNULL)
             
             # Get called allelel
             allel_output += seq_kma.best_allel_hits()
