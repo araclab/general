@@ -39,7 +39,7 @@ for filepath in "$Data_Folder_input"/*.*; do
     echo "$filename"
     mkdir $filename
    # Run mlstFinder
-   python3 $cge_mlst_git/mlst.py -i ${Data_Folder_input}/$fileInput -o $filename -s $mlst_db -p $mlst_db_dir  -x -matrix
+   python3 $cge_mlst_git/mlst.py -i ${Data_Folder_input}/$fileInput -o $filename -s $mlst_db -p $mlst_db_dir -t $filename/mlst_tmpdir -x -matrix
 
    # Collect Results
    cat $filename/results.txt | grep "Sequence Type" | awk -F': ' '{print $2}' > tmpfile
