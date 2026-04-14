@@ -488,6 +488,7 @@ class KMA():
             "-o", result_file_tmp,
             "-tmp", tmp_dir,
             "-t_db", db,
+            "-t", "2" #added Jon
             "-cge", "-boot", "-1t1", "-and"]
 
         # Call kma externally

@@ -1,9 +1,10 @@
 #!/bin/sh
-#SBATCH --time 60:00
+#SBATCH --time 02:00:00
 #SBATCH -p project
 #SBATCH -e cgmlstFinder_Runner_%A_%a.err
 #SBATCH -o cgmlstFinder_Runner_%A_%a.out
-
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=15G
 
 # Main script to run the cgmlstfinder, modified for the md5sum return
 # Note: this script focuses and uses the on the ecoli database
