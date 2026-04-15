@@ -1,10 +1,10 @@
 #!/bin/sh
-#SBATCH --time 02:00:00
+#SBATCH --time 01:00:00
 #SBATCH -p project
 #SBATCH -e cgmlstFinder_Runner_%A_%a.err
 #SBATCH -o cgmlstFinder_Runner_%A_%a.out
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=15G
+#SBATCH --cpus-per-task=2
+#SBATCH --mem=28G
 
 # Main script to run the cgmlstfinder, modified for the md5sum return
 # Note: this script focuses and uses the on the ecoli database
@@ -65,18 +65,11 @@ mkdir $main_output_folder_input/processing_files/$filename
 mkdir $main_output_folder_input/processing_files/$filename/slurm_outputs
 
 
-
-# Copy the entire ecoli database into this job's private folder
-cp ${CGE_DB_Path}/ecoli/* $LOCAL_DB_DIR/ecoli/
-
 # run cgmlstfinder with retry if KMA result file is missing or empty
 echo "Performing cgmlstfinder on: $fileInput"
-
-
-max_attempts=5
+max_attempts=3
 attempt=1
 KMA_RES_FILE="$main_output_folder_input/processing_files/$filename/kma_${filename}.res"
-
 while [ $attempt -le $max_attempts ] && [ ! -s "$KMA_RES_FILE" ]; do
     echo "Attempt $attempt: Running cgMLST_EHS_Modified.py"
     $CGE_Tool_Path/cgMLST_EHS_Modified.py -i "${Data_Folder_input}/$fileInput" -s ecoli -db "$CGE_DB_Path" -k "$CGE_KMA_Tool_Path" -o "$main_output_folder_input/processing_files/$filename"
