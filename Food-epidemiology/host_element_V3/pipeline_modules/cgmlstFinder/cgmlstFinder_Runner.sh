@@ -81,9 +81,6 @@ if [ ! -s "$KMA_RES_FILE" ]; then
     echo "ERROR: $KMA_RES_FILE missing or empty after $max_attempts attempts."
 fi
 
-if [ $success -ne 1 ]; then
-    echo "ERROR: cgMLST_EHS_Modified.py failed after $max_attempts attempts or $KMA_RES_FILE missing/empty."
-fi
 
 # Convert all results to md5
 echo Run cgmlstfinder md5 converter
