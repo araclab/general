@@ -73,7 +73,7 @@ cp ${CGE_DB_Path}/ecoli/* $LOCAL_DB_DIR/ecoli/
 echo "Performing cgmlstfinder on: $fileInput"
 
 
-max_attempts=3
+max_attempts=5
 attempt=1
 KMA_RES_FILE="$main_output_folder_input/processing_files/$filename/kma_${filename}.res"
 
