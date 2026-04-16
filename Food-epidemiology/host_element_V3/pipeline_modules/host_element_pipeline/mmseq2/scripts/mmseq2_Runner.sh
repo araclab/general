@@ -3,6 +3,9 @@
 #SBATCH -p project
 #SBATCH -e mmseq2_Runner_%A_%a.err
 #SBATCH -o mmseq2_Runner_%A_%a.out
+#SBATCH --mem=24G
+#SBATCH --cpus-per-task=2
+
 
 # Created by Edward Sung (edward.sung@gwu.edu) on 2/18/2025
 #modified high level by Jon Slotved (JOSS@dksund.dk)

@@ -4,7 +4,7 @@
 #SBATCH -p project
 #SBATCH -o run_hostelement_blca_%j.out
 #SBATCH -e run_hostelement_blca_%j.err
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=6
 
 STARTTIMER="$(date +%s)"
 
