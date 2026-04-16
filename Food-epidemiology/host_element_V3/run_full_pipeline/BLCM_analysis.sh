@@ -122,9 +122,9 @@ fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
 #5 dependecny flag "empty if no dependency"
 #6 config.env
 fimh_compiler_jid=$(bash "$fimh/Slurm_Array_Submitter.sh" \
-    "$input_folder" \               
+    "$input_folder" \
     "$sample_list" \
-    fimhtyper \
+    fimhtyper_analysis \
     "$partition" \
     "$mlst_compiler_jid" \
     "$config_file" | tail -1)
