@@ -3,6 +3,7 @@
 #SBATCH -p project
 #SBATCH -o compile_output_%j.out
 #SBATCH -e compile_output_%j.err
+#SBATCH -j compile_blcm_analysis
 
 #config
 # SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
