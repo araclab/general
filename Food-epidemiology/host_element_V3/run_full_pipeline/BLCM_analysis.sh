@@ -63,6 +63,11 @@ sample_list="$main_output_folder/tmp_analysis/sample_list.txt"
 #run modules
 
 #cgmlst
+#1 folder with fasta files
+#2 list of samples to run analysis on (takes ffrom )
+#3 SLURM job_name
+#4 partition
+#5 config.env
 cgmlst="$project_root/pipeline_modules/cgmlstFinder"
 cgmlst_compiler_jid=$(bash "$cgmlst/cgmlstFinder_Submitter.sh" \
     "$input_folder" \
@@ -73,6 +78,13 @@ cgmlst_compiler_jid=$(bash "$cgmlst/cgmlstFinder_Submitter.sh" \
 echo "cgmlst compiler: $cgmlst_compiler_jid"
 
 #host element pipeline
+#1 folder with fasta files
+#2 list of samples to run analysis on (takes ffrom )
+#3 host_tsv file
+#4 SLURM job_name
+#5 partition
+#6 dependecny flag "empty if no dependency"
+#7 config.env
 hep="$project_root/pipeline_modules/host_element_pipeline/scripts"
 hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$input_folder" \
@@ -80,33 +92,49 @@ hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$host_info" \
     hep_analysis \
     "$partition" \
-    "$cgmlst_compiler_jid" \
+    "" \
     "$config_file" | tail -1)
 echo "HEP caller: $hep_caller_jid"
 
 #mlst analysis
+#1 folder with fasta files
+#2 list of samples to run analysis on (takes ffrom )
+#3 SLURM job_name
+#4 partition
+#5 dependecny flag "empty if no dependency"
+#6 config.env
 mlst="$project_root/pipeline_modules_nonessential/MLST/MLST_SLURM"
 mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
     "$input_folder" \
     "$sample_list" \
     mlst_analysis \
     "$partition" \
-    "$hep_caller_jid" \
+    "" \
     "$config_file" | tail -1)
-echo "MLST compiler: $mlst_compiler_jid"
+echo "MLST compiler (dependecy_flag): $mlst_compiler_jid"
 
 #fimhtyper
 fimh="$project_root/pipeline_modules_nonessential/fimHtyper/fimHtyper_SLURM"
+#1 folder with fasta files
+#2 list of samples to run analysis on (takes ffrom )
+#3 SLURM job_name
+#4 partition
+#5 dependecny flag "empty if no dependency"
+#6 config.env
 fimh_compiler_jid=$(bash "$fimh/Slurm_Array_Submitter.sh" \
-    "$input_folder" \
+    "$input_folder" \               
     "$sample_list" \
-    fimhtyper_analysis \
+    fimhtyper \
     "$partition" \
-    "$mlst_compiler_jid" \
+    "" \
     "$config_file" | tail -1)
 echo "fimHtyper compiler: $fimh_compiler_jid"
 
 #kmodes
+#1 kmodes input file
+#2 partition
+#3 dependecny flag "kmodes always runs after cgmlst!"
+#4 config.env
 kmodes="$project_root/pipeline_modules/kmodes"
 kmodes_rdy_inputfile="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile.txt"
 kmodes_pred_jid=$(bash "$kmodes/kmodes_SLURM_Submitter.sh" \
@@ -122,7 +150,10 @@ blcm="$project_root/pipeline_modules/host_element_blcm/SB27_excludeBeefnTurkey_1
 kmodes_predictions="$main_output_folder/cgmlst_analysis_output/compiled_files/cgmlst_analysis_kmodes_ready_inputfile__Cluster_2__kmodes_cgmlst_clustering_predictions.csv"
 hep_elements="$main_output_folder/hep_analysis_output/compiled_files/hep_analysis_element_presence.tsv"
 mlst_results="$main_output_folder/mlst_analysis_output/compiled_files/results_compiled.txt"
-
+#1 kmodes input file
+#2 partition
+#3 dependecny flag "kmodes always runs after cgmlst!"
+#4 config.env
 blcm_jid=$(sbatch --parsable \
     --dependency=afterok:${kmodes_pred_jid}:${hep_caller_jid}:${mlst_compiler_jid} \
     -p "$partition" \

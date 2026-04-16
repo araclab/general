@@ -54,6 +54,33 @@ fi
 
 project_root=$(grep "^GLOBAL__PROJECT_ROOT__=" "$config_file" | awk -F'__=' '{print $2}' | xargs)
 
+
+
+#show summary and ask for confirmation before submitting
+echo
+echo "========================================="
+echo "BLCA Pipeline Submission Preview"
+echo "========================================="
+echo "Input folder:      $input_folder"
+echo "Host TSV:          $host_info"
+echo "Output folder:     $main_output_folder"
+echo "Partition:         $partition"
+echo
+# count files in input folder
+echo "Number of "ls" items in input folder: $(ls "$input_folder" | wc -l)"
+echo
+echo "First 5 lines of host TSV ($host_info):"
+head -5 "$host_info"
+echo "========================================="
+echo
+#read input and prompt "are you sure" before they submit
+read -p "Are you sure you want to submit with these inputs? (y/N): " confirm
+
+if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    echo "Aborted by user."
+    exit 1
+fi
+echo "starting analysis"
 # Create out dir and copy config as config.env
 mkdir -p "$main_output_folder/tmp_analysis"
 cp "$config_file" "$main_output_folder/tmp_analysis/config.env"

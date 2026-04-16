@@ -125,4 +125,6 @@ done
 compiler_jid=$(sbatch --parsable --dependency=singleton --partition="$Partition_input" -J "$jobname" "$Slurm_Array_scripts/Slurm_Array_Compiler.sh" "${Job_Name_input}_output")
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
+
+#echo id for downstream depency flags (must be the last std in script!)
 echo "$compiler_jid"

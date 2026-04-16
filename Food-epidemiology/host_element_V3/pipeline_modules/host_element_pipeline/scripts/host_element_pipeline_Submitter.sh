@@ -87,18 +87,14 @@ bash $mmseq2_scripts/mmseq2_Submitter.sh $mmseq2_screening_folder/rawData_500bpT
 
 echo "-------------------- STEP 2. Submitted Host Element Caller Compiler Job, Waits on completion of MMSEQ2 Screening --------------------"
 
+#saving id for dependency
 caller_jid=$(sbatch --parsable -p $partition --dependency=singleton -J ${Job_Name_input}_mmseq2 $host_element_scipts/host_element_pipeline_Element_Caller.sh ${Job_Name_input}_mmseq2 ${Job_Name_input}_output $Data_Folder_Hostlist_input $element_genes_screen $Job_Name_input "$config_file")
-
-
 
 echo "-------------------- STEP 3. Cleaning Up Files and Folders --------------------"
 if [ -n "$SLURM_JOB_ID" ]; then
    mv host_element_pipeline_${SLURM_JOB_ID}.err ${Job_Name_input}_output/slurmFiles
    mv host_element_pipeline_${SLURM_JOB_ID}.out ${Job_Name_input}_output/slurmFiles
 fi
-
-
-
 
 
 # Script Timer
@@ -108,4 +104,6 @@ HOURS=$((${DURATION} / 3600))
 MINUTES=$(((${DURATION} % 3600)/ 60))
 SECONDS=$(((${DURATION} % 3600) % 60))
 echo "RUNTIMER: $HOURS:$MINUTES:$SECONDS (hh:mm:ss)"
+
+#echo id for downstream depency flags (must be the last std in script!)
 echo "$caller_jid"

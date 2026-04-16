@@ -153,4 +153,6 @@ done
 compiler_jid=$(sbatch --parsable --dependency=singleton -p $partition -J $jobname $Slurm_Array_scripts/cgmlstFinder_Compiler.sh ${Job_Name_input}_output $jobname ${samplelist_filename}_SLURM-ARRAY-READY.txt "$config_file")
 
 echo "---------- Your jobs have been submitted to HPC, thank you. ----------"
+
+#echo id for downstream depency flags (must be the last std in script!)
 echo "$compiler_jid"
