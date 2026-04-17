@@ -168,7 +168,7 @@ echo "BLCM: $blcm_jid"
 
 #compile final output csv
 compile_script="$project_root/run_full_pipeline/helper_scripts/run_compile_blcm_output.sh"
-blcm_pred_scores="$main_output_folder/blcm_output/blcm_output_pred_scores.csv"
+blcm_pred_scores="$main_output_folder/blcm_output/blcm_analysis_compiled.csv"
 fimh_results="$main_output_folder/fimhtyper_analysis_output/compiled_files/results_compiled.txt"
 
 compile_jid=$(sbatch --parsable \
