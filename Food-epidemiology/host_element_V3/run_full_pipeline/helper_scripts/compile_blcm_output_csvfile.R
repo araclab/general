@@ -77,7 +77,7 @@ print("Weakly animal attributed elements: EL2 EL3 EL36 EL41 EL42 EL43 EL50 ")
 
 write.csv(
   blcm_analysis_df,
-  file = file.path(output_dir, "blcm_analysis.csv"),
+  file = file.path(output_dir, "blcm_analysis_compiled.csv"),
   row.names = F,
   quote = T
 )
