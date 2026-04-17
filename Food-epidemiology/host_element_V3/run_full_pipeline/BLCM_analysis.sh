@@ -92,7 +92,7 @@ hep_caller_jid=$(bash "$hep/host_element_pipeline_Submitter.sh" \
     "$host_info" \
     hep_analysis \
     "$partition" \
-    "$cgmlst_compiler_jid" \
+    "" \
     "$config_file" | tail -1)
 echo "HEP caller: $hep_caller_jid"
 
@@ -109,7 +109,7 @@ mlst_compiler_jid=$(bash "$mlst/Slurm_Array_Submitter.sh" \
     "$sample_list" \
     mlst_analysis \
     "$partition" \
-    "$hep_caller_jid" \
+    "" \
     "$config_file" | tail -1)
 echo "MLST compiler (dependecy_flag): $mlst_compiler_jid"
 
@@ -126,7 +126,7 @@ fimh_compiler_jid=$(bash "$fimh/Slurm_Array_Submitter.sh" \
     "$sample_list" \
     fimhtyper_analysis \
     "$partition" \
-    "$mlst_compiler_jid" \
+    "" \
     "$config_file" | tail -1)
 echo "fimHtyper compiler: $fimh_compiler_jid"
 

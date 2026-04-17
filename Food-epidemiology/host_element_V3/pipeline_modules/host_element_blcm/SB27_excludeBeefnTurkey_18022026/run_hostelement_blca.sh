@@ -1,10 +1,11 @@
 #!/bin/sh
 #SBATCH --time 3-00:00:00
-#SBATCH -J BLCM
+#SBATCH -J Bayesian_latent_class_modelling
 #SBATCH -p project
 #SBATCH -o run_hostelement_blca_%j.out
 #SBATCH -e run_hostelement_blca_%j.err
 #SBATCH --cpus-per-task=6
+#SBATCH --mem=32G
 
 STARTTIMER="$(date +%s)"
 
